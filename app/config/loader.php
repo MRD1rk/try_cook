@@ -7,7 +7,10 @@ $loader = new \Phalcon\Loader();
  */
 $loader->registerDirs(
     [
-        $config->application->controllersDir,
         $config->application->modelsDir
     ]
 )->register();
+$loader->registerClasses([
+    'BackendRoutes' => APP_PATH . '/config/BackendRoutes.php',
+    'FrontendRoutes' => APP_PATH . '/config/FrontendRoutes.php',
+]);

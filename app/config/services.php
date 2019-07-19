@@ -27,35 +27,6 @@ $di->setShared('url', function () {
     return $url;
 });
 
-/**
- * Setting up the view component
- */
-$di->setShared('view', function () {
-    $config = $this->getConfig();
-
-    $view = new View();
-    $view->setDI($this);
-    $view->setViewsDir($config->application->viewsDir);
-
-    $view->registerEngines([
-        '.volt' => function ($view) {
-            $config = $this->getConfig();
-
-            $volt = new VoltEngine($view, $this);
-
-            $volt->setOptions([
-                'compiledPath' => $config->application->cacheDir,
-                'compiledSeparator' => '_'
-            ]);
-
-            return $volt;
-        },
-        '.phtml' => PhpEngine::class
-
-    ]);
-
-    return $view;
-});
 
 /**
  * Database connection is created based in the parameters defined in the configuration file
@@ -109,4 +80,17 @@ $di->setShared('session', function () {
     $session->start();
 
     return $session;
+});
+
+/**
+ * Registering a router
+ */
+$di->setShared('router', function () {
+    $router = new \Phalcon\Mvc\Router();
+    $router->setDefaultModule('frontend');
+    $router->mount(new FrontendRoutes());
+//    $router->mount(new BackendRoutes());
+    $router->removeExtraSlashes(true);
+    $router->handle();
+    return $router;
 });
