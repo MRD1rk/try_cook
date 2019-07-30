@@ -9,8 +9,9 @@ $loader->registerDirs(
     [
         $config->application->modelsDir
     ]
-)->register();
+);
 $loader->registerClasses([
     'BackendRoutes' => APP_PATH . '/config/BackendRoutes.php',
     'FrontendRoutes' => APP_PATH . '/config/FrontendRoutes.php',
 ]);
+$loader->register();

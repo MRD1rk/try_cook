@@ -6,8 +6,8 @@ use Models\Context;
 use Modules\Frontend\Widgets\NavWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
-use Phalcon\Dispatcher;
 use Phalcon\Loader;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Volt;
 
@@ -44,24 +44,30 @@ class Module
     {
         $di->set('dispatcher', function () use ($di) {
             $eventsManager = $di->getShared('eventsManager');
+            /**
+             * Check if the user is allowed to access certain action using the SecurityPlugin
+             */
             $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
                 switch ($exception->getCode()) {
                     case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
                     case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                        $dispatcher->forward([
-                            'controller' => 'error',
-                            'action' => 'show404'
-                        ]);
+                        $dispatcher->forward(
+                            array(
+                                'controller' => 'error',
+                                'action' => 'show404',
+                            )
+                        );
                         return false;
                 }
             });
 //            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
-            $dispatcher = new \Phalcon\Mvc\Dispatcher();
+            $dispatcher = new Dispatcher();
 
             $dispatcher->setDefaultNamespace('Modules\Frontend\Controllers');
             $dispatcher->setEventsManager($eventsManager);
             return $dispatcher;
-        });
+        },true);
+
         $di->set('view', function () {
 
             $view = new View();

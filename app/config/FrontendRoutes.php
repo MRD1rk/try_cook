@@ -1,7 +1,6 @@
 <?php
 
 use Phalcon\Mvc\Router\Group as RouterGroup;
-use Phalcon\Mvc\Router;
 
 class FrontendRoutes extends RouterGroup
 {
@@ -15,13 +14,19 @@ class FrontendRoutes extends RouterGroup
     {
         $this->setPaths(
             [
-                'module' => 'frontend'
+                "module" => "frontend",
             ]
         );
 
-        $this->add('/:controller', [
-            'controller' => 1,
-            'action' => 'index'
-        ]);
+        $this->add('/([a-z]{2})', array(
+            'controller' => 'index',
+            'action' => 'index',
+            'iso_code' => 1
+        ));
+        $this->add('/([a-z]{2})/signup', array(
+            'controller' => 'index',
+            'action' => 'signup',
+            'iso_code' => 1
+        ));
     }
 }

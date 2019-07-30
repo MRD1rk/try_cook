@@ -1,15 +1,22 @@
 <?php
 
-
 namespace Models;
-
 
 use Phalcon\Di;
 
-final class Context
+final class Context extends BaseModel
 {
+    /**
+     * @var Context
+     */
     protected static $instance;
+    /**
+     * @var User
+     */
     protected $user;
+    /**
+     * @var Lang
+     */
     protected $lang;
 
     /**
@@ -39,13 +46,13 @@ final class Context
     }
 
     /**
-     * @return mixed
+     * @return Lang
      */
     public function getLang()
     {
         if ($this->lang)
             return $this->lang;
-        $lang_iso = Di::getDefault()->get('dispatcher')->getParam('iso_code');
+        $lang_iso = $this->getDI()->getDispatcher()->getParam('iso_code');
         $lang = Lang::findFirstByIsoCode($lang_iso);
         if (!$lang)
             $lang = Lang::findFirstById(Configuration::get('DEFAULT_ID_LANG'));
