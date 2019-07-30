@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend;
 
+use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
 use Phalcon\Dispatcher;
 use Phalcon\Loader;
@@ -39,21 +40,16 @@ class Module
      */
     public function registerServices(DiInterface $di)
     {
-        $di['dispatcher'] = function () use ($di) {
+        $di->set('dispatcher', function () use ($di) {
             $eventsManager = $di->getShared('eventsManager');
-            /**
-             * Check if the user is allowed to access certain action using the SecurityPlugin
-             */
             $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
                 switch ($exception->getCode()) {
                     case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
                     case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                        $dispatcher->forward(
-                            array(
-                                'controller' => 'error',
-                                'action' => 'show404',
-                            )
-                        );
+                        $dispatcher->forward([
+                            'controller' => 'error',
+                            'action' => 'show404'
+                        ]);
                         return false;
                 }
             });
@@ -63,7 +59,7 @@ class Module
             $dispatcher->setDefaultNamespace('Modules\Frontend\Controllers');
             $dispatcher->setEventsManager($eventsManager);
             return $dispatcher;
-        };
+        });
         $di->set('view', function () {
 
             $view = new View();
@@ -91,5 +87,21 @@ class Module
             $compiler->addFunction('strtotime', 'strtotime');
             return $volt;
         }, true);
+
+        $di->set('assets',function () {
+            $assets = new Manager();
+            $assets->collection('headerCss')
+                ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
+                ->addCss('/vendor/fontawesome-free/css/all.min.css')
+                ->addCss('/css/grayscale.min.css')
+                ->addCss('/css/custom.css');
+            $assets->collection('footerJs')
+                ->addJs('/vendor/jquery/jquery.min.js')
+                ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
+                ->addJs('/vendor/jquery-easing/jquery.easing.min.js')
+                ->addJs('/js/grayscale.js');
+
+            return $assets;
+        },true);
     }
 }
