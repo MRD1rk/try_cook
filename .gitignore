@@ -1,4 +1,6 @@
 # IntellijIdea files
 *.iml
 .idea
-out
+
+
+!.gitignore
