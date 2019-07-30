@@ -2,6 +2,8 @@
 
 namespace Modules\Frontend;
 
+use Models\Context;
+use Modules\Frontend\Widgets\NavWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
 use Phalcon\Dispatcher;
@@ -88,7 +90,7 @@ class Module
             return $volt;
         }, true);
 
-        $di->set('assets',function () {
+        $di->set('assets', function () {
             $assets = new Manager();
             $assets->collection('headerCss')
                 ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
@@ -102,6 +104,13 @@ class Module
                 ->addJs('/js/grayscale.js');
 
             return $assets;
-        },true);
+        }, true);
+
+        $di->set('context', function () {
+            return Context::getInstance();
+        });
+        $di->set('NavWidget', function () {
+            return new NavWidget();
+        });
     }
 }

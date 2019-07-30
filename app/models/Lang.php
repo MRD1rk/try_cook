@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Configuration extends BaseModel
+class Lang extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -21,13 +21,31 @@ class Configuration extends BaseModel
      *
      * @var string
      */
-    public $value;
+    public $iso_code;
 
     /**
      *
      * @var string
      */
-    public $date_add;
+    public $lang_code;
+
+    /**
+     *
+     * @var string
+     */
+    public $date_format_lite;
+
+    /**
+     *
+     * @var string
+     */
+    public $date_format_full;
+
+    /**
+     *
+     * @var integer
+     */
+    public $active;
 
     /**
      * Initialize method for model.
@@ -35,7 +53,7 @@ class Configuration extends BaseModel
     public function initialize()
     {
         $this->setSchema("try_cook_db");
-        $this->setSource("tc_configuration");
+        $this->setSource("tc_lang");
     }
 
     /**
@@ -45,14 +63,14 @@ class Configuration extends BaseModel
      */
     public function getSource()
     {
-        return 'tc_configuration';
+        return 'tc_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Configuration[]|Configuration|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return Lang[]|Lang|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -63,7 +81,7 @@ class Configuration extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Configuration|\Phalcon\Mvc\Model\ResultInterface
+     * @return Lang|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {
@@ -81,21 +99,12 @@ class Configuration extends BaseModel
         return [
             'id' => 'id',
             'name' => 'name',
-            'value' => 'value',
-            'date_add' => 'date_add'
+            'iso_code' => 'iso_code',
+            'lang_code' => 'lang_code',
+            'date_format_lite' => 'date_format_lite',
+            'date_format_full' => 'date_format_full',
+            'active' => 'active'
         ];
     }
 
-    /**
-     * @param $name
-     * @return string|null
-     */
-    public static function get(string $name)
-    {
-        $configuration = self::findFirstByName($name);
-        if (!$configuration)
-            return null;
-        return $configuration->value;
-
-    }
 }
