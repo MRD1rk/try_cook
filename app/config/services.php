@@ -98,8 +98,12 @@ $di->setShared('router', function () {
     return $router;
 });
 $di->set('t', function () {
-    $translate = Translate::getTranslates();
-    return $translate;
+    $translates = Translate::getTranslates();
+    return new \Phalcon\Translate\Adapter\NativeArray(
+        [
+            'content' => $translates
+        ]
+    );
 });
 
 $di->setShared('redis', function () {

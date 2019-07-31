@@ -3,6 +3,8 @@
 namespace Modules\Frontend\Controllers;
 
 
+use Models\User;
+
 class IndexController extends ControllerBase
 {
 
@@ -10,13 +12,18 @@ class IndexController extends ControllerBase
     {
     }
 
-    public function signinAction()
+    public function signupAction()
     {
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
-            echo '<pre>';
-            var_dump($data);
-            die();
+            $user = new User();
+            if ($user->save($data)) {
+                $this->flash->success($this->t->_('welcome', ['name' => $user->getFullName()]));
+            } else {
+                foreach ($user->getMessages() as $message) {
+                    echo  $message->getMessage();
+                }
+            }
         }
     }
 

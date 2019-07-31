@@ -58,7 +58,7 @@
         <img src="img/ipad.png" class="img-fluid" alt="">
     </div>
 </section>
-
+{{ content() }}
 <!-- Projects Section -->
 <section id="projects" class="projects-section bg-light">
     <div class="container">

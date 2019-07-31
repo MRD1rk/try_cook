@@ -2,9 +2,6 @@
 
 use Phalcon\Di\FactoryDefault;
 
-//if(!in_array($_SERVER['REMOTE_ADDR'],['93.73.241.71','95.164.50.26'])){
-//    die('exit');
-//}
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
 

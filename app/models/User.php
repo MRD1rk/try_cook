@@ -285,7 +285,7 @@ class User extends BaseModel
             'email',
             new EmailValidator(
                 [
-                    'model'   => $this,
+                    'model' => $this,
                     'message' => 'Please enter a correct email address',
                 ]
             )
@@ -310,7 +310,7 @@ class User extends BaseModel
      */
     public function getSource()
     {
-        return 'tc_user';
+        return 'tc_users';
     }
 
     /**
@@ -351,17 +351,22 @@ class User extends BaseModel
             'email' => 'email',
             'activation_code' => 'activation_code',
             'password' => 'password',
+            'active' => 'active',
             'date_upd' => 'date_upd',
             'date_add' => 'date_add'
         ];
     }
 
-    public function afterSave()
+    public function beforeValidationOnCreate()
     {
         $random = new Random();
         $code = $random->hex();
         $this->setActivationCode($code);
-        $this->save();
+    }
+
+    public function getFullName()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 
 }
