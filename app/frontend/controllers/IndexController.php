@@ -12,7 +12,12 @@ class IndexController extends ControllerBase
 
     public function signinAction()
     {
-        $data = $this->request->getPost();
+        if ($this->request->isPost()) {
+            $data = $this->request->getPost();
+            echo '<pre>';
+            var_dump($data);
+            die();
+        }
     }
 
 }

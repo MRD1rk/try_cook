@@ -8,11 +8,8 @@ class NavWidget extends BaseWidget
 {
     protected $view_dir = 'nav';
 
-    public function run($view = 'header', $navs = null)
+    public function run($view = 'header')
     {
-        if (!$navs)
-            return null;
-        $this->view->navs = $navs;
         return $this->render($view);
     }
 }

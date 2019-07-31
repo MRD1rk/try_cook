@@ -52,8 +52,6 @@ class Lang extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
-        $this->setSource("tc_lang");
     }
 
     /**
@@ -63,7 +61,7 @@ class Lang extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'tc_lang';
+        return 'tc_langs';
     }
 
     /**

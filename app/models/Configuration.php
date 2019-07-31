@@ -34,8 +34,6 @@ class Configuration extends BaseModel
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
-        $this->setSource("tc_configuration");
     }
 
     /**
@@ -45,7 +43,7 @@ class Configuration extends BaseModel
      */
     public function getSource()
     {
-        return 'tc_configuration';
+        return 'tc_configurations';
     }
 
     /**
