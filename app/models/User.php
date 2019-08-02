@@ -2,10 +2,14 @@
 
 namespace Models;
 
+use Phalcon\Security;
 use Phalcon\Security\Random;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email as EmailValidator;
 
+/**
+ * @property int logged
+ */
 class User extends BaseModel
 {
 
@@ -62,6 +66,10 @@ class User extends BaseModel
      * @var string
      */
     protected $date_add;
+    /**
+     * @var false|string
+     */
+    protected $last_login;
 
     /**
      * Method to set the value of field id
@@ -253,6 +261,22 @@ class User extends BaseModel
     }
 
     /**
+     * @return false|string
+     */
+    public function getLastLogin()
+    {
+        return $this->last_login;
+    }
+
+    /**
+     * @param false|string $last_login
+     */
+    public function setLastLogin($last_login): void
+    {
+        $this->last_login = $last_login;
+    }
+
+    /**
      * Returns the value of field date_upd
      *
      * @return string
@@ -367,6 +391,37 @@ class User extends BaseModel
     public function getFullName()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * @param $password
+     * @return bool
+     */
+    public function login($password)
+    {
+        $security = new Security();
+        if ($security->checkHash($password, $this->getPassword())) {
+            $this->logged = 1;
+            $this->last_login = date('Y-m-d H:i:s');
+            $this->save();
+            Context::getInstance()->setUser($this);
+            $this->_registerSession();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Register an authenticated user into session data
+     *
+     */
+    private function _registerSession(): void
+    {
+        $this->getDI()->getSession()->set('auth', [
+            'id_user' => $this->getId(),
+            'id_role' => $this->getIdRole(),
+            'name' => $this->getFullName()
+        ]);
     }
 
 }

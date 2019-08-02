@@ -28,5 +28,10 @@ class FrontendRoutes extends RouterGroup
             'action' => 'signup',
             'iso_code' => 1
         ));
+        $this->add('/([a-z]{2})/signin', array(
+            'controller' => 'index',
+            'action' => 'signin',
+            'iso_code' => 1
+        ));
     }
 }
