@@ -10,6 +10,7 @@ class IndexController extends BaseController
 
     public function indexAction()
     {
+        return 1;
         return 'close\r\n\r\n1';
         $this->view->container_class = 'container-fluid';
     }
