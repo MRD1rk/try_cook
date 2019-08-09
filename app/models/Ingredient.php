@@ -127,7 +127,7 @@ class Ingredient extends BaseModel
     public function initialize()
     {
         $this->hasMany('id', 'Models\IngredientLang', 'id_ingredient', ['alias' => 'langs']);
-        $this->hasMany('id', 'Models\RecipeIngredient', 'id_ingredient', ['alias' => 'recipeIngredient']);
+        $this->hasMany('id', 'Models\RecipeIngredient', 'id_ingredient', ['alias' => 'recipeIngredients']);
     }
 
     /**

@@ -27,6 +27,12 @@ class RecipeLang extends BaseModel
      *
      * @var string
      */
+    protected $description;
+
+    /**
+     *
+     * @var string
+     */
     protected $content;
 
     /**
@@ -74,6 +80,19 @@ class RecipeLang extends BaseModel
     }
 
     /**
+     * Method to set the value of field title
+     *
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
      * Method to set the value of field content
      *
      * @param string $content
@@ -89,7 +108,7 @@ class RecipeLang extends BaseModel
     /**
      * Method to set the value of field content
      *
-     * @param string $content
+     * @param $link_rewrite
      * @return $this
      */
     public function setLinkRewrite($link_rewrite)
@@ -127,6 +146,16 @@ class RecipeLang extends BaseModel
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Returns the value of field title
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -202,7 +231,9 @@ class RecipeLang extends BaseModel
             'id_recipe' => 'id_recipe',
             'id_lang' => 'id_lang',
             'title' => 'title',
-            'content' => 'content'
+            'description' => 'description',
+            'content' => 'content',
+            'link_rewrite' => 'link_rewrite'
         ];
     }
 

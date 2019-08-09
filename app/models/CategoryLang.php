@@ -127,7 +127,7 @@ class CategoryLang extends BaseModel
     public function initialize()
     {
         $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'categories']);
-        $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'langs']);
+        $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
     }
 
     /**

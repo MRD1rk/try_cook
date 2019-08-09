@@ -96,7 +96,7 @@ class CategoryRecipe extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'category']);
-        $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipes']);
+        $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
     /**

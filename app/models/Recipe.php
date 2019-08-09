@@ -24,6 +24,16 @@ class Recipe extends BaseModel
     protected $cooking_time;
 
     /**
+     * @var int
+     */
+    protected $prepare_time;
+
+    /**
+     * @var string
+     */
+    protected $id_user;
+
+    /**
      *
      * @var integer
      */
@@ -76,6 +86,32 @@ class Recipe extends BaseModel
     public function setCookingTime($cooking_time)
     {
         $this->cooking_time = $cooking_time;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field cooking_time
+     *
+     * @param integer $prepare_time
+     * @return $this
+     */
+    public function setPrepareTime($prepare_time)
+    {
+        $this->prepare_time = $prepare_time;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field active
+     *
+     * @param integer $id_user
+     * @return $this
+     */
+    public function setIdUser($id_user)
+    {
+        $this->id_user = $id_user;
 
         return $this;
     }
@@ -150,6 +186,16 @@ class Recipe extends BaseModel
     }
 
     /**
+     * Returns the value of field cooking_time
+     *
+     * @return integer
+     */
+    public function getPrepareTime()
+    {
+        return $this->prepare_time;
+    }
+
+    /**
      * Returns the value of field active
      *
      * @return integer
@@ -157,6 +203,16 @@ class Recipe extends BaseModel
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Returns the value of field active
+     *
+     * @return integer
+     */
+    public function getIdUser()
+    {
+        return $this->id_user;
     }
 
     /**
@@ -186,7 +242,13 @@ class Recipe extends BaseModel
     {
         $this->hasMany('id', 'Models\CategoryRecipe', 'id_recipe', ['alias' => 'categoryRecipe']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'recipeIngredient']);
-        $this->hasMany('id', 'Models\RecipeLang', 'id_recipe', ['alias' => 'lang']);
+        $this->hasOne('id_user', 'Models\User', 'id', ['alias' => 'user']);
+        $this->hasOne('id', 'Models\RecipeLang', 'id_recipe', [
+            'alias' => 'lang',
+            'params' => [
+                'id_lang=' . Context::getInstance()->getLang()->id
+            ]
+        ]);
     }
 
     /**
@@ -233,6 +295,9 @@ class Recipe extends BaseModel
             'id' => 'id',
             'default_person_count' => 'default_person_count',
             'cooking_time' => 'cooking_time',
+            'prepare_time' => 'prepare_time',
+            'difficulty' => 'difficulty',
+            'id_user' => 'id_user',
             'active' => 'active',
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'

@@ -323,8 +323,6 @@ class User extends BaseModel
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
-        $this->setSource("tc_user");
     }
 
     /**
@@ -376,6 +374,7 @@ class User extends BaseModel
             'activation_code' => 'activation_code',
             'password' => 'password',
             'active' => 'active',
+            'last_login' => 'last_login',
             'date_upd' => 'date_upd',
             'date_add' => 'date_add'
         ];

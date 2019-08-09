@@ -2,8 +2,14 @@
 
 namespace Models;
 
-class RecipeIngredient extends BaseModel
+class RecipeMedia extends \Phalcon\Mvc\Model
 {
+
+    /**
+     *
+     * @var integer
+     */
+    protected $id;
 
     /**
      *
@@ -13,27 +19,34 @@ class RecipeIngredient extends BaseModel
 
     /**
      *
-     * @var integer
+     * @var string
      */
-    protected $id_ingredient;
+    protected $type;
 
     /**
      *
      * @var string
      */
-    protected $value;
-
-    /**
-     *
-     * @var string
-     */
-    protected $unit;
+    protected $link;
 
     /**
      *
      * @var integer
      */
     protected $position;
+
+    /**
+     * Method to set the value of field id
+     *
+     * @param integer $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * Method to set the value of field id_recipe
@@ -49,40 +62,27 @@ class RecipeIngredient extends BaseModel
     }
 
     /**
-     * Method to set the value of field id_ingredient
+     * Method to set the value of field type
      *
-     * @param integer $id_ingredient
+     * @param string $type
      * @return $this
      */
-    public function setIdIngredient($id_ingredient)
+    public function setType($type)
     {
-        $this->id_ingredient = $id_ingredient;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Method to set the value of field value
+     * Method to set the value of field source
      *
-     * @param string $value
+     * @param string $link
      * @return $this
      */
-    public function setValue($value)
+    public function setLink($link)
     {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field unit
-     *
-     * @param string $unit
-     * @return $this
-     */
-    public function setUnit($unit)
-    {
-        $this->unit = $unit;
+        $this->link = $link;
 
         return $this;
     }
@@ -101,6 +101,16 @@ class RecipeIngredient extends BaseModel
     }
 
     /**
+     * Returns the value of field id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Returns the value of field id_recipe
      *
      * @return integer
@@ -111,33 +121,23 @@ class RecipeIngredient extends BaseModel
     }
 
     /**
-     * Returns the value of field id_ingredient
-     *
-     * @return integer
-     */
-    public function getIdIngredient()
-    {
-        return $this->id_ingredient;
-    }
-
-    /**
-     * Returns the value of field value
+     * Returns the value of field type
      *
      * @return string
      */
-    public function getValue()
+    public function getType()
     {
-        return $this->value;
+        return $this->type;
     }
 
     /**
-     * Returns the value of field unit
+     * Returns the value of field source
      *
      * @return string
      */
-    public function getUnit()
+    public function getLink()
     {
-        return $this->unit;
+        return $this->link;
     }
 
     /**
@@ -155,7 +155,6 @@ class RecipeIngredient extends BaseModel
      */
     public function initialize()
     {
-        $this->belongsTo('id_ingredient', 'Models\Ingredient', 'id', ['alias' => 'ingredient']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
@@ -166,14 +165,14 @@ class RecipeIngredient extends BaseModel
      */
     public function getSource()
     {
-        return 'tc_recipe_ingredient';
+        return 'tc_recipe_media';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return RecipeIngredient[]|RecipeIngredient|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return RecipeMedia[]|RecipeMedia|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -184,7 +183,7 @@ class RecipeIngredient extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return RecipeIngredient|\Phalcon\Mvc\Model\ResultInterface
+     * @return RecipeMedia|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {
@@ -200,10 +199,10 @@ class RecipeIngredient extends BaseModel
     public function columnMap()
     {
         return [
+            'id' => 'id',
             'id_recipe' => 'id_recipe',
-            'id_ingredient' => 'id_ingredient',
-            'value' => 'value',
-            'unit' => 'unit',
+            'type' => 'type',
+            'link' => 'link',
             'position' => 'position'
         ];
     }
