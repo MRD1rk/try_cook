@@ -117,4 +117,8 @@ $di->setShared('redis', function () {
         ]);
     return $redis;
 });
+$di->setShared('url', function () {
+    $urlManager = new \Components\UrlManager();
+    return $urlManager;
+});
 

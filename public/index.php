@@ -11,6 +11,7 @@ define('ENVIRONMENT', 'development');
 if (!defined('ENVIRONMENT')) {
     exit('The application environment is not defined.');
 }
+date_default_timezone_set('Europe/Kiev');
 ini_set( 'session.cookie_domain', $_SERVER['HTTP_HOST']);
 session_set_cookie_params (0, '/', $_SERVER['HTTP_HOST'], false);
 session_start();

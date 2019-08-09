@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Lang extends \Phalcon\Mvc\Model
+class Lang extends BaseModel
 {
 
     /**

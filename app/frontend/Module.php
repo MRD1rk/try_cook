@@ -26,6 +26,7 @@ class Module
         $loader->registerNamespaces(array(
             'Modules\Frontend\Controllers' => __DIR__ . '/controllers/',
             'Models' => __DIR__ . '/../models/',
+            'Components' => __DIR__ . '/../components/',
             'Modules\Frontend\Forms' => __DIR__ . '/forms/',
             'Modules\Frontend\Plugins' => __DIR__ . '/plugins/',
             'Modules\Frontend\Components' => __DIR__ . '/components/',

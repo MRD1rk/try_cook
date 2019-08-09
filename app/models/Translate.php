@@ -101,7 +101,7 @@ class Translate extends BaseModel
     {
         $this->setSchema("try_cook_db");
         $this->setSource("tc_translates");
-        $this->hasMany('id', 'TranslateLang', 'id_translate', ['alias' => 'langs']);
+        $this->hasMany('id', 'Models\TranslateLang', 'id_translate', ['alias' => 'langs']);
     }
 
     /**

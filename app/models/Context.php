@@ -2,7 +2,6 @@
 
 namespace Models;
 
-use Phalcon\Di;
 
 final class Context extends BaseModel
 {

@@ -157,8 +157,8 @@ class TranslateLang extends BaseModel
     {
         $this->setSchema("try_cook_db");
         $this->setSource("tc_translate_lang");
-        $this->belongsTo('id_lang', 'TcLangs', 'id', ['alias' => 'TcLangs']);
-        $this->belongsTo('id_translate', 'Translate', 'id', ['alias' => 'Translate']);
+        $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
+        $this->belongsTo('id_translate', 'Models\Translate', 'id', ['alias' => 'translate']);
     }
 
     /**
