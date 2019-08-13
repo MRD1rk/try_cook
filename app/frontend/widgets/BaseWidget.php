@@ -2,13 +2,18 @@
 
 namespace Modules\Frontend\Widgets;
 
+use Components\UrlManager;
 use Phalcon\Di;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Exception;
 use Phalcon\Mvc\View;
 
+/**
+ * @property UrlManager url
+ */
 class BaseWidget
 {
+    protected $di;
     protected $view;
     protected $view_dir = '';
     protected $partial_path = '';
@@ -50,9 +55,17 @@ class BaseWidget
         });
         $view->setViewsDir(__DIR__ . '/views/');
         $view->setEventsManager($eventsManager);
-        $view->setDI(Di::getDefault());
+        $view->setDI($this->getDi());
 
         $this->view = $view;
         return $this->view;
+    }
+
+    /**
+     * @return \Phalcon\DiInterface
+     */
+    public function getDi()
+    {
+        return Di::getDefault();
     }
 }

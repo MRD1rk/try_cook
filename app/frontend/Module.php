@@ -3,6 +3,7 @@
 namespace Modules\Frontend;
 
 use Models\Context;
+use Modules\Frontend\Widgets\BreadCrumbsWidget;
 use Modules\Frontend\Widgets\NavWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
@@ -118,6 +119,9 @@ class Module
         });
         $di->set('NavWidget', function () {
             return new NavWidget();
+        });
+        $di->set('BreadCrumbsWidget', function () {
+            return new BreadCrumbsWidget();
         });
     }
 }

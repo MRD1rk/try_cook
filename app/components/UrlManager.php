@@ -4,6 +4,7 @@ namespace Components;
 
 
 use Models\Configuration;
+use Models\Context;
 use Phalcon\Mvc\Url;
 
 class UrlManager extends Url
@@ -19,7 +20,16 @@ class UrlManager extends Url
     {
         $url = parent::get($uri, $args, $absolute, $baseUri);
         if ($absolute)
-            $uri = $this->domain_url . '/' . $url;
-        return $uri;
+            $url = $this->domain_url . '/' . $url;
+        return $url;
+    }
+
+    public function getCategoryLink($id_category, $link_rewrite = 'category', $absolute = false)
+    {
+        $iso_code = Context::getInstance()->getLang()->iso_code;
+        $url = '/' . $iso_code . '/' . $id_category . '-' . $link_rewrite;
+        if ($absolute)
+            $url = Configuration::get('DOMAIN') . $url;
+        return $url;
     }
 }

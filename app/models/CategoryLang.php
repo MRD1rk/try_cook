@@ -27,6 +27,12 @@ class CategoryLang extends BaseModel
      *
      * @var string
      */
+    protected $link_rewrite;
+
+    /**
+     *
+     * @var string
+     */
     protected $description;
 
     /**
@@ -64,6 +70,19 @@ class CategoryLang extends BaseModel
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field name
+     *
+     * @param string $link_rewrite
+     * @return $this
+     */
+    public function setLinkRewrite($link_rewrite)
+    {
+        $this->link_rewrite = $link_rewrite;
 
         return $this;
     }
@@ -112,6 +131,16 @@ class CategoryLang extends BaseModel
     }
 
     /**
+     * Returns the value of field name
+     *
+     * @return string
+     */
+    public function getLinkRewrite()
+    {
+        return $this->link_rewrite;
+    }
+
+    /**
      * Returns the value of field description
      *
      * @return string
@@ -126,7 +155,7 @@ class CategoryLang extends BaseModel
      */
     public function initialize()
     {
-        $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'categories']);
+        $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'category']);
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
     }
 
@@ -174,8 +203,14 @@ class CategoryLang extends BaseModel
             'id_category' => 'id_category',
             'id_lang' => 'id_lang',
             'name' => 'name',
+            'link_rewrite' => 'link_rewrite',
             'description' => 'description'
         ];
+    }
+
+    public function beforeValidationOnCreate()
+    {
+        $this->setLinkRewrite(Tools::strToUrl($this->getName()));
     }
 
 }

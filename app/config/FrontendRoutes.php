@@ -22,7 +22,7 @@ class FrontendRoutes extends RouterGroup
             'controller' => 'index',
             'action' => 'index',
             'iso_code' => 1
-        ));
+        ))->setName('index-index');
         $this->add('/([a-z]{2})/signup', array(
             'controller' => 'index',
             'action' => 'signup',

@@ -1,6 +1,8 @@
 <?php
 
-class CategoryRecipe extends \Phalcon\Mvc\Model
+namespace Models;
+
+class CategoryRecipe extends BaseModel
 {
 
     /**

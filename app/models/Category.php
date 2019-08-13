@@ -31,6 +31,12 @@ class Category extends BaseModel
 
     /**
      *
+     * @var integer
+     */
+    protected $level_depth;
+
+    /**
+     *
      * @var string
      */
     protected $date_add;
@@ -89,6 +95,19 @@ class Category extends BaseModel
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field active
+     *
+     * @param integer $level_depth
+     * @return $this
+     */
+    public function setLevelDepth($level_depth)
+    {
+        $this->level_depth = $level_depth;
 
         return $this;
     }
@@ -158,6 +177,15 @@ class Category extends BaseModel
     {
         return $this->active;
     }
+    /**
+     * Returns the value of field level_depth
+     *
+     * @return integer
+     */
+    public function getLevelDepth()
+    {
+        return $this->level_depth;
+    }
 
     /**
      * Returns the value of field date_add
@@ -184,7 +212,12 @@ class Category extends BaseModel
      */
     public function initialize()
     {
-        $this->hasMany('id', 'Models\CategoryLang', 'id_category', ['alias' => 'lang']);
+        $this->hasOne('id', 'Models\CategoryLang', 'id_category', [
+            'alias' => 'lang',
+            'params' => [
+                'id_lang=' . Context::getInstance()->getLang()->id
+            ]
+        ]);
         $this->hasMany('id', 'Models\CategoryRecipe', 'id_category', ['alias' => 'categoryRecipes']);
     }
 
@@ -233,6 +266,7 @@ class Category extends BaseModel
             'id_parent' => 'id_parent',
             'position' => 'position',
             'active' => 'active',
+            'level_depth' => 'level_depth',
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'
         ];

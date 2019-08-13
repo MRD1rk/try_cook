@@ -240,8 +240,8 @@ class Recipe extends BaseModel
      */
     public function initialize()
     {
-        $this->hasMany('id', 'Models\CategoryRecipe', 'id_recipe', ['alias' => 'categoryRecipe']);
-        $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'recipeIngredient']);
+        $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category','Models\Category', 'id', ['alias' => 'categories']);
+        $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients']);
         $this->hasOne('id_user', 'Models\User', 'id', ['alias' => 'user']);
         $this->hasOne('id', 'Models\RecipeLang', 'id_recipe', [
             'alias' => 'lang',
