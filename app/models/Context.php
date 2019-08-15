@@ -68,6 +68,12 @@ final class Context extends BaseModel
 
     }
 
+    public function setEmployee($employee)
+    {
+        $this->employee = $employee;
+        return $this;
+    }
+
     /**
      * @return Lang
      */
