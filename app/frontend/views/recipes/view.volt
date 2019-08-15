@@ -1,7 +1,7 @@
 <div class="recipes-view">
     <div class="row">
         <div class="col-12">
-            {{ BreadCrumbsWidget.run(recipe.id) }}
+            {{ BreadCrumbsWidget.run() }}
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">

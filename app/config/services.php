@@ -92,7 +92,7 @@ $di->setShared('router', function () {
     $router = new \Phalcon\Mvc\Router();
     $router->setDefaultModule('frontend');
     $router->mount(new FrontendRoutes());
-//    $router->mount(new BackendRoutes());
+    $router->mount(new BackendRoutes());
     $router->removeExtraSlashes(true);
     $router->handle();
     return $router;

@@ -4,15 +4,13 @@
 namespace Modules\Frontend\Widgets;
 
 
-use Models\Category;
-use Models\Context;
 use Models\Recipe;
 
 class BreadCrumbsWidget extends BaseWidget
 {
     protected $view_dir = 'breadcrumbs';
 
-    public function run($id_recipe = null, $view = 'nav')
+    public function run($view = 'nav')
     {
 
         $controller_name = $this->getDi()->get('router')->getControllerName();
@@ -23,11 +21,7 @@ class BreadCrumbsWidget extends BaseWidget
                 $links = $this->getRecipesLinks();
 
         }
-        $main_category['name'] = $this->getDi()->getT()->_('main');
-        $main_category['link'] = $this->getDi()->get('url')->get(['for'=>'index-index','iso_code'=>Context::getInstance()->getLang()->iso_code]);
-
-        $bread_crumbs = array_merge([$main_category], $bread_crumbs);
-        $this->view->breadcrumbs = $bread_crumbs;
+        $this->view->breadcrumbs = $links;
         return $this->render($view);
 
     }
@@ -43,7 +37,8 @@ class BreadCrumbsWidget extends BaseWidget
             $category_data['link'] = $this->getDi()->getUrl()->getCategoryLink($category->id, $category->lang->getLinkRewrite());
             $data[] = $category_data;
         }
-        $data[] = $recipe->lang->getTitle();
+        $recipe_data['name'] = $recipe->lang->getTitle();
+        $data[] = $recipe_data;
 
         return $data;
     }

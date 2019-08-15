@@ -88,7 +88,7 @@ class Configuration extends BaseModel
      * @param $name
      * @return string|null
      */
-    public static function get(string $name)
+    public static function get(string $name) :string
     {
         $configuration = self::findFirstByName($name);
         if (!$configuration)

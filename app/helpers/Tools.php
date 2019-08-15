@@ -6,12 +6,11 @@
  * Time: 17:50
  */
 
-namespace Models;
+namespace Helpers;
 
-use Phalcon\Mvc\Model;
 use Phalcon\Filter;
 
-class Tools extends BaseModel
+class Tools
 {
 
     public function initialize()

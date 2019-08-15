@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Frontend\Widgets;
+namespace Modules\Backend\Widgets;
 
 use Components\UrlManager;
 use Models\Context;

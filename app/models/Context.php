@@ -14,6 +14,10 @@ final class Context extends BaseModel
      */
     protected $user;
     /**
+     * @var Employee
+     */
+    protected $employee;
+    /**
      * @var Lang
      */
     protected $lang;
@@ -42,6 +46,26 @@ final class Context extends BaseModel
     public function setUser($user): void
     {
         $this->user = $user;
+    }
+
+    public function getEmployee()
+    {
+        if (isset($this->employee))
+            return $this->employee;
+        $authData = $this->getDI()->getSession()->get('backend_auth');
+        $employee = null;
+        if (!empty($authData)) {
+            $employee = Employee::findFirstById($authData['id_employee']);
+            if ($employee) {
+                $employee->logged = 1;
+            } else
+                $employee = new Employee();
+        } else {
+            $employee = new Employee();
+        }
+        $this->employee = $employee;
+        return $this->employee;
+
     }
 
     /**

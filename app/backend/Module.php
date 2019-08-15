@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Frontend;
+
+namespace Modules\Backend;
 
 use Models\Context;
-use Modules\Frontend\Widgets\BreadCrumbsWidget;
-use Modules\Frontend\Widgets\NavWidget;
+use Modules\Backend\Widgets\AdminMenuWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
@@ -14,6 +14,7 @@ use Phalcon\Mvc\View\Engine\Volt;
 
 class Module
 {
+
     public function __construct()
     {
     }
@@ -25,14 +26,14 @@ class Module
     {
         $loader = new Loader();
         $loader->registerNamespaces(array(
-            'Modules\Frontend\Controllers' => __DIR__ . '/controllers/',
+            'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
             'Models' => __DIR__ . '/../models/',
             'Components' => __DIR__ . '/../components/',
             'Helpers' => __DIR__ . '/../helpers/',
-            'Modules\Frontend\Forms' => __DIR__ . '/forms/',
-            'Modules\Frontend\Plugins' => __DIR__ . '/plugins/',
-            'Modules\Frontend\Components' => __DIR__ . '/components/',
-            'Modules\Frontend\Widgets' => __DIR__ . '/widgets/',
+            'Modules\Backend\Forms' => __DIR__ . '/forms/',
+            'Modules\Backend\Plugins' => __DIR__ . '/plugins/',
+            'Modules\Backend\Components' => __DIR__ . '/components/',
+            'Modules\Backend\Widgets' => __DIR__ . '/widgets/',
         ));
 
         $loader->register();
@@ -66,10 +67,10 @@ class Module
 //            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
             $dispatcher = new Dispatcher();
 
-            $dispatcher->setDefaultNamespace('Modules\Frontend\Controllers');
+            $dispatcher->setDefaultNamespace('Modules\Backend\Controllers');
             $dispatcher->setEventsManager($eventsManager);
             return $dispatcher;
-        },true);
+        }, true);
 
         $di->set('view', function () {
 
@@ -102,15 +103,33 @@ class Module
         $di->set('assets', function () {
             $assets = new Manager();
             $assets->collection('headerCss')
-                ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
-                ->addCss('/vendor/fontawesome-free/css/all.min.css')
-                ->addCss('/css/grayscale.min.css')
-                ->addCss('/css/custom.css');
+                ->addCss('/admin-theme/css/bootstrap.min.css')
+                ->addCss('/admin-theme/css/font-awesome.min.css')
+                ->addCss('/admin-theme/css/themify-icons.css')
+                ->addCss('/admin-theme/css/metisMenu.css')
+                ->addCss('/admin-theme/css/owl.carousel.min.css')
+                ->addCss('/admin-theme/css/slicknav.min.css')
+                ->addCss('/admin-theme/css/typography.css')
+                ->addCss('/admin-theme/css/default-css.css')
+                ->addCss('/admin-theme/css/styles.css')
+                ->addCss('/admin-theme/css/responsive.css');
             $assets->collection('footerJs')
-                ->addJs('/vendor/jquery/jquery.min.js')
-                ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
-                ->addJs('/vendor/jquery-easing/jquery.easing.min.js')
-                ->addJs('/js/grayscale.js');
+                ->addJs('/admin-theme/js/vendor/modernizr-2.8.3.min.js')
+                ->addJs('/admin-theme/js/vendor/jquery-2.2.4.min.js')
+                ->addJs('/admin-theme/js/popper.min.js')
+                ->addJs('/admin-theme/js/bootstrap.min.js')
+                ->addJs('/admin-theme/js/owl.carousel.min.js')
+                ->addJs('/admin-theme/js/metisMenu.min.js')
+                ->addJs('/admin-theme/js/jquery.slimscroll.min.js')
+                ->addJs('/admin-theme/js/jquery.slicknav.min.js')
+                ->addJs('/admin-theme/js/chart.min.js')
+                ->addJs('/admin-theme/js/highcharts.js')
+                ->addJs('/admin-theme/js/highcharts-exporting.js')
+                ->addJs('/admin-theme/js/highcharts-export-data.js')
+                ->addJs('/admin-theme/js/pie-chart.js')
+                ->addJs('/admin-theme/js/bar-chart.js')
+                ->addJs('/admin-theme/js/plugins.js')
+                ->addJs('/admin-theme/js/scripts.js');
 
             return $assets;
         }, true);
@@ -118,11 +137,8 @@ class Module
         $di->set('context', function () {
             return Context::getInstance();
         });
-        $di->set('NavWidget', function () {
-            return new NavWidget();
-        });
-        $di->set('BreadCrumbsWidget', function () {
-            return new BreadCrumbsWidget();
+        $di->set('AdminMenuWidget', function () {
+            return new AdminMenuWidget();
         });
     }
 }

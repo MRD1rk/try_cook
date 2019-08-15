@@ -1,7 +1,12 @@
-{#breadcrumbs-nav-start#}
-<div class="breadcrumbs">
+<!--breadcrumbs-nav-start-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url.get(['for':'index-index','iso_code':iso_code]) }}">{{ t._('to-main') }}</a> </li>
     {% for breadcrumb in breadcrumbs %}
-        <a href="{{ breadcrumb['link'] }}"><span class="breadcrumb-item">{{ breadcrumb['name'] }}</span></a>
+        {% if loop.last %}
+            <li class="breadcrumb-item active">{{ breadcrumb['name'] }}</li>
+        {% else %}
+            <li class="breadcrumb-item"><a href="{{ breadcrumb['link']|default('') }}">{{ breadcrumb['name'] }}</a></li>
+        {% endif %}
     {% endfor %}
-</div>
-{#breadcrumbs-nav-end#}
+</ol>
+<!--breadcrumbs-nav-end-->
