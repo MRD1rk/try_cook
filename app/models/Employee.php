@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Security;
+
 class Employee extends BaseModel
 {
 
@@ -64,6 +66,10 @@ class Employee extends BaseModel
      * @var string
      */
     protected $date_upd;
+    /**
+     * @var int
+     */
+    private $logged = 0;
 
     /**
      * Method to set the value of field id
