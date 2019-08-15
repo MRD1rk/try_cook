@@ -7,7 +7,7 @@
     {{ assets.outputCss('headerCss') }}
     <title>srtdash - SEO Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="admin-theme/images/icon/favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="/admin-theme/images/icon/favicon.ico">
 </head>
 
 <body>
@@ -25,7 +25,7 @@
     <div class="sidebar-menu">
         <div class="sidebar-header">
             <div class="logo">
-                <a href="index.html"><img src="admin-theme/images/icon/logo.png" alt="logo"></a>
+                <a href="index.html"><img src="/admin-theme/images/icon/logo.png" alt="logo"></a>
             </div>
         </div>
         {{ AdminMenuWidget.run() }}
@@ -121,7 +121,7 @@
                                 <div class="nofity-list">
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img1.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img1.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -131,7 +131,7 @@
                                     </a>
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img2.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img2.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -141,7 +141,7 @@
                                     </a>
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img3.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img3.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -151,7 +151,7 @@
                                     </a>
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img4.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img4.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -161,7 +161,7 @@
                                     </a>
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img2.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img2.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -171,7 +171,7 @@
                                     </a>
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img1.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img1.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -181,7 +181,7 @@
                                     </a>
                                     <a href="#" class="notify-item">
                                         <div class="notify-thumb">
-                                            <img src="admin-theme/images/author/author-img3.jpg" alt="image">
+                                            <img src="/admin-theme/images/author/author-img3.jpg" alt="image">
                                         </div>
                                         <div class="notify-text">
                                             <p>Aglae Mayer</p>
@@ -214,7 +214,7 @@
                 </div>
                 <div class="col-sm-6 clearfix">
                     <div class="user-profile pull-right">
-                        <img class="avatar user-thumb" src="admin-theme/images/author/avatar.png" alt="avatar">
+                        <img class="avatar user-thumb" src="/admin-theme/images/author/avatar.png" alt="avatar">
                         <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Kumkum Rai <i class="fa fa-angle-down"></i></h4>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Message</a>
@@ -399,7 +399,7 @@
                             <div class="testimonial-carousel owl-carousel">
                                 <div class="tst-item">
                                     <div class="tstu-img">
-                                        <img src="admin-theme/images/team/team-author1.jpg" alt="author image">
+                                        <img src="/admin-theme/images/team/team-author1.jpg" alt="author image">
                                     </div>
                                     <div class="tstu-content">
                                         <h4 class="tstu-name">Abel Franecki</h4>
@@ -409,7 +409,7 @@
                                 </div>
                                 <div class="tst-item">
                                     <div class="tstu-img">
-                                        <img src="admin-theme/images/team/team-author2.jpg" alt="author image">
+                                        <img src="/admin-theme/images/team/team-author2.jpg" alt="author image">
                                     </div>
                                     <div class="tstu-content">
                                         <h4 class="tstu-name">Abel Franecki</h4>
@@ -419,7 +419,7 @@
                                 </div>
                                 <div class="tst-item">
                                     <div class="tstu-img">
-                                        <img src="admin-theme/images/team/team-author3.jpg" alt="author image">
+                                        <img src="/admin-theme/images/team/team-author3.jpg" alt="author image">
                                     </div>
                                     <div class="tstu-content">
                                         <h4 class="tstu-name">Abel Franecki</h4>

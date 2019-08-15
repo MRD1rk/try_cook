@@ -31,6 +31,14 @@ class BackendRoutes extends RouterGroup
             'controller' => 1,
             'action' => 'index'
         ]);
+        $this->add('/:controller/:action', [
+            'controller' => 1,
+            'action' => 2
+        ]);
+        $this->add('/login', [
+            'controller' => 'index',
+            'action' => 'login'
+        ]);
         $this->add('/recipes', [
             'controller' => 'recipes',
             'action' => 'index'

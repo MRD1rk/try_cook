@@ -337,8 +337,9 @@ class Employee extends BaseModel
 
     public static function findFirstById($id)
     {
-        return parent::findFirst('id='.$id.' AND active = 1');
+        return parent::findFirst('id=' . $id . ' AND active = 1');
     }
+
     /**
      * Independent Column Mapping.
      * Keys are the real names in the table and the values their names in the application
@@ -360,5 +361,25 @@ class Employee extends BaseModel
             'date_upd' => 'date_upd'
         ];
     }
+
+    private function _registerSession()
+    {
+
+    }
+    public function login($password)
+    {
+
+        $security = new Security();
+        if ($security->checkHash($password, $this->password)) {
+            $this->logged = 1;
+            $this->last_login = date('Y-m-d H:i:s');
+            $this->save();
+            Context::getInstance()->setEmployee($this);
+            $this->_registerSession();
+            return true;
+        }
+        return false;
+    }
+
 
 }
