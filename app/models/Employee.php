@@ -300,7 +300,7 @@ class Employee extends BaseModel
      */
     public function initialize()
     {
-        $this->belongsTo('id_role', 'Models\TcRoles', 'id', ['alias' => 'role']);
+        $this->belongsTo('id_role', 'Models\Role', 'id', ['alias' => 'role']);
     }
 
     /**

@@ -227,6 +227,7 @@
         </div>
         <!-- page title area end -->
         <div class="main-content-inner">
+            {{ content() }}
             <div class="row">
                 <!-- seo fact area start -->
                 <div class="col-lg-8">

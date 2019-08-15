@@ -6,5 +6,7 @@
             "email": "mrd1rkzz@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-json": "*"
+    }
 }

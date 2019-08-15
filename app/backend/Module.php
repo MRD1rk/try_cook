@@ -4,6 +4,7 @@
 namespace Modules\Backend;
 
 use Models\Context;
+use Modules\Backend\Plugins\SecurityPlugin;
 use Modules\Backend\Widgets\AdminMenuWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
@@ -51,20 +52,7 @@ class Module
             /**
              * Check if the user is allowed to access certain action using the SecurityPlugin
              */
-            $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
-                switch ($exception->getCode()) {
-                    case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-                    case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                        $dispatcher->forward(
-                            array(
-                                'controller' => 'error',
-                                'action' => 'show404',
-                            )
-                        );
-                        return false;
-                }
-            });
-//            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
+            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
             $dispatcher = new Dispatcher();
 
             $dispatcher->setDefaultNamespace('Modules\Backend\Controllers');
