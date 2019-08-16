@@ -69,7 +69,7 @@ class Employee extends BaseModel
     /**
      * @var int
      */
-    private $logged = 0;
+    private $logged;
 
     /**
      * Method to set the value of field id

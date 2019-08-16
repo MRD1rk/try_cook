@@ -4,6 +4,7 @@
 namespace Modules\Backend;
 
 use Models\Context;
+use Modules\Backend\Plugins\PersistentLoginPlugin;
 use Modules\Backend\Plugins\SecurityPlugin;
 use Modules\Backend\Widgets\AdminMenuWidget;
 use Phalcon\Assets\Manager;
@@ -53,6 +54,7 @@ class Module
              * Check if the user is allowed to access certain action using the SecurityPlugin
              */
             $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
+            $eventsManager->attach('dispatch:beforeDispatch', new PersistentLoginPlugin());
             $dispatcher = new Dispatcher();
 
             $dispatcher->setDefaultNamespace('Modules\Backend\Controllers');
@@ -71,6 +73,13 @@ class Module
             $view->setLayoutsDir('../views/layouts/');
             $view->setLayout('main');
             return $view;
+        });
+
+        $di->set('auth',function () {
+            $options = [
+                'rememberMeDuration' => 1096000 // Optional, default: 604800 (1 week)
+            ];
+            return new \MicheleAngioni\PhalconAuth\Auth(new \Models\Employee(), $options);
         });
 
         $di->set('volt', function ($view, $di) {

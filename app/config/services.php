@@ -84,6 +84,18 @@ $di->setShared('session', function () {
 
     return $session;
 });
+$di->setShared('cookies', function () {
+    $cookies = new \Phalcon\Http\Response\Cookies();
+    $cookies->useEncryption(true);
+    return $cookies;
+});
+$di->setShared('crypt', function () {
+    $crypt = new \Phalcon\Crypt();
+    $crypt->setCipher('aes-256-ctr');
+    $crypt->setKey(CRYPT_KEY);
+    $crypt->useSigning(true);
+    return $crypt;
+});
 
 /**
  * Registering a router

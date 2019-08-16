@@ -4,7 +4,7 @@ use Phalcon\Di\FactoryDefault;
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
-
+define('CRYPT_KEY','asf456Jrert');
 define('ENVIRONMENT', 'development');
 //define('ENVIRONMENT', 'production');
 
@@ -12,10 +12,6 @@ if (!defined('ENVIRONMENT')) {
     exit('The application environment is not defined.');
 }
 date_default_timezone_set('Europe/Kiev');
-ini_set( 'session.cookie_domain', $_SERVER['HTTP_HOST']);
-session_set_cookie_params (0, '/', $_SERVER['HTTP_HOST'], false);
-session_start();
-setcookie('PHPSESSID', session_id(), time()+60*60*24*30, '/', $_SERVER['HTTP_HOST'], false, true);
 switch (ENVIRONMENT) {
     case 'development':
         ini_set('display_errors', 'On');
