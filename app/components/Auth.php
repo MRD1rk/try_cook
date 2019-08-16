@@ -53,4 +53,9 @@ class Auth extends Component
             'name' => $entity->getFullName()
         ]);
     }
+
+    public function createRememberEnvironment($entity)
+    {
+        $userAgent = $this->request->getUserAgent();
+    }
 }
