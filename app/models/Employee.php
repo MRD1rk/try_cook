@@ -20,6 +20,10 @@ class Employee extends BaseModel
     protected $id_role = 3;
 
     /**
+     * @var string
+     */
+    protected $email;
+    /**
      *
      * @var string
      */
@@ -93,6 +97,19 @@ class Employee extends BaseModel
     public function setIdRole($id_role)
     {
         $this->id_role = $id_role;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field email
+     *
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }
@@ -219,6 +236,16 @@ class Employee extends BaseModel
     public function getIdRole()
     {
         return $this->id_role;
+    }
+
+    /**
+     * Returns the value of field firstname
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -359,6 +386,7 @@ class Employee extends BaseModel
             'id_role' => 'id_role',
             'firstname' => 'firstname',
             'lastname' => 'lastname',
+            'email' => 'email',
             'phone' => 'phone',
             'active' => 'active',
             'password' => 'password',
@@ -372,6 +400,7 @@ class Employee extends BaseModel
     {
 
     }
+
     public function login($password)
     {
 
@@ -387,5 +416,12 @@ class Employee extends BaseModel
         return false;
     }
 
+    public function getFullName()
+    {
+        $nameArr = [];
+        $nameArr[] = $this->getFirstname();
+        $nameArr[] = $this->getLastname();
+        return implode(' ', array_filter($nameArr));
+    }
 
 }

@@ -19,10 +19,10 @@ class IndexController extends BaseController
             $email = $this->request->getPost('email', 'email');
             $password = $this->request->getPost('password');
             $remember_me = $this->request->getPost('remember_me', null, null);
-            $employee = Employee::findFirstByEmail($email);
-            if ($employee && $employee->login($password)) {
-
-            }
+            $auth = $this->auth;
+            echo '<pre>';
+            var_dump($auth->login($email,$password,$remember_me));
+            die();
         }
     }
 }
