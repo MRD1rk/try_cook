@@ -52,12 +52,12 @@ final class Context extends BaseModel
     {
         if (isset($this->employee))
             return $this->employee;
-        $authData = $this->getDI()->getSession()->get('backend_auth');
+        $authData = $this->getDI()->getSession()->get('employee_data');
         $employee = null;
         if (!empty($authData)) {
-            $employee = Employee::findFirstById($authData['id_employee']);
+            $employee = Employee::findFirstById($authData['id']);
             if ($employee) {
-                $employee->logged = 1;
+                $employee->setLogged(1);
             } else
                 $employee = new Employee();
         } else {

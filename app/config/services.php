@@ -63,17 +63,6 @@ $di->setShared('modelsMetadata', function () {
     return new MetaDataAdapter();
 });
 
-/**
- * Register the session flash service with the Twitter Bootstrap classes
- */
-$di->set('flash', function () {
-    return new Flash([
-        'error' => 'alert alert-danger',
-        'success' => 'alert alert-success',
-        'notice' => 'alert alert-info',
-        'warning' => 'alert alert-warning'
-    ]);
-});
 
 /**
  * Start the session the first time some component request the session service
@@ -84,6 +73,37 @@ $di->setShared('session', function () {
 
     return $session;
 });
+$di->set(
+    "flashDirect",
+    function () {
+        $flashDirect = new \Phalcon\Flash\Direct([
+            "error" => "alert alert-danger",
+            "success" => "alert alert-success alert-dismissable",
+            "notice" => "alert alert-info",
+            "warning" => "alert alert-warning",
+        ]);
+        $flashDirect->setImplicitFlush('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+        $flashDirect->setAutoescape(false);
+
+        return $flashDirect;
+    }
+);
+
+/**
+ * Set up the flash session service as flash
+ */
+$di->set('flash', function () {
+    $flash = new \Phalcon\Flash\Session([
+        "error" => "alert alert-danger",
+        "success" => "alert alert-success alert-dismissable",
+        "notice" => "alert alert-info",
+        "warning" => "alert alert-warning",
+    ]);
+    $flash->setImplicitFlush('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+    $flash->setAutoescape(false);
+    return $flash;
+});
+
 $di->setShared('cookies', function () {
     $cookies = new \Phalcon\Http\Response\Cookies();
     $cookies->useEncryption(true);

@@ -6,6 +6,7 @@ namespace Components;
 
 use MicheleAngioni\PhalconAuth\Exceptions\WrongCredentialsException;
 use Models\Configuration;
+use Models\Context;
 use Models\TokenStorage;
 use Phalcon\Mvc\User\Component;
 use Phalcon\Security;
@@ -50,12 +51,12 @@ class Auth extends Component
         if (!$this->security->checkHash($password, $entity->password))
             throw new \Exception('Wrong email/password combination ');
 
-        if ($remember_me) {
+        if ($save_session) {
             $this->saveSessionData($entity);
 
             // Check if the remember me was selected
-            if ($save_session) {
-                $this->createRememberEnvironment();
+            if ($remember_me) {
+                $this->createRememberEnvironment($entity);
             }
         }
 
@@ -84,10 +85,13 @@ class Auth extends Component
             $this->remove();
             return false;
         }
+        $entity->logged = 1;
+        $method = 'set'.ucfirst($this->type);
+        Context::getInstance()->{$method}($entity);
         $tokenStorage->refreshToken();
         $expires = $tokenStorage->getExpires();
         $this->cookies->set($this->token_cookie_name, $tokenStorage->getToken(), $expires);
-        $this->cookies->set($this->series_cookie_name, $tokenStorage->getSeries(), time() + TokenStorage::SERIES_EXPIRES);
+//        $this->cookies->set($this->series_cookie_name, $tokenStorage->getSeries(), time() + TokenStorage::SERIES_EXPIRES);
         $this->cookies->send();
         return true;
     }
@@ -107,10 +111,10 @@ class Auth extends Component
         ]);
     }
 
-    public function createRememberEnvironment()
+    public function createRememberEnvironment($entity)
     {
         $tokenStorage = new TokenStorage();
-        $tokenStorage->setId($this->entity->getId());
+        $tokenStorage->setId($entity->getId());
         $tokenStorage->setIp($this->request->getClientAddress());
         $tokenStorage->setType($this->type);
         $tokenStorage->save();
@@ -137,8 +141,6 @@ class Auth extends Component
             $this->cookies->get($this->series_cookie_name)->delete();
         }
 
-        // Logout the entity
-        $this->logout();
     }
 
 
@@ -149,5 +151,7 @@ class Auth extends Component
     {
         $session_name = $this->type . '_data';
         $this->session->remove($session_name);
+        $this->remove();
+        return true;
     }
 }

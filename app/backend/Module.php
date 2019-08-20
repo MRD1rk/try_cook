@@ -7,7 +7,7 @@ use Components\Auth;
 use Models\Context;
 use Modules\Backend\Plugins\PersistentLoginPlugin;
 use Modules\Backend\Plugins\SecurityPlugin;
-use Modules\Backend\Widgets\AdminMenuWidget;
+use Modules\Backend\Widgets\AdminNavWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
@@ -135,8 +135,8 @@ class Module
         $di->set('context', function () {
             return Context::getInstance();
         });
-        $di->set('AdminMenuWidget', function () {
-            return new AdminMenuWidget();
+        $di->set('AdminNavWidget', function () {
+            return new AdminNavWidget();
         });
     }
 }

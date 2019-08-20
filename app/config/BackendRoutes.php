@@ -38,7 +38,19 @@ class BackendRoutes extends RouterGroup
         $this->add('/login', [
             'controller' => 'index',
             'action' => 'login'
-        ]);
+        ])->setName('admin-index-login');
+        $this->add('/logout', [
+            'controller' => 'index',
+            'action' => 'logout'
+        ])->setName('admin-index-logout');
+        $this->add('/settings', [
+            'controller' => 'settings',
+            'action' => 'index'
+        ])->setName('admin-settings-index');
+        $this->add('/settings/admin-menu', [
+            'controller' => 'settings',
+            'action' => 'adminMenu'
+        ])->setName('admin-settings-adminMenu');
         $this->add('/recipes', [
             'controller' => 'recipes',
             'action' => 'index'

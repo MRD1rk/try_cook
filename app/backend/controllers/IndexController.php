@@ -4,13 +4,10 @@
 namespace Modules\Backend\Controllers;
 
 
-use Models\Employee;
-
 class IndexController extends BaseController
 {
     public function indexAction()
     {
-
     }
 
     public function loginAction()
@@ -20,9 +17,18 @@ class IndexController extends BaseController
             $password = $this->request->getPost('password');
             $remember_me = $this->request->getPost('remember_me', null, null);
             $auth = $this->auth;
-            echo '<pre>';
-            var_dump($auth->login($email,$password,$remember_me));
-            die();
+            if ($auth->login($email,$password,$remember_me)){
+                $this->flash->success('welcome');
+                return $this->response->redirect($this->url->get(['for'=>'admin-index-index']));
+            }
+
         }
+    }
+
+    public function logoutAction()
+    {
+        if ($this->auth->logout())
+            return $this->response->redirect($this->url->get(['for'=>'admin-index-index']));
+
     }
 }

@@ -359,7 +359,10 @@ class AdminMenu extends BaseModel
     public function initialize()
     {
         $this->belongsTo('id_role', 'Models\Role', 'id', ['alias' => 'role']);
-        $this->hasMany('id', 'Models\AdminMenu', 'id_parent', ['alias' => 'childs', 'params' => ['order' => 'position']]);
+        $this->hasMany('id', 'Models\AdminMenu', 'id_parent', ['alias' => 'childs', 'params' => [
+                'conditions' => 'active = 1 AND id_role='.Context::getInstance()->getEmployee()->getIdRole(),
+                'order' => 'position']]
+        );
     }
 
     /**
@@ -420,6 +423,6 @@ class AdminMenu extends BaseModel
 
     public function getRouteName()
     {
-        return 'admin-'.$this->controller.'-'.$this->action;
+        return 'admin-' . $this->controller . '-' . $this->action;
     }
 }

@@ -17,7 +17,7 @@ class Employee extends BaseModel
      *
      * @var integer
      */
-    protected $id_role = 3;
+    protected $id_role = 4;
 
     /**
      * @var string
@@ -73,7 +73,7 @@ class Employee extends BaseModel
     /**
      * @var int
      */
-    private $logged;
+    protected $logged = 0;
 
     /**
      * Method to set the value of field id
@@ -162,6 +162,18 @@ class Employee extends BaseModel
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+    /**
+     * Method to set the value of field logged
+     *
+     * @param integer $logged
+     * @return $this
+     */
+    public function setLogged($logged)
+    {
+        $this->logged = $logged;
 
         return $this;
     }
@@ -286,6 +298,15 @@ class Employee extends BaseModel
     public function getActive()
     {
         return $this->active;
+    }
+    /**
+     * Returns the value of field logged
+     *
+     * @return integer
+     */
+    public function getLogged()
+    {
+        return $this->logged;
     }
 
     /**
