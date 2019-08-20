@@ -413,10 +413,6 @@
     </div>
 </div>
 
-<!--variable for JavaScript-->
-<script>
-    let current_uri = "{{ current_uri }}"
-</script>
 <!--end variable -->
 {{ assets.outputJs('footerJs') }}
 </body>

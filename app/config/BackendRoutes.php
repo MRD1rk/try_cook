@@ -50,7 +50,7 @@ class BackendRoutes extends RouterGroup
         $this->add('/settings/admin-menu', [
             'controller' => 'settings',
             'action' => 'adminMenu'
-        ])->setName('admin-settings-adminMenu');
+        ])->setName('admin-settings-admin-menu');
         $this->add('/recipes', [
             'controller' => 'recipes',
             'action' => 'index'

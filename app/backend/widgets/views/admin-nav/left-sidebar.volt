@@ -2,7 +2,7 @@
     {% for tab in tabs %}
         {% set count_childs = tab.countChilds() %}
         {% if count_childs > 0 %}
-            <li class="test4">
+            <li>
                 <a href="javascript:void(0)">
                     <i class="{{ tab.icon }}"></i><span>{{ tab.title }}</span>
                 </a>
