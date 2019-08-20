@@ -1,7 +1,6 @@
 # IntellijIdea files
 *.iml
 .idea
-vendor
 
 
 !.gitignore
