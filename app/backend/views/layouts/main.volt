@@ -220,7 +220,7 @@
         </div>
         <!-- page title area end -->
         <div class="main-content-inner">
-                        {{ flash.output() }}<!--Вывод всех ошибок flash-->
+            {{ flash.output() }}<!--Вывод всех ошибок flash-->
             {{ content() }}
 
         </div>

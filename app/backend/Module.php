@@ -111,7 +111,8 @@ class Module
                 ->addCss('/admin-theme/css/typography.css')
                 ->addCss('/admin-theme/css/default-css.css')
                 ->addCss('/admin-theme/css/styles.css')
-                ->addCss('/admin-theme/css/responsive.css');
+                ->addCss('/admin-theme/css/responsive.css')
+                ->addCss('/admin-theme/css/global.css');
             $assets->collection('footerJs')
                 ->addJs('/admin-theme/js/vendor/modernizr-2.8.3.min.js')
                 ->addJs('/admin-theme/js/vendor/jquery-2.2.4.min.js')

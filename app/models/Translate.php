@@ -101,7 +101,8 @@ class Translate extends BaseModel
     {
         $this->setSchema("try_cook_db");
         $this->setSource("tc_translates");
-        $this->hasMany('id', 'Models\TranslateLang', 'id_translate', ['alias' => 'lang']);
+        $this->hasMany('id', 'Models\TranslateLang', 'id_translate', ['alias' => 'langs']);
+        $this->hasOne('id', 'Models\TranslateLang', 'id_translate', ['alias' => 'lang']);
     }
 
     /**
@@ -168,7 +169,8 @@ class Translate extends BaseModel
                     $translates[$row->pattern] = $row->value;
                 }
                 unset($rows);
-                $redis->save('translate_' . $id_lang, $translates, 360);
+//                $redis->save('translate_' . $id_lang, $translates, 360);
+                $redis->save('translate_' . $id_lang, $translates, 1);
             } else
                 $translates = [];
         }

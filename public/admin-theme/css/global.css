@@ -1,0 +1,6 @@
+textarea{
+    resize: none;
+}
+textarea:empty{
+    background-color: #ffcbcc;
+}

@@ -59,6 +59,14 @@ class BackendRoutes extends RouterGroup
             'controller' => 'recipes',
             'action' => 'add'
         ])->setName('admin-recipes-add');
+        $this->add('/translations', [
+            'controller' => 'translations',
+            'action' => 'index'
+        ])->setName('admin-translations-index');
+        $this->add('/translations/add', [
+            'controller' => 'translations',
+            'action' => 'add'
+        ])->setName('admin-translations-add');
     }
 
 
