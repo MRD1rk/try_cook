@@ -23,6 +23,7 @@ class BaseWidget
     {
         $this->view = $this->getView();
         $this->view->widget = $this;
+        $this->view->context = Context::getInstance();
         $this->view->iso_code = Context::getInstance()->getLang()->iso_code;
     }
 

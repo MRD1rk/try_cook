@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\Message;
+
 class AdminMenu extends BaseModel
 {
 
@@ -358,9 +360,10 @@ class AdminMenu extends BaseModel
      */
     public function initialize()
     {
+        $this->keepSnapshots(true);
         $this->belongsTo('id_role', 'Models\Role', 'id', ['alias' => 'role']);
         $this->hasMany('id', 'Models\AdminMenu', 'id_parent', ['alias' => 'childs', 'params' => [
-                'conditions' => 'active = 1 AND id_role='.Context::getInstance()->getEmployee()->getIdRole(),
+
                 'order' => 'position']]
         );
     }
@@ -425,4 +428,34 @@ class AdminMenu extends BaseModel
     {
         return 'admin-' . $this->controller . '-' . $this->action;
     }
+
+    public function beforeSave()
+    {
+        if ($this->hasSnapshotData()) {
+            if ($this->hasChanged('position')) {
+                $old_position = $this->getSnapshotData()['position'];
+                $new_position = $this->getPosition();
+                if ($old_position > $new_position) {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position + 1
+                WHERE position >=' . $new_position . ' 
+                AND position < ' . $old_position . ' 
+                AND id != ' . $this->getId() . ' 
+                AND id_parent = ' . $this->getIdParent();
+                } else {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position - 1
+                WHERE position <=' . $new_position . ' 
+                AND position > ' . $old_position . ' 
+                AND id != ' . $this->getId() . ' 
+                AND id_parent = ' . $this->getIdParent();
+                }
+                if (!$result = $this->getWriteConnection()->query($phql)) {
+                    $message = new Message('sql query error (position). Result: ' . var_dump($result));
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
 }

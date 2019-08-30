@@ -7,12 +7,13 @@
     {{ assets.outputCss('headerCss') }}
     <title>srtdash - SEO Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-{#    <link rel="shortcut icon" type="image/png" href="/admin-theme/images/icon/favicon.ico">#}
+    {#    <link rel="shortcut icon" type="image/png" href="/admin-theme/images/icon/favicon.ico">#}
 </head>
 
 <body>
 <!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
 <![endif]-->
 <!-- preloader area start -->
 {#<div id="preloader">#}
@@ -219,8 +220,7 @@
         </div>
         <!-- page title area end -->
         <div class="main-content-inner">
-            {{ flash.output() }}<!--Вывод всех ошибок flash-->
-            {{ flashDirect.output() }}<!--Вывод всех ошибок flash-->
+                        {{ flash.output() }}<!--Вывод всех ошибок flash-->
             {{ content() }}
 
         </div>
@@ -361,7 +361,7 @@
                         <div class="s-sw-title">
                             <h5>Notifications</h5>
                             <div class="s-swtich">
-                                <input type="checkbox" id="switch1" />
+                                <input type="checkbox" id="switch1"/>
                                 <label for="switch1">Toggle</label>
                             </div>
                         </div>
@@ -371,7 +371,7 @@
                         <div class="s-sw-title">
                             <h5>Show recent activity</h5>
                             <div class="s-swtich">
-                                <input type="checkbox" id="switch2" />
+                                <input type="checkbox" id="switch2"/>
                                 <label for="switch2">Toggle</label>
                             </div>
                         </div>
@@ -381,7 +381,7 @@
                         <div class="s-sw-title">
                             <h5>Show your emails</h5>
                             <div class="s-swtich">
-                                <input type="checkbox" id="switch3" />
+                                <input type="checkbox" id="switch3"/>
                                 <label for="switch3">Toggle</label>
                             </div>
                         </div>
@@ -391,7 +391,7 @@
                         <div class="s-sw-title">
                             <h5>Show Task statistics</h5>
                             <div class="s-swtich">
-                                <input type="checkbox" id="switch4" />
+                                <input type="checkbox" id="switch4"/>
                                 <label for="switch4">Toggle</label>
                             </div>
                         </div>
@@ -401,7 +401,7 @@
                         <div class="s-sw-title">
                             <h5>Notifications</h5>
                             <div class="s-swtich">
-                                <input type="checkbox" id="switch5" />
+                                <input type="checkbox" id="switch5"/>
                                 <label for="switch5">Toggle</label>
                             </div>
                         </div>
@@ -413,6 +413,10 @@
     </div>
 </div>
 
+<!--variable for JavaScript-->
+<script>
+    let prefix = "{{ prefix }}"
+</script>
 <!--end variable -->
 {{ assets.outputJs('footerJs') }}
 </body>

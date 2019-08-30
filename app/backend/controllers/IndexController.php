@@ -17,9 +17,12 @@ class IndexController extends BaseController
             $password = $this->request->getPost('password');
             $remember_me = $this->request->getPost('remember_me', null, null);
             $auth = $this->auth;
-            if ($auth->login($email,$password,$remember_me)){
+            try {
+                $auth->login($email, $password, $remember_me);
                 $this->flash->success('welcome');
-                return $this->response->redirect($this->url->get(['for'=>'admin-index-index']));
+                return $this->response->redirect($this->url->get(['for' => 'admin-index-index']));
+            } catch (\Exception $exception) {
+                $this->flash->error($exception->getMessage());
             }
 
         }
@@ -28,7 +31,7 @@ class IndexController extends BaseController
     public function logoutAction()
     {
         if ($this->auth->logout())
-            return $this->response->redirect($this->url->get(['for'=>'admin-index-index']));
+            return $this->response->redirect($this->url->get(['for' => 'admin-index-index']));
 
     }
 }

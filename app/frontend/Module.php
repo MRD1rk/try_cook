@@ -29,6 +29,7 @@ class Module
             'Models' => __DIR__ . '/../models/',
             'Components' => __DIR__ . '/../components/',
             'Helpers' => __DIR__ . '/../helpers/',
+            'Overwrite' => __DIR__ . '/../overwrite/',
             'Modules\Frontend\Forms' => __DIR__ . '/forms/',
             'Modules\Frontend\Plugins' => __DIR__ . '/plugins/',
             'Modules\Frontend\Components' => __DIR__ . '/components/',
@@ -50,6 +51,7 @@ class Module
             /**
              * Check if the user is allowed to access certain action using the SecurityPlugin
              */
+
             $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
                 switch ($exception->getCode()) {
                     case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:

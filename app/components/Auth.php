@@ -49,7 +49,7 @@ class Auth extends Component
         if (!$entity->active)
             throw new \Exception('User banned');
         if (!$this->security->checkHash($password, $entity->password))
-            throw new \Exception('Wrong email/password combination ');
+            throw new \Exception('Wrong email/password combination');
 
         if ($save_session) {
             $this->saveSessionData($entity);

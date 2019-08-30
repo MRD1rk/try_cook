@@ -1,6 +1,6 @@
 {%- macro getMenu(tabs) %}
     {% for tab in tabs %}
-        {% set count_childs = tab.countChilds() %}
+        {% set count_childs = tab.getChilds(['active = 1 AND id_role='~context.getEmployee().getIdRole()]).count() %}
         {% if count_childs > 0 %}
             <li>
                 <a href="javascript:void(0)">

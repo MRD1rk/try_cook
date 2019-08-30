@@ -33,6 +33,7 @@ class Module
             'Models' => __DIR__ . '/../models/',
             'Components' => __DIR__ . '/../components/',
             'Helpers' => __DIR__ . '/../helpers/',
+            'Overwrite' => __DIR__ . '/../overwrite/',
             'Modules\Backend\Forms' => __DIR__ . '/forms/',
             'Modules\Backend\Plugins' => __DIR__ . '/plugins/',
             'Modules\Backend\Components' => __DIR__ . '/components/',
