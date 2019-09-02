@@ -101,8 +101,8 @@ class Translate extends BaseModel
     {
         $this->setSchema("try_cook_db");
         $this->setSource("tc_translates");
-        $this->hasMany('id', 'Models\TranslateLang', 'id_translate', ['alias' => 'langs']);
-        $this->hasOne('id', 'Models\TranslateLang', 'id_translate', ['alias' => 'lang']);
+        $this->hasMany('id', 'Models\TranslateLang', 'id_translation', ['alias' => 'langs']);
+        $this->hasOne('id', 'Models\TranslateLang', 'id_translation', ['alias' => 'lang']);
     }
 
     /**
@@ -161,7 +161,7 @@ class Translate extends BaseModel
         $translates = $redis->get('translate_' . $id_lang);
         if (!$translates) {
             $phql = 'SELECT t.pattern, tl.value FROM Models\Translate t
-                     LEFT JOIN Models\TranslateLang tl ON t.id= tl.id_translate AND tl.id_lang=' . $id_lang;
+                     LEFT JOIN Models\TranslateLang tl ON t.id= tl.id_translation AND tl.id_lang=' . $id_lang;
             $query = new Query($phql, $di);
             $rows = $query->execute();
             if ($rows->count()) {

@@ -110,14 +110,15 @@ class Module
                 ->addCss('/admin-theme/css/slicknav.min.css')
                 ->addCss('/admin-theme/css/typography.css')
                 ->addCss('/admin-theme/css/default-css.css')
+                ->addCss('/admin-theme/css/global.css')
                 ->addCss('/admin-theme/css/styles.css')
-                ->addCss('/admin-theme/css/responsive.css')
-                ->addCss('/admin-theme/css/global.css');
+                ->addCss('/admin-theme/css/responsive.css');
             $assets->collection('footerJs')
                 ->addJs('/admin-theme/js/vendor/modernizr-2.8.3.min.js')
                 ->addJs('/admin-theme/js/vendor/jquery-2.2.4.min.js')
                 ->addJs('/admin-theme/js/popper.min.js')
                 ->addJs('/admin-theme/js/bootstrap.min.js')
+                ->addJs('/admin-theme/js/global.js')
                 ->addJs('/admin-theme/js/owl.carousel.min.js')
                 ->addJs('/admin-theme/js/metisMenu.min.js')
                 ->addJs('/admin-theme/js/jquery.slimscroll.min.js')

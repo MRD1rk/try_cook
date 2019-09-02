@@ -1,6 +1,16 @@
 textarea{
     resize: none;
 }
-textarea:empty{
+textarea:placeholder-shown{
     background-color: #ffcbcc;
+}
+#alert {
+    display: none;
+    position: fixed;
+    top: 0;
+    padding: 20px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
 }

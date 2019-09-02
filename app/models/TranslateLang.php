@@ -7,12 +7,14 @@ class TranslateLang extends BaseModel
 
     /**
      *
+     * @Primary
      * @var integer
      */
-    protected $id_translate;
+    protected $id_translation;
 
     /**
      *
+     * @Primary
      * @var integer
      */
     protected $id_lang;
@@ -36,14 +38,14 @@ class TranslateLang extends BaseModel
     protected $date_upd;
 
     /**
-     * Method to set the value of field id_translate
+     * Method to set the value of field id_translation
      *
-     * @param integer $id_translate
+     * @param integer $id_translation
      * @return $this
      */
-    public function setIdTranslate($id_translate)
+    public function setIdTranslation($id_translation)
     {
-        $this->id_translate = $id_translate;
+        $this->id_translation = $id_translation;
 
         return $this;
     }
@@ -101,13 +103,13 @@ class TranslateLang extends BaseModel
     }
 
     /**
-     * Returns the value of field id_translate
+     * Returns the value of field id_translation
      *
      * @return integer
      */
-    public function getIdTranslate()
+    public function getIdTranslation()
     {
-        return $this->id_translate;
+        return $this->id_translation;
     }
 
     /**
@@ -155,10 +157,20 @@ class TranslateLang extends BaseModel
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
-        $this->setSource("tc_translate_lang");
+        $this->skipAttributesOnCreate(
+            [
+                'date_upd',
+            ]
+        );
+
+        // Skips only when updating
+        $this->skipAttributesOnUpdate(
+            [
+                'date_add',
+            ]
+        );
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
-        $this->belongsTo('id_translate', 'Models\Translate', 'id', ['alias' => 'translate']);
+        $this->belongsTo('id_translation', 'Models\Translate', 'id', ['alias' => 'translate']);
     }
 
     /**
@@ -202,12 +214,14 @@ class TranslateLang extends BaseModel
     public function columnMap()
     {
         return [
-            'id_translate' => 'id_translate',
+            'id_translation' => 'id_translation',
             'id_lang' => 'id_lang',
             'value' => 'value',
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'
         ];
     }
+
+
 
 }

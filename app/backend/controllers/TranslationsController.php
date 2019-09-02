@@ -18,6 +18,7 @@ class TranslationsController extends BaseController
 
     public function indexAction()
     {
+        $this->assets->collection('footerJs')->addJs('/admin-theme/js/translations.js');
         $translations = Translate::find();
         $langs = Lang::find('active = 1');
         $this->view->translations = $translations;
@@ -45,7 +46,7 @@ class TranslationsController extends BaseController
             foreach ($translates as $id_lang => $translate_value) {
                 $translate_lang = new TranslateLang();
                 $translate_lang->setIdLang($id_lang);
-                $translate_lang->setIdTranslate($translate->getId());
+                $translate_lang->setIdTranslation($translate->getId());
                 $translate_lang->setValue(Tools::striptags($translate_value));
                 if (!$translate_lang->save()) {
                     $messages = $translate_lang->getMessages();
@@ -55,8 +56,36 @@ class TranslationsController extends BaseController
                     return true;
                 }
             }
-            $this->flash->success($this->t->_('translate-successfully-added'));
+            $this->flash->success($this->t->_('translation-successfully-added'));
             return $this->response->redirect($this->url->get(['for' => 'admin-translations-index']));
+        }
+    }
+
+    public function updateAction()
+    {
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $post = $this->request->getPost('data');
+            $status = false;
+            $message = null;
+            if (!empty($post)) {
+                foreach ($post as $item) {
+//                    $translationLang = TranslateLang::findFirst('id_translate=' . $item['id_pattern'] . ' AND id_lang=' . $item['id_lang']);
+                    $translationLang = new TranslateLang();
+                    if (!$translationLang->save($item)) {
+                        foreach ($translationLang->getMessages() as $errorMessage) {
+                            $message[] = $this->t->_($errorMessage->getMessage());
+                        }
+                        $status = false;
+                        continue;
+                    } else {
+                        $status = true;
+                        $message = $this->t->_('translation-successfully-updated');
+                        continue;
+                    }
+
+                }
+                return json_encode(['status' => $status, 'message' => is_array($message) ? implode(', ', $message) : $message]);
+            }
         }
     }
 }
