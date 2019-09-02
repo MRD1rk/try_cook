@@ -8,6 +8,7 @@ use Models\Context;
 use Modules\Backend\Plugins\PersistentLoginPlugin;
 use Modules\Backend\Plugins\SecurityPlugin;
 use Modules\Backend\Widgets\AdminNavWidget;
+use Modules\Backend\Widgets\BreadCrumbsWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
@@ -140,6 +141,9 @@ class Module
         });
         $di->set('AdminNavWidget', function () {
             return new AdminNavWidget();
+        });
+        $di->set('BreadCrumbsWidget', function () {
+            return new BreadCrumbsWidget();
         });
     }
 }

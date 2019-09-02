@@ -1,5 +1,4 @@
-
-<div class="error-area ptb--100 text-center">
+<div class="error-area text-center">
     <div class="container">
         <div class="error-content">
             <h2>404</h2>
