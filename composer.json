@@ -7,7 +7,6 @@
     }
   ],
   "require": {
-    "ext-json": "*",
-    "michele-angioni/phalcon-auth": "~0.1"
+    "ext-json": "*"
   }
 }
