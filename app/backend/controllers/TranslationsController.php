@@ -88,4 +88,25 @@ class TranslationsController extends BaseController
             }
         }
     }
+
+    public function parseAction()
+    {
+        $subject = file_get_contents('/var/www/try.cook/app/backend/controllers/TranslationsController.php');
+        $currentTranslator = 't\._';//in view files
+        $currentTranslator = '\$this->t->_'; // in php files
+        $pattern = '/\b.*?'.$currentTranslator.'\(\'(.+?)\'\)/';
+        $countMatches = preg_match_all(
+            $pattern,
+            $subject,
+            $matches,
+            PREG_SET_ORDER
+        );
+        $translationPatterns = [];
+        if ($countMatches) {
+            foreach ($matches as $match) {
+                $translationPatterns[] = $match[1];
+            }
+        }
+        return $translationPatterns;
+    }
 }

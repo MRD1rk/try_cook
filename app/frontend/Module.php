@@ -105,13 +105,14 @@ class Module
             $assets = new Manager();
             $assets->collection('headerCss')
                 ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
-                ->addCss('/vendor/fontawesome-free/css/all.min.css')
+//                ->addCss('/vendor/fontawesome-free/css/all.min.css')
                 ->addCss('/css/grayscale.min.css')
                 ->addCss('/css/custom.css');
             $assets->collection('footerJs')
                 ->addJs('/vendor/jquery/jquery.min.js')
                 ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
                 ->addJs('/vendor/jquery-easing/jquery.easing.min.js')
+                ->addJs('/js/custom.js')
                 ->addJs('/js/grayscale.js');
 
             return $assets;
