@@ -103,7 +103,7 @@ class Module
         $di->set('assets', function () {
             $assets = new Manager();
             $assets->collection('headerCss')
-                ->addCss('/admin-theme/css/bootstrap.min.css')
+                ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
                 ->addCss('/admin-theme/css/font-awesome.min.css')
                 ->addCss('/admin-theme/css/themify-icons.css')
                 ->addCss('/admin-theme/css/metisMenu.css')
@@ -115,10 +115,9 @@ class Module
                 ->addCss('/admin-theme/css/styles.css')
                 ->addCss('/admin-theme/css/responsive.css');
             $assets->collection('footerJs')
-                ->addJs('/admin-theme/js/vendor/modernizr-2.8.3.min.js')
-                ->addJs('/admin-theme/js/vendor/jquery-2.2.4.min.js')
+                ->addJs('/vendor/jquery/jquery.min.js')
                 ->addJs('/admin-theme/js/popper.min.js')
-                ->addJs('/admin-theme/js/bootstrap.min.js')
+                ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
                 ->addJs('/admin-theme/js/global.js')
                 ->addJs('/admin-theme/js/owl.carousel.min.js')
                 ->addJs('/admin-theme/js/metisMenu.min.js')
