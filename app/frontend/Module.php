@@ -105,7 +105,7 @@ class Module
             $assets = new Manager();
             $assets->collection('headerCss')
                 ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
-//                ->addCss('/vendor/fontawesome-free/css/all.min.css')
+                ->addCss('/vendor/font-awesome/css/all.min.css?v=1')
                 ->addCss('/css/grayscale.min.css')
                 ->addCss('/css/custom.css');
             $assets->collection('footerJs')
