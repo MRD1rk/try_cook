@@ -10,9 +10,12 @@ class RecipesController extends BaseController
 {
     public function indexAction()
     {
-
     }
 
+    public function addAction()
+    {
+
+    }
     public function viewAction()
     {
         $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');

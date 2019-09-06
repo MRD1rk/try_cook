@@ -33,12 +33,16 @@ class FrontendRoutes extends RouterGroup
             'action' => 'signin',
             'iso_code' => 1
         ));
-        $this->add('/([a-z]{2})/recipes/([0-9]{0,})', array(
+        $this->add('/([a-z]{2})/recipes', array(
             'controller' => 'recipes',
             'action' => 'index',
             'iso_code' => 1,
-            'id_recipe' => 2
         ))->setName('recipes-index');
+        $this->add('/([a-z]{2})/recipes/add', array(
+            'controller' => 'recipes',
+            'action' => 'add',
+            'iso_code' => 1,
+        ))->setName('recipes-add');
         $this->add('/([a-z]{2})/recipes/([0-9]+)[-]([a-zA-Z0-9\_\-]+)[.]html', array(
             'controller' => 'recipes',
             'action' => 'view',

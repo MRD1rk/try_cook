@@ -17,30 +17,36 @@
 </head>
 
 <body id="page-top">
-<div class="tc-header">
-    <div class="container">
-        <div class="tc-header-top row">
-            <div class="col-3">
-                <div class="tc-header-logo ">
-                    <img src="/img/logo.png" alt="logo">
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="search-block">
-                    <input type="text" placeholder="Search">
-                    <div class="search-button">
-                        <i class="fa fa-search" aria-hidden="true"></i>
+<div class="container">
+    <div class="tc-header">
+        <div class="tc-header-top">
+            <div class="row">
+                <div class="col-lg-4 col-xs-6">
+                    <div class="tc-header-logo ">
                     </div>
                 </div>
+                <div class="col-lg-5 col-xs-12">
+                    <div class="search-block">
+                        <input type="text" placeholder="{{ t._('fast-search') }}">
+                        <div class="search-button">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <a class="tc-header-button">{{ t._('login') }}</a>
+                    <a class="tc-header-button">{{ t._('signup') }}</a>
+                </div>
             </div>
-            <div class="col-5">
-                <div class="tc-header-button">
-                    <a>{{ t._('login') }}</a>
+        </div>
+        <div class="tc-header-bottom">
+            <div class="row">
+                <div class="col-12">
+                    {{ NavWidget.run('header') }}
                 </div>
             </div>
         </div>
     </div>
-    {{ NavWidget.run() }}
 </div>
 <div class="content-block {{ container_class }}">
     {{ content() }}

@@ -1,7 +1,7 @@
 $(function () {
     $(".search-button").click(function(){
-        $(".search-block input").toggleClass("active").focus;
+        $(".search-block input").toggleClass("active").focus();
         $(this).toggleClass("animate");
-        $(".input").val("");
+        $(".input").val('');
     });
 })
