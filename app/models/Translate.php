@@ -158,7 +158,7 @@ class Translate extends BaseModel
         $di = $model->getDI();
         $redis = $di->get('redis');
         $id_lang = \Models\Context::getInstance()->getLang()->id;
-        $translates = $redis->get('translate_' . $id_lang);
+        $translates = $redis->get('translation_' . $id_lang);
         if (!$translates) {
             $phql = 'SELECT t.pattern, tl.value FROM Models\Translate t
                      LEFT JOIN Models\TranslateLang tl ON t.id= tl.id_translation AND tl.id_lang=' . $id_lang;
@@ -169,8 +169,8 @@ class Translate extends BaseModel
                     $translates[$row->pattern] = $row->value;
                 }
                 unset($rows);
-//                $redis->save('translate_' . $id_lang, $translates, 360);
-                $redis->save('translate_' . $id_lang, $translates, 1);
+//                $redis->save('translation_' . $id_lang, $translates, 360);
+                $redis->save('translation_' . $id_lang, $translates, 1);
             } else
                 $translates = [];
         }

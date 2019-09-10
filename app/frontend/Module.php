@@ -106,14 +106,13 @@ class Module
             $assets->collection('headerCss')
                 ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
                 ->addCss('/vendor/font-awesome/css/all.min.css?v=1')
-                ->addCss('/css/grayscale.min.css')
+                ->addCss('/css/fonts.css')
                 ->addCss('/css/custom.css');
             $assets->collection('footerJs')
                 ->addJs('/vendor/jquery/jquery.min.js')
                 ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
                 ->addJs('/vendor/jquery-easing/jquery.easing.min.js')
-                ->addJs('/js/custom.js')
-                ->addJs('/js/grayscale.js');
+                ->addJs('/js/custom.js');
 
             return $assets;
         }, true);

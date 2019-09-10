@@ -8,5 +8,8 @@
   ],
   "require": {
     "ext-json": "*"
+  },
+  "require-dev": {
+    "phalcon/devtools": "~3.4"
   }
 }

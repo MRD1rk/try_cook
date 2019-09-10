@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Grayscale - Start Bootstrap Theme</title>
+    {{ tag.getTitle() }}
+    {{ tag.getDescription() }}
+    {{ tag.getAppleTouchIcons() }}
     {{ assets.outputCss('headerCss') }}
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -59,8 +61,10 @@
 {#        Copyright &copy; Your Website 2019#}
 {#    </div>#}
 {#</footer>#}
+<script>
+        let iso_code = '{{ iso_code }}';
+</script>
 {{ assets.outputJs('footerJs') }}
-
 </body>
 
 </html>

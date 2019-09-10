@@ -4,6 +4,7 @@ namespace Modules\Frontend\Controllers;
 
 use Models\Context;
 use Phalcon\Mvc\Controller;
+use Phalcon\Mvc\View;
 
 /**
  * @property Context context

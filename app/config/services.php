@@ -113,7 +113,7 @@ $di->setShared('router', function () {
     $router->handle();
     return $router;
 });
-$di->set('t', function () {
+$di->setShared('t', function () {
     $translates = Translate::getTranslates();
     return new \Phalcon\Translate\Adapter\NativeArray(
         [
@@ -136,5 +136,9 @@ $di->setShared('redis', function () {
 $di->setShared('url', function () {
     $urlManager = new \Components\UrlManager();
     return $urlManager;
+});
+$di->setShared('tag',function (){
+   $tag = new \Overwrite\Tag();
+   return $tag;
 });
 

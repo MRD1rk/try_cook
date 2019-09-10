@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Di;
+
 class Configuration extends BaseModel
 {
 
@@ -85,15 +87,16 @@ class Configuration extends BaseModel
     }
 
     /**
-     * @param $name
+     * @param string $name
+     * @param bool $useTranslation
      * @return string|null
      */
-    public static function get(string $name) :string
+    public static function get(string $name, bool $useTranslation = false)
     {
         $configuration = self::findFirstByName($name);
         if (!$configuration)
             return null;
-        return $configuration->value;
+        return !$useTranslation ? $configuration->value : Di::getDefault()->get('t')->_($configuration->value);
 
     }
 }

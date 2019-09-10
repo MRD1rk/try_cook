@@ -1,0 +1,85 @@
+@font-face {
+    font-family: 'Noto Sans Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Noto Sans Regular'), url('/fonts/NotoSans/NotoSans-Regular.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Noto Sans Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Noto Sans Italic'), url('/fonts/NotoSans/NotoSans-Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Noto Sans Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Noto Sans Bold'), url('/fonts/NotoSans/NotoSans-Bold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Noto Sans Bold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Noto Sans Bold Italic'), url('/fonts/NotoSans/NotoSans-BoldItalic.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Pro';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro'), url('/fonts/GothamPro/GothaProReg.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Pro Black';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro Black'), url('/fonts/GothamPro/GothaProBla.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Pro Light';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro Light'), url('/fonts/GothamPro/GothaProLig.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Pro Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro Medium'), url('/fonts/GothamPro/GothaProMed.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Pro Light Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro Light Italic'), url('/fonts/GothamPro/GothaProLigIta.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Gotham Pro Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro Bold'), url('/fonts/GothamPro/GothaProBol.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'GothamPro-MediumItalic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('GothamPro-MediumItalic'), url('/fonts/GothamPro/GothamProMediumItalic.woff') format('woff');
+}

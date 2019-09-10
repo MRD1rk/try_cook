@@ -16,6 +16,6 @@ $loader->registerNamespaces([
 $loader->registerClasses([
     'BackendRoutes' => APP_PATH . '/config/BackendRoutes.php',
     'FrontendRoutes' => APP_PATH . '/config/FrontendRoutes.php',
-    'Models\Configuration' => APP_PATH . '/models/Configuration.php',
+//    'Models\Configuration' => APP_PATH . '/models/Configuration.php',
 ]);
 $loader->register();

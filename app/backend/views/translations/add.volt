@@ -3,6 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title">{{ t._('add-new-translation') }}</h4>
+                <p class="border-bottom alert-danger p-2">{{ t._('all_separators_will_be_replaced') }}</p>
                 <div id="translation_add">
                     <form id="translation_add_form" method="post">
                         <input type="hidden" name="is_system" value="0">

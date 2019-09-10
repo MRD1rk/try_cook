@@ -1,0 +1,4 @@
+$(function () {
+    $('.feature-select').selectize({
+    });
+});

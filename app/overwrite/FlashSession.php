@@ -8,17 +8,17 @@ class FlashSession extends Session
 {
     public $closeButton = true;
 
-    public function __construct($cssClassess = [])
+    public function __construct($cssClasses = [])
     {
         if (empty($cssClassess)) {
-            $cssClassess = [
+            $cssClasses = [
                 "error" => "alert alert-danger",
                 "success" => "alert alert-success",
                 "notice" => "alert alert-info",
                 "warning" => "alert alert-warning",
             ];
         }
-        parent::__construct($cssClassess);
+        parent::__construct($cssClasses);
     }
 
 
