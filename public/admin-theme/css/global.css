@@ -1,9 +1,15 @@
-textarea{
+textarea {
     resize: none;
 }
-textarea:placeholder-shown{
+
+textarea:placeholder-shown {
     background-color: #ffcbcc;
 }
+
+.table-vcenter td, .table-vcenter th {
+    vertical-align: middle;
+}
+
 #alert {
     display: none;
     position: fixed;
@@ -13,4 +19,14 @@ textarea:placeholder-shown{
     width: 100%;
     text-align: center;
     z-index: 100;
+}
+
+table .s-swtich label {
+    width: 40%;
+    height: 30px;
+}
+
+table .s-swtich label:after {
+    width: 20px;
+    height: 20px;
 }

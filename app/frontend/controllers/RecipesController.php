@@ -21,6 +21,12 @@ class RecipesController extends BaseController
         $this->assets->collection('footerJs')->addJs('js/recipes.js');
         $categories = Category::find('id_parent = 0');
         $features = Feature::find('id=1');
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $data = $this->request->getPost();
+            echo '<pre>';
+            var_dump($data);
+            die();
+        }
         $this->view->features = $features;
         $this->view->categories = $categories;
     }

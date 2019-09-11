@@ -3,7 +3,6 @@
 
 namespace Modules\Backend\Controllers;
 
-
 use Helpers\Tools;
 use Models\Lang;
 use Models\Translate;
@@ -33,23 +32,23 @@ class TranslationsController extends BaseController
             $pattern = $this->request->getPost('pattern', 'striptags');
             $pattern = str_replace([' ', '-'], '_', $pattern);
             $pattern = strtolower($pattern);
-            $translates = $this->request->getPost('value', 'striptags');
-            $translate = new Translate();
-            $translate->setPattern($pattern);
-            if (!$translate->save()) {
-                $messages = $translate->getMessages();
+            $translations = $this->request->getPost('value', 'striptags');
+            $translation = new Translate();
+            $translation->setPattern($pattern);
+            if (!$translation->save()) {
+                $messages = $translation->getMessages();
                 foreach ($messages as $message) {
                     $this->flash->error($this->t->_($message->getMessage()));
                 }
                 return true;
             }
-            foreach ($translates as $id_lang => $translate_value) {
-                $translate_lang = new TranslateLang();
-                $translate_lang->setIdLang($id_lang);
-                $translate_lang->setIdTranslation($translate->getId());
-                $translate_lang->setValue(Tools::striptags($translate_value));
-                if (!$translate_lang->save()) {
-                    $messages = $translate_lang->getMessages();
+            foreach ($translations as $id_lang => $translation_value) {
+                $translation_lang = new TranslateLang();
+                $translation_lang->setIdLang($id_lang);
+                $translation_lang->setIdTranslation($translation->getId());
+                $translation_lang->setValue(Tools::striptags($translation_value));
+                if (!$translation_lang->save()) {
+                    $messages = $translation_lang->getMessages();
                     foreach ($messages as $message) {
                         $this->flash->error($this->t->_($message->getMessage()));
                     }
@@ -69,7 +68,7 @@ class TranslationsController extends BaseController
             $message = null;
             if (!empty($post)) {
                 foreach ($post as $item) {
-//                    $translationLang = TranslateLang::findFirst('id_translate=' . $item['id_pattern'] . ' AND id_lang=' . $item['id_lang']);
+//                    $translationLang = translationLang::findFirst('id_translation=' . $item['id_pattern'] . ' AND id_lang=' . $item['id_lang']);
                     $translationLang = new TranslateLang();
                     if (!$translationLang->save($item)) {
                         foreach ($translationLang->getMessages() as $errorMessage) {

@@ -2764,7 +2764,7 @@ table.dataTable thead td {
     text-indent: -9999px;
     width: 40px;
     height: 23px;
-    background: #1bd4a6;
+    background: #c0d8d2;
     display: block;
     border-radius: 100px;
     position: relative;
@@ -2785,7 +2785,7 @@ table.dataTable thead td {
 }
 
 .s-swtich input:checked+label {
-    background: #bada55;
+    background: #4cd021;
 }
 
 .s-swtich input:checked+label:after {

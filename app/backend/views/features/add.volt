@@ -2,18 +2,13 @@
     <div class="col-sm-12 col-md-8 mt-5">
         <div class="card">
             <div class="card-body">
-                <h4 class="header-title">{{ t._('add-new-translation') }}</h4>
-                <p class="border-bottom alert-danger p-2">{{ t._('all_separators_will_be_replaced') }}</p>
-                <div id="translation_add">
-                    <form id="translation_add_form" method="post">
-                        <div class="form-group">
-                            <label>{{ t._('pattern') }}:</label>
-                            <input name="pattern" class="form-control">
-                        </div>
+                <h4 class="header-title">{{ t._('add-new-feature') }}</h4>
+                <div id="feature_add">
+                    <form id="feature_add_form" method="post">
                         {% for lang in langs %}
                             <div class="form-group">
                                 <label>{{ t._(lang.iso_code~'_translation') }}:</label>
-                                <input name="value[{{ lang.id }}]" class="form-control translation">
+                                <input name="value[{{ lang.id }}]" class="form-control feature">
                             </div>
                         {% endfor %}
                         <div class="form-group text-center">

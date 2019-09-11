@@ -71,6 +71,30 @@ class BackendRoutes extends RouterGroup
             'controller' => 'translations',
             'action' => 'parse'
         ])->setName('admin-translations-parse');
+//        features
+        $this->add('/features', [
+            'controller' => 'features',
+            'action' => 'index'
+        ])->setName('admin-features-index');
+        $this->add('/features/view/:int', [
+            'controller' => 'features',
+            'action' => 'view',
+            'id_feature' => 1
+        ])->setName('admin-features-view');
+        $this->add('/features/update/:int', [
+            'controller' => 'features',
+            'action' => 'update',
+            'id_feature' => 1
+        ])->setName('admin-features-update');
+        $this->add('/features/delete/:int', [
+            'controller' => 'features',
+            'action' => 'delete',
+            'id_feature' => 1
+        ])->setName('admin-features-delete');
+        $this->add('/features/add', [
+            'controller' => 'features',
+            'action' => 'add',
+        ])->setName('admin-features-add');
     }
 
 
