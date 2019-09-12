@@ -18,6 +18,7 @@ class RecipesController extends BaseController
         $this->assets->collection('headerCss')->addCss('vendor/selectize/css/selectize.css');
         $this->assets->collection('headerCss')->addCss('css/recipes.css');
         $this->assets->collection('footerJs')->addJs('vendor/selectize/js/standalone/selectize.min.js');
+        $this->assets->collection('footerJs')->addJs('vendor/tinymce/tinymce.min.js');
         $this->assets->collection('footerJs')->addJs('js/recipes.js');
         $categories = Category::find('id_parent = 0');
         $features = Feature::find('id=1');

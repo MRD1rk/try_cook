@@ -95,6 +95,37 @@ class BackendRoutes extends RouterGroup
             'controller' => 'features',
             'action' => 'add',
         ])->setName('admin-features-add');
+        $this->add('/features/add-value/:int', [
+            'controller' => 'features',
+            'action' => 'addFeatureValue',
+            'id_feature' => 1
+        ])->setName('admin-features-add-value');
+        $this->add('/features/update-active', [
+            'controller' => 'features',
+            'action' => 'updateActive',
+        ])->setName('admin-features-update-active');
+        $this->add('/features/update-position', [
+            'controller' => 'features',
+            'action' => 'updatePosition',
+        ])->setName('admin-features-update-position');
+        $this->add('/features/update-value-active', [
+            'controller' => 'features',
+            'action' => 'updateValueActive',
+        ])->setName('admin-features-update-value-active');
+        $this->add('/features/update-value-position', [
+            'controller' => 'features',
+            'action' => 'updateValuePosition',
+        ])->setName('admin-features-update-value-position');
+        $this->add('/features/update-value/:int', [
+            'controller' => 'features',
+            'action' => 'updateFeatureValue',
+            'id_feature_value' => 1
+        ])->setName('admin-features-update-value');
+        $this->add('/features/delete-value/:int', [
+            'controller' => 'features',
+            'action' => 'deleteFeatureValue',
+            'id_feature_value' => 1
+        ])->setName('admin-features-delete-value');
     }
 
 

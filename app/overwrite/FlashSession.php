@@ -35,7 +35,7 @@ class FlashSession extends Session
         if (!empty($flash_messages)) {
             foreach ($flash_messages as $type => $messages) {
                 foreach ($messages as $message) {
-                    $html .= '<div class="' . $this->_cssClasses[$type] . '">
+                    $html .= '<div class="alert-overwrite ' . $this->_cssClasses[$type] . '">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

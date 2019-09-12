@@ -92,7 +92,15 @@ body{
 {
     visibility:hidden;
 }
-
+#content{
+    padding: 20px;
+}
+input[type="file"]{
+    display: none;
+}
+.tox-statusbar{
+    display: none !important;
+}
 .tc-header{
     height: auto;
     padding: 1.9375rem 3.125rem 0 3.125rem;

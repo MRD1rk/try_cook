@@ -30,3 +30,18 @@ table .s-swtich label:after {
     width: 20px;
     height: 20px;
 }
+.tDnD_whileDrag{
+    background: #c66e2d;
+    font-weight: bold;
+    box-shadow: 0 10px 10px -5px;
+    border-radius: 5px;
+}
+table .position+i.drugHandler{
+    font-size: 24px;
+    cursor: move !important;
+}
+.alert-overwrite{
+    font-weight: bold;
+    font-size: 16px !important;
+    text-align: center;
+}
