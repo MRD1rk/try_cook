@@ -1,5 +1,11 @@
 $(function () {
     let values = {};
+    $('.unit-select').selectize({
+        persist:true
+    });
+    $('.ingredient-select').selectize({
+        persist:true
+    });
     $('.feature-select').selectize({
         persist: true,
         onChange: function () {

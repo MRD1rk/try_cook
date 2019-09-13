@@ -30,7 +30,7 @@
             {% endfor %}
         </div>
         <div class="col-6">
-            <div class="row">
+            <div class="row justify-content-between">
                 <div class="col-12">
                     <div class="form-group">
                         <input name="recipe_name" class="form-control" placeholder="{{ t._('enter_recipe_name') }}">
@@ -55,14 +55,139 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label>{{ t._('cooking_time') }}</label>
-                        <input>
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="far fa-clock fa-2x"></i>
+                            </div>
+                            <div class="col-5 pr-0">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input name="recipe_cooking_hour" class="form-control">
+                                    </div>
+                                    <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span></div>
+                                </div>
+                            </div>
+                            <div class="col-5 pr-0">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input name="recipe_cooking_minute" class="form-control">
+                                    </div>
+                                    <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                     <div class="form-group">
-                        <label>{{ t._('cooking_time') }}</label>
-                        <input>
+                        <label>{{ t._('person_count') }}</label>
+                        <div class="row">
+                            <div class="col-3">
+                                <i class="fas fa-user-friends fa-2x"></i>
+                            </div>
+                            <div class="col-9">
+                                <input name="recipe_person_count" class="form-control">
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="col-12">
+                    <div class="row justify-content-end">
+                        <div class="col-6">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="need_prepare">
+                                <label class="custom-control-label" for="need_prepare">{{ t._('need_prepare') }}</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <label>{{ t._('prepare_time') }}</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <i class="far fa-clock fa-2x"></i>
+                                    </div>
+                                    <div class="col-5 pr-0">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input name="recipe_cooking_hour" class="form-control">
+                                            </div>
+                                            <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 pr-0">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input name="recipe_cooking_minute" class="form-control">
+                                            </div>
+                                            <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row justify-content-end">
+                        <div class="col-6">
+                            <p class="text-right hovered-red add-recipe-part">{{ t._('add_recipe_part') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <select id="recipe_part" name="recipe_part[id]" class="recipe-part-select"
+                                        placeholder="{{ t._('begin_input') }}">
+                                    <option value=""></option>
+                                    <option>Основное</option>
+                                    <option>Заправка</option>
+                                    <option>Крем</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <p class="text-left">{{ t._('add_ingredient') }}</p>
+                        </div>
+                        <div class="col-12">
+                            <div class="ingredient-item">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <select class="ingredient-select">
+                                            <option value="">{{ t._('begin_input') }}</option>
+                                            <option value="2">Рис</option>
+                                            <option value="3">Ананас</option>
+                                            <option value="4">Авокадо</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <input placeholder="{{ t._('weight') }}" class="form-control">
+                                            </div>
+                                            <div class="col-5">
+                                                <select class="unit-select">
+                                                    <option value="">...</option>
+                                                    <option value="1">шт</option>
+                                                    <option value="2">кг</option>
+                                                    <option value="3">пучек</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="delete-ingredient"><i class="fas fa-trash"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

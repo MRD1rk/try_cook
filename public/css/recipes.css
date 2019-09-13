@@ -29,5 +29,12 @@
     transition: .3s;
 }
 .add-recipe-preview-img:hover span{
-    color: red;
+    color: #ff291f;
+}
+.hovered-red:hover{
+    transition: .3s;
+    color: #ff291f;
+}
+.add-recipe-part{
+    cursor: pointer;
 }
