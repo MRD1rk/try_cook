@@ -109,6 +109,7 @@ $di->setShared('router', function () {
     $router->setDefaultModule('frontend');
     $router->mount(new FrontendRoutes());
     $router->mount(new BackendRoutes());
+    $router->mount(new ApiRoutes());
     $router->removeExtraSlashes(true);
     $router->handle();
     return $router;

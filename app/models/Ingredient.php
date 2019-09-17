@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\Query;
+
 class Ingredient extends BaseModel
 {
 
@@ -16,6 +18,12 @@ class Ingredient extends BaseModel
      * @var integer
      */
     protected $active;
+
+    /**
+     *
+     * @var string
+     */
+    protected $unit_available;
 
     /**
      *
@@ -51,6 +59,19 @@ class Ingredient extends BaseModel
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field active
+     *
+     * @param $unit_available
+     * @return $this
+     */
+    public function setUnitAvailable($unit_available)
+    {
+        $this->unit_available = $unit_available;
 
         return $this;
     }
@@ -99,6 +120,16 @@ class Ingredient extends BaseModel
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Returns the value of field active
+     *
+     * @return string
+     */
+    public function getUnitAvailable()
+    {
+        return $this->unit_available;
     }
 
     /**
@@ -173,9 +204,27 @@ class Ingredient extends BaseModel
         return [
             'id' => 'id',
             'active' => 'active',
+            'unit_available' => 'unit_available',
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'
         ];
+    }
+
+    public static function getIngredient($params = [])
+    {
+        $where_conditions = [];
+        $id_lang = Context::getInstance()->getLang()->id;
+        if (isset($params['name'])) {
+            $where_conditions[] = 'il.title LIKE "%' . $params['name'] . '%"';
+        }
+        $phql = 'SELECT * FROM Models\Ingredient i LEFT JOIN Models\IngredientLang il ON il.id_ingredient = i.id AND il.id_lang=' . $id_lang . ' 
+        WHERE ' . implode(' AND ', $where_conditions);
+        $model = new self;
+        $query = new Query($phql, $model->getDI());
+        $results = $query->execute();
+        if (!count($results))
+            return null;
+        return $results;
     }
 
 }

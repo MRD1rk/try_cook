@@ -28,13 +28,29 @@
     right: 0;
     transition: .3s;
 }
-.add-recipe-preview-img:hover span{
+
+.add-recipe-preview-img:hover span {
     color: #ff291f;
 }
-.hovered-red:hover{
+
+.hovered-red:hover {
     transition: .3s;
     color: #ff291f;
 }
-.add-recipe-part{
+
+.add-recipe-part {
     cursor: pointer;
+}
+
+.prepare-time {
+    min-height: 86px;
+}
+
+.prepare-time-block {
+    display: none;
+}
+.btn-add-ingredient{
+
+    border: 1px solid black;
+    margin-bottom: 20px;
 }

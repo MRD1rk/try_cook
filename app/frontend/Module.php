@@ -104,15 +104,20 @@ class Module
         $di->set('assets', function () {
             $assets = new Manager();
             $assets->collection('headerCss')
-                ->addCss('/vendor/bootstrap/css/bootstrap.min.css')
-                ->addCss('/vendor/font-awesome/css/all.min.css?v=1')
-                ->addCss('/css/fonts.css')
-                ->addCss('/css/custom.css');
+                ->addCss('vendor/bootstrap/css/bootstrap.min.css')
+                ->addCss('vendor/font-awesome/css/all.min.css?v=1')
+                ->addCss('css/fonts.css')
+                ->addCss('css/custom.css');
             $assets->collection('footerJs')
-                ->addJs('/vendor/jquery/jquery.min.js')
-                ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
-                ->addJs('/vendor/jquery-easing/jquery.easing.min.js')
-                ->addJs('/js/custom.js');
+                ->addJs('vendor/jquery/jquery.min.js')
+                ->addJs('vendor/bootstrap/js/bootstrap.bundle.min.js')
+                ->addJs('vendor/jquery-easing/jquery.easing.min.js')
+                ->addJs('js/custom.js')
+//                ->join(true)
+//                ->setTargetPath('js/application.min.js')
+//                ->setTargetUri('js/application.min.js')
+//                ->addFilter(new \Phalcon\Assets\Filters\Jsmin());
+            ;
 
             return $assets;
         }, true);
