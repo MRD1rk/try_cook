@@ -18,7 +18,7 @@ class TranslationsController extends BaseController
     public function indexAction()
     {
         $this->assets->collection('footerJs')->addJs('/admin-theme/js/translations.js');
-        $translations = Translate::find();
+        $translations = Translate::find(['order' => 'id DESC']);
         $langs = Lang::find('active = 1');
         $this->view->translations = $translations;
         $this->view->langs = $langs;
@@ -88,12 +88,26 @@ class TranslationsController extends BaseController
         }
     }
 
+    public function deleteAction()
+    {
+        $id_translation = $this->dispatcher->getParam('id_translation');
+        $translation = Translate::findFirst($id_translation);
+        if (!$translation) {
+            $this->flash->error($this->t->_('translation_not_found'));
+            return $this->response->redirect($_SERVER['HTTP_REFERER']);
+        }
+        if ($translation->delete()) {
+            $this->flash->success($this->t->_('successfully-deleted'));
+            return $this->response->redirect($_SERVER['HTTP_REFERER']);
+        }
+    }
+
     public function parseAction()
     {
         $subject = file_get_contents('/var/www/try.cook/app/backend/controllers/TranslationsController.php');
         $currentTranslator = 't\._';//in view files
         $currentTranslator = '\$this->t->_'; // in php files
-        $pattern = '/\b.*?'.$currentTranslator.'\(\'(.+?)\'\)/';
+        $pattern = '/\b.*?' . $currentTranslator . '\(\'(.+?)\'\)/';
         $countMatches = preg_match_all(
             $pattern,
             $subject,

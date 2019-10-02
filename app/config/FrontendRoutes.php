@@ -33,6 +33,11 @@ class FrontendRoutes extends RouterGroup
             'action' => 'signin',
             'iso_code' => 1
         ));
+        $this->add('/([a-z]{2})/get-translations', array(
+            'controller' => 'index',
+            'action' => 'getTranslations',
+            'iso_code' => 1
+        ));
         $this->add('/([a-z]{2})/recipes', array(
             'controller' => 'recipes',
             'action' => 'index',
@@ -50,5 +55,11 @@ class FrontendRoutes extends RouterGroup
             'id_recipe' => 2,
             'link_rewrite' => 3
         ))->setName('recipes-view');
+
+        $this->add('/([a-z]{2})/import-ingredient', [
+            'controller' => 'index',
+            'action' => 'importIngredient',
+            'iso_code' => 1
+        ]);
     }
 }

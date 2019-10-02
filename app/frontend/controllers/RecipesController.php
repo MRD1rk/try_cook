@@ -5,6 +5,7 @@ namespace Modules\Frontend\Controllers;
 use Models\Category;
 use Models\Feature;
 use Models\Recipe;
+use Models\Unit;
 
 class RecipesController extends BaseController
 {
@@ -20,14 +21,18 @@ class RecipesController extends BaseController
         $this->assets->collection('footerJs')->addJs('vendor/selectize/js/standalone/selectize.min.js');
         $this->assets->collection('footerJs')->addJs('vendor/tinymce/tinymce.min.js');
         $this->assets->collection('footerJs')->addJs('js/recipes.js');
+        $units = Unit::find();
+        $units_data = [];
+        foreach ($units as $unit) {
+            $units_data[$unit->getId()] = $unit->lang->getTitle();
+        }
         $categories = Category::find('id_parent = 0');
         $features = Feature::find('id=1');
         if ($this->request->isPost() && $this->request->isAjax()) {
             $data = $this->request->getPost();
-            echo '<pre>';
-            var_dump($data);
-            die();
         }
+
+        $this->view->units = json_encode($units_data);
         $this->view->features = $features;
         $this->view->categories = $categories;
     }

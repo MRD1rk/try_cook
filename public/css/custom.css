@@ -92,6 +92,11 @@ body{
 {
     visibility:hidden;
 }
+
+.btn-green{
+    color: #ffffff !important;
+    background: #65b401 !important;
+}
 #content{
     padding: 20px;
 }
@@ -101,12 +106,51 @@ input[type="file"]{
 .tox-statusbar{
     display: none !important;
 }
+#choose-language{
+    color: #65b401;
+    margin-top: 5px;
+}
+#choose-language:hover{
+    cursor: pointer;
+}
+#choose-language li a:hover{
+    color: #65b401;
+    font-weight:bold;
+}
+#choose-language .country-flag{
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url('/img/flag_sprites.png');
+}
+#choose-language .country-flag.ru{
+    background-position: -62px -10px;
+}
+#choose-language .country-flag.uk{
+    background-position: -10px -62px;
+}
+#choose-language .country-flag.en{
+    background-position: -10px -10px;
+}
+#choose-language li{
+    padding-left: 10px;
+}
+#header-navbar .nav-link{
+    color: #b9b9ba;
+}
+#header-navbar .nav-item{
+    font-size: 24px;
+}
 .tc-header{
     height: auto;
     padding: 1.9375rem 3.125rem 0 3.125rem;
     background-color: #FFF;
     position: relative;
     margin: 0 auto;
+}
+.tc-header .tc-header-top{
+    margin-bottom: 10px;
 }
 .tc-header .tc-header-top .tc-header-logo{
     float: left;
@@ -130,7 +174,7 @@ input[type="file"]{
     text-transform: uppercase;
     border-radius: 1.25rem;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
     transition: border-color 0.2s ease, background-color 0.2s ease;
     -webkit-user-select: none;
@@ -142,32 +186,10 @@ input[type="file"]{
 
 }
 .tc-header .tc-header-button{
-    float: right;
     padding: 0 1.25rem;
-    display: block;
     border-color: #e6e6e6;
+    color: #cccccc;
 }
-.search-block {
-    height: 100px;
-    position: relative;
-}
-
-.search-block input {
-
-    position: absolute;
-    right: 30px;
-    box-sizing: border-box;
-    width: 0;
-    height: 45px;
-    padding: 0 20px;
-    outline: none;
-    font-size: 18px;
-    border-radius: 50px;
-    color: #29313a;
-    border: 3px solid #62d474;
-    transition: all 0.4s ease;
-}
-
 ::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */
     color: #62d474;
@@ -185,29 +207,7 @@ input[type="file"]{
     color: #62d474;
 }
 
-.search-button {
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    background: #62d474;
-    border-radius: 50%;
-    right: 30px;
-    cursor: pointer;
-    text-align: center;
-    line-height: 55px;
-    font-size: 25px;
-    color: #fff;
-    transition: all 0.8s ease;
-}
 
-.search-block input.active {
-    width: 100%;
-    right: 30px;
-}
-
-.search-button.animate {
-    transform: rotate(-360deg);
-}
 .tc-header-bottom{
     border-top: 1px solid gray;
     height: 100px;
@@ -222,6 +222,19 @@ h1.tc-title {
     border-bottom: 1px solid #ccbd9c;
     margin-bottom: 30px;
 }
-#content{
-    background: #ffffff;
+#search{
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    background: #f6f6f6;
+    border: none;
+}
+#search:focus{
+    box-shadow:none;
+}
+#search-button{
+    background: #7db633;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    transition: 0.3s;
+    cursor: pointer;
 }

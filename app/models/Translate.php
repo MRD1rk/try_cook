@@ -3,6 +3,8 @@
 namespace Models;
 
 use \Phalcon\Mvc\Model\Query;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Email as EmailValidator;
 
 class Translate extends BaseModel
 {
@@ -18,6 +20,12 @@ class Translate extends BaseModel
      * @var string
      */
     protected $pattern;
+
+    /**
+     *
+     * @var string
+     */
+    protected $category;
 
     /**
      *
@@ -47,6 +55,19 @@ class Translate extends BaseModel
     public function setPattern($pattern)
     {
         $this->pattern = $pattern;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field pattern
+     *
+     * @param string $category
+     * @return $this
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
 
         return $this;
     }
@@ -85,6 +106,16 @@ class Translate extends BaseModel
     }
 
     /**
+     * Returns the value of field category
+     *
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
      * Returns the value of field date_add
      *
      * @return string
@@ -99,12 +130,34 @@ class Translate extends BaseModel
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
-        $this->setSource("tc_translates");
+
         $this->hasMany('id', 'Models\TranslateLang', 'id_translation', ['alias' => 'langs']);
-        $this->hasOne('id', 'Models\TranslateLang', 'id_translation', ['alias' => 'lang']);
+        $this->hasOne('id', 'Models\TranslateLang', 'id_translation', [
+            'alias' => 'lang'
+            ]);
     }
 
+    /**
+     * Validations and business logic
+     *
+     * @return boolean
+     */
+    public function validation()
+    {
+        $validator = new Validation();
+
+        $validator->add(
+            'pattern',
+            new Validation\Validator\Uniqueness(
+                [
+                    'model' => $this,
+                    'message' => 'pattern_must_be_unique',
+                ]
+            )
+        );
+
+        return $this->validate($validator);
+    }
     /**
      * Returns table name mapped in the model.
      *
@@ -148,8 +201,35 @@ class Translate extends BaseModel
         return [
             'id' => 'id',
             'pattern' => 'pattern',
+            'category' => 'category',
             'date_add' => 'date_add'
         ];
+    }
+
+    public static function getTranslationsByCategory($category)
+    {
+        $model = new self();
+        $di = $model->getDI();
+        $redis = $di->get('redis');
+        $id_lang = \Models\Context::getInstance()->getLang()->id;
+        $translates = $redis->get('translation_' . $category . '_' . $id_lang);
+        if (!$translates) {
+            $phql = 'SELECT t.pattern, tl.value FROM Models\Translate t
+                     LEFT JOIN Models\TranslateLang tl ON t.id= tl.id_translation AND tl.id_lang=' . $id_lang . ' 
+                     WHERE t.category="' . $category . '"';
+            $query = new Query($phql, $di);
+            $rows = $query->execute();
+            if ($rows->count()) {
+                foreach ($rows as $row) {
+                    $translates[$row->pattern] = $row->value;
+                }
+                unset($rows);
+//                $redis->save('translation_'.$category.'_' . $id_lang, $translates, 360);
+                $redis->save('translation_' . $category . '_' . $id_lang, $translates, 1);
+            } else
+                $translates = [];
+        }
+        return $translates;
     }
 
     public static function getTranslates()
@@ -177,4 +257,10 @@ class Translate extends BaseModel
         return $translates;
     }
 
+    public function beforeDelete()
+    {
+        if ($this->getLangs()) {
+            $this->getLangs()->delete();
+        }
+    }
 }

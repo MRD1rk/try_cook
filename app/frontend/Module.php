@@ -2,9 +2,11 @@
 
 namespace Modules\Frontend;
 
+use Helpers\Converter;
 use Models\Context;
 use Modules\Frontend\Widgets\BreadCrumbsWidget;
 use Modules\Frontend\Widgets\NavWidget;
+use Modules\Frontend\Widgets\SelectLangWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
@@ -100,7 +102,10 @@ class Module
             $compiler->addFunction('strtotime', 'strtotime');
             return $volt;
         }, true);
-
+        $di->set('converter',function (){
+            $converter = new Converter();
+            return $converter;
+        });
         $di->set('assets', function () {
             $assets = new Manager();
             $assets->collection('headerCss')
@@ -130,6 +135,9 @@ class Module
         });
         $di->set('BreadCrumbsWidget', function () {
             return new BreadCrumbsWidget();
+        });
+        $di->set('SelectLangWidget', function () {
+            return new SelectLangWidget();
         });
     }
 }

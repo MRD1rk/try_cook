@@ -1,7 +1,9 @@
 <?php
 
 use Phalcon\Di\FactoryDefault;
-
+if (function_exists('xdebug_disable')) {
+    xdebug_disable();
+}
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
 define('CRYPT_KEY','asf456Jrert');

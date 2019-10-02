@@ -34,5 +34,9 @@ class ApiRoutes extends RouterGroup
             'controller' => 'index',
             'action' => 'getIngredients'
         ]);
+        $this->add('/get-units', [
+            'controller' => 'index',
+            'action' => 'getUnits'
+        ]);
     }
 }

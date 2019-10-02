@@ -67,6 +67,11 @@ class BackendRoutes extends RouterGroup
             'controller' => 'translations',
             'action' => 'add'
         ])->setName('admin-translations-add');
+        $this->add('/translations/delete/:int', [
+            'controller' => 'translations',
+            'action' => 'delete',
+            'id_translation' =>1
+        ])->setName('admin-translations-delete');
         $this->add('/translations/parse', [
             'controller' => 'translations',
             'action' => 'parse'

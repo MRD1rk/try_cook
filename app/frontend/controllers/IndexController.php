@@ -3,6 +3,9 @@
 namespace Modules\Frontend\Controllers;
 
 
+use Models\Ingredient;
+use Models\IngredientLang;
+use Models\Translate;
 use Models\User;
 
 class IndexController extends BaseController
@@ -42,5 +45,19 @@ class IndexController extends BaseController
         }
     }
 
+    public function getTranslationsAction()
+    {
+        if ($this->request->isAjax()) {
+            $status = false;
+            $data = null;
+            $category = $this->request->getPost('category');
+            $translations = Translate::getTranslationsByCategory($category);
+            if ($translations){
+                $status = true;
+                $data = $translations;
+            }
+            return $this->response->setJsonContent(['status'=>$status,'data'=>$data]);
+        }
+    }
 }
 

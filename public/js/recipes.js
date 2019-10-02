@@ -1,14 +1,6 @@
 $(function () {
+    Translation.load('recipes_add');
     let values = {};
-    $('.unit-select').selectize({
-        persist: true
-    });
-    // $('.ingredient-select').selectize({
-    //     persist: true
-    // });
-    // $('.recipe-part-select').selectize({
-    //     persist: true
-    // });
     $('.feature-select').selectize({
         persist: true,
         onChange: function () {
@@ -36,19 +28,28 @@ $(function () {
             $('.prepare-time-block').fadeOut();
     });
 
+    //delete ingredient
+    $('body').on('click', '.delete-ingredient', function () {
+        let block = $(this).parents('.ingredient-item');
+        block.fadeOut()
+        setTimeout(function () {
 
+            block.remove()
+        }, 1000);
+    });
     $('body').on('click', '.add-recipe-part', function () {
         let childs = $('.parts>div').length;
         let block_number = childs + 1;
         let block_class = 'recipe-part-block-' + block_number;
-        let html = '<div class="col-12 recipe-part-block ' + block_class + '">\n' +
+        let html = '<div class="row recipe-block"><div class="col-12 recipe-part-block ' + block_class + '">\n' +
             '                    <div class="row">\n' +
             '                        <div class="col-12">\n' +
-            '                            <div class="row">\n' +
-            '                                <div class="col-6">\n' +
+            '                            <div class="row ">\n' +
+            '                                <div class="col-10">\n' +
             '                                    <div class="form-group">\n' +
+            '                                       <label>Название подраздела</label>' +
             '                                        <select name="recipe_part[id]" class="recipe-part-select"\n' +
-            '                                                placeholder="Начните вводить...">\n' +
+            '                                                placeholder="'+Translation.get('begin_input')+'">\n' +
             '                                            <option value=""></option>\n' +
             '                                            <option>Основное</option>\n' +
             '                                            <option>Заправка</option>\n' +
@@ -60,15 +61,15 @@ $(function () {
             '                        </div>\n' +
             '                        <div class="col-6 add-ingredient-block">\n' +
             '                           <div class="btn-group">' +
-            '                            <button class="btn btn-light btn-add-ingredient ">Добавить ингридиент<i\n' +
+            '                            <button class="btn btn-light btn-add-ingredient ">'+Translation.get('add_ingredient')+'<i\n' +
             '                                        class="fa fa-plus"></i></button>\n' +
             '                           </div>' +
             '                        </div>\n' +
             '                    </div>\n' +
-            '                </div>';
-        let parent = $(this).parents('.col-12').siblings('.parts');
+            '                </div></div> ';
+        let parent = $(this).parents('.recipe-block');
 
-        parent.append(html);
+        parent.after(html);
 
 
         $('.' + block_class + ' .recipe-part-select').selectize({
@@ -87,24 +88,18 @@ $(function () {
             '                            <div>\n' +
             '                                <div class="row">\n' +
             '                                    <div class="col-6">\n' +
-            '                                        <select class="ingredient-select">\n' +
-            '                                            <option value="">Начните вводить...</option>\n' +
-            '                                            <option value="2">Рис</option>\n' +
-            '                                            <option value="3">Ананас</option>\n' +
-            '                                            <option value="4">Авокадо</option>\n' +
+            '                                        <select placeholder="'+Translation.get('begin_input')+'" class="ingredient-select">\n' +
+            '                                            <option value=""></option>\n' +
             '                                        </select>\n' +
             '                                    </div>\n' +
             '                                    <div class="col-6">\n' +
             '                                        <div class="row">\n' +
             '                                            <div class="col-5">\n' +
-            '                                                <input placeholder="Вес" class="form-control">\n' +
+            '                                                <input placeholder="'+Translation.get('weight')+'" class="form-control">\n' +
             '                                            </div>\n' +
             '                                            <div class="col-5">\n' +
             '                                                <select class="unit-select">\n' +
             '                                                    <option value="">...</option>\n' +
-            '                                                    <option value="1">шт</option>\n' +
-            '                                                    <option value="2">кг</option>\n' +
-            '                                                    <option value="3">пучек</option>\n' +
             '                                                </select>\n' +
             '                                            </div>\n' +
             '                                            <div class="col-2">\n' +
@@ -116,19 +111,40 @@ $(function () {
             '                            </div>\n' +
             '                        </div>\n';
         parent.before(html);
-        $('.' + block_class + ' .unit-select').selectize({
-            persist: true
+        let unit_selectize = $('.' + block_class + ' .unit-select').selectize({
+            valueField: 'value',
+            labelField: 'title',
         });
         $('.' + block_class + ' .ingredient-select').selectize({
-            valueField: 'name',
+            valueField: 'id',
             labelField: 'name',
             searchField: 'name',
             options: [],
             create: false,
+            render: {
+                item: function (value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/get-units',
+                        dataType: 'json',
+                        data: {units: value.unit_available},
+                        success: function (data) {
+                            var selectize = unit_selectize[0].selectize;
+                            selectize.clearOptions();
+                            for (var i in data.data) {
+                                selectize.addOption(data.data[i]);
+                            }
+                            selectize.refreshOptions()
+
+                        }
+                    });
+                    return '<div data-units="' + value.unit_available + '" data-value="' + value.id + '">' + value.name + '</div>'
+                }
+            },
             load: function (query, callback) {
-                if (!query.length) return callback();
+                if (!query.length || query.length < 3) return callback();
                 $.ajax({
-                    url: 'get-ingredient',
+                    url: '/api/get-ingredients',
                     type: 'POST',
                     dataType: 'json',
                     data: {query: query,},
@@ -136,7 +152,8 @@ $(function () {
                         callback();
                     },
                     success: function (res) {
-                        callback(res);
+                        callback(res.data);
+
                     }
                 });
             },
