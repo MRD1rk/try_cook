@@ -13,8 +13,11 @@ class IndexController extends BaseController
 
     public function indexAction()
     {
-
-        $this->view->container_class = 'container-fluid';
+        $this->assets->collection('headerCss')->addCss('/css/recipes-slider.css');
+        $this->assets->collection('headerCss')->addCss('/vendor/slick/slick.css');
+        $this->assets->collection('headerCss')->addCss('/vendor/slick/slick-theme.css');
+        $this->assets->collection('footerJs')->addJs('/vendor/slick/slick.min.js');
+//        $this->view->container_class = '';
     }
 
     public function signupAction()

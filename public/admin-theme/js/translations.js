@@ -4,7 +4,7 @@ $(function () {
         let button = $(this);
         let textareas = $(this).parents('.translation-item').find('textarea.translation-changed');
         if (textareas.length === 0) {
-            showAlert('Empty translate!', 'danger');
+            showAlert('Empty translate!', false);
             return;
         }
         let data = [];
@@ -25,7 +25,7 @@ $(function () {
                     showAlert(data.message);
                     buttonUpdateOk(button);
                 } else {
-                    showAlert(data.message,'error');
+                    showAlert(data.message,false);
                     buttonUpdateError(button)
                 }
                 $('textarea').removeClass('translation-changed');

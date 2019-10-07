@@ -1,4 +1,3 @@
-
 function buttonUpdateStart(button) {
     button.html('<i class="fa fa-spinner fa-spin"></i> ' + button.text());
 }
@@ -10,14 +9,15 @@ function buttonUpdateOk(button) {
 function buttonUpdateError(button) {
     button.html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + button.text());
 }
+
 /**
  *
- * @param text
- * @param status available values => ['success','info','warning','danger'];
+ * @param text string
+ * @param status boolean
  */
-function showAlert(text, status = 'success') {
-    status.replace('error', 'danger');
-    let html = '<div id="alert" class="alert alert-' + status + '"><button type="button" class="close" data-dismiss="alert">&times;</button>'
+function showAlert(text, status = true) {
+    let $class = status ? 'success' : 'danger';
+    let html = '<div id="alert" class="alert alert-' + $class + '"><button type="button" class="close" data-dismiss="alert">&times;</button>'
         + text + '</div>';
     $('#alert').replaceWith(html);
     $('#alert').fadeIn();

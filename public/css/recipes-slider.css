@@ -1,0 +1,40 @@
+.recipe-item{
+    margin: 0 10px;
+    position: relative;
+}
+.recipe-item span{
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    color: #ffffff;
+    font-family: "Gotham Pro Bold",sans-serif;
+    text-align: center;
+    background: rgba(139, 128, 160, 0.51);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+.recipe-img img{
+    width: 100%;
+}
+.recipe-item figure{
+    overflow: hidden;
+}
+figure img {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-filter: grayscale(0) blur(0);
+    filter: grayscale(0) blur(0);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+.recipe-item:hover img {
+    -webkit-filter: grayscale(50%) blur(1px);
+    filter: grayscale(50%) blur(1px);
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+}
+.recipe-item:hover span{
+    display: block;
+}

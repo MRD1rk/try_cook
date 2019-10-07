@@ -6,6 +6,7 @@ use Helpers\Converter;
 use Models\Context;
 use Modules\Frontend\Widgets\BreadCrumbsWidget;
 use Modules\Frontend\Widgets\NavWidget;
+use Modules\Frontend\Widgets\PopularRecipesWidget;
 use Modules\Frontend\Widgets\SelectLangWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
@@ -138,6 +139,9 @@ class Module
         });
         $di->set('SelectLangWidget', function () {
             return new SelectLangWidget();
+        });
+        $di->set('PopularRecipesWidget', function () {
+            return new PopularRecipesWidget();
         });
     }
 }

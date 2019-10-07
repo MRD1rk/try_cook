@@ -159,14 +159,14 @@ class TranslateLang extends BaseModel
     {
         $this->skipAttributesOnCreate(
             [
-                'date_upd',
+                'date_upd'
             ]
         );
 
         // Skips only when updating
         $this->skipAttributesOnUpdate(
             [
-                'date_add',
+                'date_add'
             ]
         );
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
@@ -220,6 +220,11 @@ class TranslateLang extends BaseModel
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'
         ];
+    }
+
+    public function beforeValidation()
+    {
+        $this->setDateUpd(date('Y-m-d H:i:s'));
     }
 
 

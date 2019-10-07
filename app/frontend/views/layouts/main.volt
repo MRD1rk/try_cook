@@ -39,8 +39,8 @@
                     <div class="row justify-content-end">
                         <div class="col-lg-5">
                             <div class="header-sign">
-                                <a href="#" class="tc-header-button">{{ t._('signin') }}</a>
-                                <a href="#" class="tc-header-button btn-green">{{ t._('signup') }}</a>
+                                <a href="#" class="btn-tc">{{ t._('signin') }}</a>
+                                <a href="#" class="btn-tc btn-green">{{ t._('signup') }}</a>
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -62,7 +62,7 @@
 <div class="content-block {{ container_class }}">
     {{ content() }}
 </div>
-<img style="width: 100%;" src="/img/template.jpg">
+<img style="width: 100%;" src="/img/template.png">
 
 
 <!-- Footer -->
