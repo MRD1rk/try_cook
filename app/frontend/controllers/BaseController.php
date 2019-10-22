@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend\Controllers;
 
+use Models\Configuration;
 use Models\Context;
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\View;
@@ -18,5 +19,6 @@ class BaseController extends Controller
         $this->view->container_class = '';
         $this->view->t = $this->getDI()->get('t');
         $this->view->iso_code = $this->context->getLang()->iso_code;
+        $this->view->site_name = Configuration::get('SITE_NAME');
     }
 }

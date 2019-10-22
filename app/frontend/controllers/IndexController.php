@@ -16,7 +16,8 @@ class IndexController extends BaseController
         $this->assets->collection('headerCss')->addCss('/css/recipes-slider.css');
         $this->assets->collection('headerCss')->addCss('/vendor/slick/slick.css');
         $this->assets->collection('headerCss')->addCss('/vendor/slick/slick-theme.css');
-        $this->assets->collection('footerJs')->addJs('/vendor/slick/slick.min.js');
+        $this->assets->collection('footerJs')->addJs('vendor/slick/slick.min.js');
+        $this->assets->collection('footerJs')->addJs('js/index.js');
 //        $this->view->container_class = '';
     }
 
@@ -55,11 +56,11 @@ class IndexController extends BaseController
             $data = null;
             $category = $this->request->getPost('category');
             $translations = Translate::getTranslationsByCategory($category);
-            if ($translations){
+            if ($translations) {
                 $status = true;
                 $data = $translations;
             }
-            return $this->response->setJsonContent(['status'=>$status,'data'=>$data]);
+            return $this->response->setJsonContent(['status' => $status, 'data' => $data]);
         }
     }
 }

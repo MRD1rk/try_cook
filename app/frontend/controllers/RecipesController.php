@@ -9,6 +9,12 @@ use Models\Unit;
 
 class RecipesController extends BaseController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->view->container_class = 'container';
+    }
+
     public function indexAction()
     {
     }
@@ -36,6 +42,7 @@ class RecipesController extends BaseController
         $this->view->features = $features;
         $this->view->categories = $categories;
     }
+
     public function viewAction()
     {
         $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');

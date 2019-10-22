@@ -89,13 +89,50 @@ body {
     /*background: #eae0cc;*/
 }
 
-p {
+.article-item .article-body {
     color: #9b9c9e;
+}
+
+img {
+    width: 100%;
+}
+p{
+    color: #8b80a0;
+}
+footer#footer {
+    background-color: #bbb4cc;
+    padding: 15px;
+}
+
+#footer .footer-list {
+    list-style: none;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+#footer .footer-list a{
+    color: #8b80a0;
 }
 
 /*Hidden selectize-arrow*/
 .selectize-input::after {
     visibility: hidden;
+}
+.build-by{
+    padding-left: 40px;
+    font-weight: bold;
+}
+.social-links{
+    text-align: right;
+}
+.social-links .social-link-item {
+    display: inline-block;
+    padding: 0 5px;
+}
+.social-links .social-link-item path{
+    transition: 0.3s;
+}
+.social-links .social-link-item:hover path{
+    fill:#8d4ed2;
 }
 
 .btn-green {
@@ -155,10 +192,13 @@ input[type="file"] {
 
 #header-navbar .nav-link {
     color: #b9b9ba;
-}
-
-#header-navbar .nav-item {
     font-size: 24px;
+}
+#header-navbar .nav-link:hover:after {
+    content: "";
+    display: block;
+    padding: 2px 0;
+    border-bottom: 4px solid #65b401;
 }
 
 .tc-header {
@@ -168,11 +208,6 @@ input[type="file"] {
     position: relative;
     margin: 0 auto;
 }
-
-.tc-header .tc-header-top {
-    margin-bottom: 10px;
-}
-
 .tc-header .tc-header-top .tc-header-logo {
     float: left;
     height: 100%;
@@ -206,7 +241,8 @@ input[type="file"] {
     background: white;
     position: relative;
 }
-.btn-tc:hover{
+
+.btn-tc:hover {
     color: #afa9a9;
     text-decoration: none;
 }
@@ -233,7 +269,6 @@ input[type="file"] {
 
 
 .tc-header-bottom {
-    border-top: 1px solid gray;
     height: 100px;
 }
 
@@ -284,7 +319,7 @@ h1.tc-title {
 .custom-title {
     color: #8b80a0;
     font-weight: 900;
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-family: 'Gotham Pro Black', sans-serif;
 }
 
@@ -300,21 +335,53 @@ h1.tc-title {
 .index-index .jumbotron {
     background-color: inherit;
 }
-#new-items{
-    background-image: url("/img/background.png");
+.subscribe-group #subscribe-email{
+    color: #8b80a0;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.subscribe-group #subscribe-email:focus,.subscribe-group #subscribe_button{
+    box-shadow: none;
+    border-color: #8b80a0;
+    outline: none;
+}
+.subscribe-group #subscribe_button{
+    background-color: #8b80a0;
+    border: 1px solid #8b80a0;
+    color: #ffffff;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+#subscribe-block{
+    background-image: url("/img/subscribe_bg.png");
+    background-size: cover;
+    background-position: 0 60%;
+}
+#new-items {
+    background-image: url("/img/new-items-background.png");
     background-size: cover;
     background-position: 0 60%;
     min-height: 600px;
 }
-.recipe-title{
+
+.title {
     color: #64b400;
     font-size: 28px;
     font-weight: bold;
     text-align: center;
 }
-.new-items-big{
-    background: #ffffff;
-}
-.recipe-short-description{
+
+.recipe-short-description {
     font-size: 18px;;
+}
+
+.article-item {
+    -webkit-box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.article-body {
+    padding: 1rem;
+    text-align: center;
 }

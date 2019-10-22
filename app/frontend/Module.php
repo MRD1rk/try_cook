@@ -119,11 +119,10 @@ class Module
                 ->addJs('vendor/bootstrap/js/bootstrap.bundle.min.js')
                 ->addJs('vendor/jquery-easing/jquery.easing.min.js')
                 ->addJs('js/custom.js')
-//                ->join(true)
+                ->join(true);
 //                ->setTargetPath('js/application.min.js')
 //                ->setTargetUri('js/application.min.js')
 //                ->addFilter(new \Phalcon\Assets\Filters\Jsmin());
-            ;
 
             return $assets;
         }, true);
