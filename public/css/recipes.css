@@ -3,6 +3,11 @@
     font-weight: 700;
 }
 
+.category-title {
+    color: #64b400;
+    font-weight: 700;
+}
+
 .add-recipe-preview-img {
     display: block;
     position: relative;
@@ -49,15 +54,18 @@
 .prepare-time-block {
     display: none;
 }
-.btn-add-ingredient{
+
+.btn-add-ingredient {
 
     border: 1px solid black;
     margin-bottom: 20px;
 }
-.delete-ingredient{
+
+.delete-ingredient {
     cursor: pointer;
 }
-.recipe-block{
+
+.recipe-block {
     margin: 10px 0;
     padding: 15px;
     background: #ffffff;

@@ -12,7 +12,8 @@ class RecipesController extends BaseController
     public function initialize()
     {
         parent::initialize();
-        $this->view->container_class = 'container';
+        $this->view->container_class = 'container-lg';
+        $this->assets->collection('headerCss')->addCss('css/recipes.css');
     }
 
     public function indexAction()
@@ -23,7 +24,6 @@ class RecipesController extends BaseController
     {
         $this->tag->setTitle($this->t->_('add-recipe'));
         $this->assets->collection('headerCss')->addCss('vendor/selectize/css/selectize.css');
-        $this->assets->collection('headerCss')->addCss('css/recipes.css');
         $this->assets->collection('footerJs')->addJs('vendor/selectize/js/standalone/selectize.min.js');
         $this->assets->collection('footerJs')->addJs('vendor/tinymce/tinymce.min.js');
         $this->assets->collection('footerJs')->addJs('js/recipes.js');

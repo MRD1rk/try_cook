@@ -19,7 +19,11 @@ class BreadCrumbsWidget extends BaseWidget
         switch ($method) {
             case 'recipes/view':
                 $links = $this->getRecipesLinks();
-
+                break;
+            case 'recipes/index':
+                $recipe_link['name'] = $this->getDi()->get('t')->_('recipes');
+                $recipe_link['link'] = $this->getDi()->getUrl()->get(['for'=>'recipes-index']);
+                $links[] = $recipe_link;
         }
         $this->view->breadcrumbs = $links;
         return $this->render($view);
