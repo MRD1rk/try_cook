@@ -2,6 +2,7 @@
 
 namespace Modules\Api;
 
+use Components\CSRF;
 use Models\Context;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
@@ -64,6 +65,7 @@ class Module
                 }
             });
 //            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
+            $eventsManager->attach('dispatch:beforeDispatch', new CSRF());
             $dispatcher = new Dispatcher();
 
             $dispatcher->setDefaultNamespace('Modules\Api\Controllers');

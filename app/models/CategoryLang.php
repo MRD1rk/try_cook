@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Helpers\Tools;
+
 class CategoryLang extends BaseModel
 {
 
@@ -21,7 +23,7 @@ class CategoryLang extends BaseModel
      *
      * @var string
      */
-    protected $name;
+    protected $title;
 
     /**
      *
@@ -62,20 +64,20 @@ class CategoryLang extends BaseModel
     }
 
     /**
-     * Method to set the value of field name
+     * Method to set the value of field title
      *
-     * @param string $name
+     * @param string $title
      * @return $this
      */
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
 
     /**
-     * Method to set the value of field name
+     * Method to set the value of field title
      *
      * @param string $link_rewrite
      * @return $this
@@ -121,17 +123,17 @@ class CategoryLang extends BaseModel
     }
 
     /**
-     * Returns the value of field name
+     * Returns the value of field title
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
-     * Returns the value of field name
+     * Returns the value of field title
      *
      * @return string
      */
@@ -160,7 +162,7 @@ class CategoryLang extends BaseModel
     }
 
     /**
-     * Returns table name mapped in the model.
+     * Returns table title mapped in the model.
      *
      * @return string
      */
@@ -193,7 +195,7 @@ class CategoryLang extends BaseModel
 
     /**
      * Independent Column Mapping.
-     * Keys are the real names in the table and the values their names in the application
+     * Keys are the real titles in the table and the values their titles in the application
      *
      * @return array
      */
@@ -202,7 +204,7 @@ class CategoryLang extends BaseModel
         return [
             'id_category' => 'id_category',
             'id_lang' => 'id_lang',
-            'name' => 'name',
+            'title' => 'title',
             'link_rewrite' => 'link_rewrite',
             'description' => 'description'
         ];
@@ -210,7 +212,7 @@ class CategoryLang extends BaseModel
 
     public function beforeValidationOnCreate()
     {
-        $this->setLinkRewrite(Tools::strToUrl($this->getName()));
+        $this->setLinkRewrite(Tools::strToUrl($this->gettitle()));
     }
 
 }

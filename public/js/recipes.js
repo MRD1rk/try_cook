@@ -49,7 +49,7 @@ $(function () {
             '                                    <div class="form-group">\n' +
             '                                       <label>Название подраздела</label>' +
             '                                        <select name="recipe_part[id]" class="recipe-part-select"\n' +
-            '                                                placeholder="'+Translation.get('begin_input')+'">\n' +
+            '                                                placeholder="' + Translation.get('begin_input') + '">\n' +
             '                                            <option value=""></option>\n' +
             '                                            <option>Основное</option>\n' +
             '                                            <option>Заправка</option>\n' +
@@ -61,7 +61,7 @@ $(function () {
             '                        </div>\n' +
             '                        <div class="col-6 add-ingredient-block">\n' +
             '                           <div class="btn-group">' +
-            '                            <button class="btn btn-light btn-add-ingredient ">'+Translation.get('add_ingredient')+'<i\n' +
+            '                            <button class="btn btn-light btn-add-ingredient ">' + Translation.get('add_ingredient') + '<i\n' +
             '                                        class="fa fa-plus"></i></button>\n' +
             '                           </div>' +
             '                        </div>\n' +
@@ -88,14 +88,14 @@ $(function () {
             '                            <div>\n' +
             '                                <div class="row">\n' +
             '                                    <div class="col-6">\n' +
-            '                                        <select placeholder="'+Translation.get('begin_input')+'" class="ingredient-select">\n' +
+            '                                        <select placeholder="' + Translation.get('begin_input') + '" class="ingredient-select">\n' +
             '                                            <option value=""></option>\n' +
             '                                        </select>\n' +
             '                                    </div>\n' +
             '                                    <div class="col-6">\n' +
             '                                        <div class="row">\n' +
             '                                            <div class="col-5">\n' +
-            '                                                <input placeholder="'+Translation.get('weight')+'" class="form-control">\n' +
+            '                                                <input placeholder="' + Translation.get('weight') + '" class="form-control">\n' +
             '                                            </div>\n' +
             '                                            <div class="col-5">\n' +
             '                                                <select class="unit-select">\n' +
@@ -123,11 +123,14 @@ $(function () {
             create: false,
             render: {
                 item: function (value) {
+                    let data = {};
+                    data.units = value.unit_available;
+                    data = $.extend(data, getToken());
                     $.ajax({
                         type: 'POST',
                         url: '/api/get-units',
                         dataType: 'json',
-                        data: {units: value.unit_available},
+                        data: data,
                         success: function (data) {
                             var selectize = unit_selectize[0].selectize;
                             selectize.clearOptions();
@@ -143,11 +146,14 @@ $(function () {
             },
             load: function (query, callback) {
                 if (!query.length || query.length < 3) return callback();
+                let data = {};
+                data['query'] = query;
+                data = $.extend(data, getToken());
                 $.ajax({
                     url: '/api/get-ingredients',
                     type: 'POST',
                     dataType: 'json',
-                    data: {query: query,},
+                    data: data,
                     error: function () {
                         callback();
                     },

@@ -23,6 +23,11 @@ class IndexController extends BaseController
     public function getIngredientsAction()
     {
         $query = $this->request->getPost('query', 'string');
+        if (!$query){
+            $response['status'] = false;
+            $response['message'] = $this->t->_('query_is_required');
+            return $this->response->setJsonContent($response);
+        }
         $ids = (new Search())->query($query);
         $ingredients = Ingredient::getIngredient(['ids' => $ids]);
         $datas = [];
@@ -57,5 +62,6 @@ class IndexController extends BaseController
     {
 
     }
+
 }
 

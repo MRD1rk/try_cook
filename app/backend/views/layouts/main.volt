@@ -410,7 +410,7 @@
 
 <!--variable for JavaScript-->
 <script>
-    let prefix = "{{ prefix }}"
+    let prefix = "{{ prefix }}";
 </script>
 <!--end variable -->
 {{ assets.outputJs('footerJs') }}

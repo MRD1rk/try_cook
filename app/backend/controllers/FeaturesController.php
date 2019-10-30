@@ -27,7 +27,7 @@ class FeaturesController extends BaseController
     {
         if ($this->request->isPost()) {
             $feature_langs = $this->request->getPost('value');
-            $feature = new Feature(['order' => 'position']);
+            $feature = new Feature();
             $feature->save();
             if (!empty($feature_langs)) {
                 foreach ($feature_langs as $id_lang => $value) {

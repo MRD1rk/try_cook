@@ -10,6 +10,10 @@
                             <label>{{ t._('pattern') }}:</label>
                             <input name="pattern" class="form-control">
                         </div>
+                        <div class="form-group">
+                            <label>{{ t._('category') }}:</label>
+                            <input name="category" class="form-control">
+                        </div>
                         {% for lang in langs %}
                             <div class="form-group">
                                 <label>{{ t._(lang.iso_code~'_translation') }}:</label>

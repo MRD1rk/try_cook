@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend;
 
+use Components\CSRF;
 use Helpers\Converter;
 use Models\Context;
 use Modules\Frontend\Widgets\BreadCrumbsWidget;
@@ -69,6 +70,7 @@ class Module
                 }
             });
 //            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
+            $eventsManager->attach('dispatch:beforeDispatch', new CSRF());
             $dispatcher = new Dispatcher();
 
             $dispatcher->setDefaultNamespace('Modules\Frontend\Controllers');

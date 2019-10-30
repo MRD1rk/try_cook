@@ -17,7 +17,7 @@ class Tools
     {
     }
 
-    public static function rus2eng($string)
+    public static function rusToEng($string)
     {
         $converter = array(
             'а' => 'a', 'б' => 'b', 'в' => 'v',

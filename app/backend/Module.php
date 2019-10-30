@@ -8,6 +8,7 @@ use Models\Context;
 use Modules\Backend\Plugins\PersistentLoginPlugin;
 use Modules\Backend\Plugins\SecurityPlugin;
 use Modules\Backend\Widgets\AdminNavWidget;
+use Modules\Backend\Widgets\AdminSidebarWidget;
 use Modules\Backend\Widgets\BreadCrumbsWidget;
 use Phalcon\Assets\Manager;
 use Phalcon\DiInterface;
@@ -78,13 +79,6 @@ class Module
             return $view;
         });
 
-        $di->set('auth',function () {
-            $options = [
-                'rememberMeDuration' => 1096000 // Optional, default: 604800 (1 week)
-            ];
-            return new Auth(new \Models\Employee(), $options);
-        });
-
         $di->set('volt', function ($view, $di) {
 
             $volt = new Volt($view, $di);
@@ -97,6 +91,10 @@ class Module
             $compiler->addFunction('is_a', 'is_a');
             $compiler->addFunction('floor', 'floor');
             $compiler->addFunction('strtotime', 'strtotime');
+            $compiler->addFilter('def',  function($args_list) use ($di) {
+                $args = explode(", ", $args_list);
+                return "(isset($args[0]) ? $args[0] : $args[1])";
+            });
             return $volt;
         }, true);
 
@@ -135,11 +133,20 @@ class Module
             return $assets;
         }, true);
 
+        $di->set('auth',function () {
+            $options = [
+                'rememberMeDuration' => 1096000 // Optional, default: 604800 (1 week)
+            ];
+            return new Auth(new \Models\Employee(), $options);
+        });
         $di->set('context', function () {
             return Context::getInstance();
         });
         $di->set('AdminNavWidget', function () {
             return new AdminNavWidget();
+        });
+        $di->set('AdminSidebarWidget', function () {
+            return new AdminSidebarWidget();
         });
         $di->set('BreadCrumbsWidget', function () {
             return new BreadCrumbsWidget();

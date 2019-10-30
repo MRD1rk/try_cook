@@ -3,10 +3,9 @@ var Translation = {
     load: function (category) {
         let data = {};
         data['category'] = category;
-        data = $.extend(data,getToken());
         $.ajax({
             type: 'POST',
-            url: '/'+iso_code+'/get-translations',
+            url: prefix+'/get-translations',
             dataType: 'json',
             async: false,
             data: data,

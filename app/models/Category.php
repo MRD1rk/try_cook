@@ -177,6 +177,7 @@ class Category extends BaseModel
     {
         return $this->active;
     }
+
     /**
      * Returns the value of field level_depth
      *
@@ -214,9 +215,6 @@ class Category extends BaseModel
     {
         $this->hasOne('id', 'Models\CategoryLang', 'id_category', [
             'alias' => 'lang',
-            'params' => [
-                'id_lang=' . Context::getInstance()->getLang()->id
-            ]
         ]);
         $this->hasMany('id', 'Models\CategoryRecipe', 'id_category', ['alias' => 'categoryRecipes']);
     }

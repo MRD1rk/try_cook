@@ -10,4 +10,9 @@ class ErrorsController extends BaseController
     {
         $this->container_class = 'container';
     }
+
+    public function csrfAction()
+    {
+        echo 'csrf';
+    }
 }

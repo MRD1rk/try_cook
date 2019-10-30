@@ -43,6 +43,14 @@ class BackendRoutes extends RouterGroup
             'controller' => 'index',
             'action' => 'logout'
         ])->setName('admin-index-logout');
+        $this->add('/transliteration', [
+            'controller' => 'index',
+            'action' => 'transliteration'
+        ])->setName('admin-index-transliteration');
+        $this->add('/get-translations', array(
+            'controller' => 'index',
+            'action' => 'getTranslations'
+        ))->setName('admin-index-get-translations');
         $this->add('/settings', [
             'controller' => 'settings',
             'action' => 'index'
@@ -70,7 +78,7 @@ class BackendRoutes extends RouterGroup
         $this->add('/translations/delete/:int', [
             'controller' => 'translations',
             'action' => 'delete',
-            'id_translation' =>1
+            'id_translation' => 1
         ])->setName('admin-translations-delete');
         $this->add('/translations/parse', [
             'controller' => 'translations',
@@ -131,6 +139,24 @@ class BackendRoutes extends RouterGroup
             'action' => 'deleteFeatureValue',
             'id_feature_value' => 1
         ])->setName('admin-features-delete-value');
+        $this->add('/categories', [
+            'controller' => 'categories',
+            'action' => 'index',
+        ])->setName('admin-categories-index');
+        $this->add('/categories/add', [
+            'controller' => 'categories',
+            'action' => 'add',
+        ])->setName('admin-categories-add');
+        $this->add('/categories/update/:int', [
+            'controller' => 'categories',
+            'action' => 'update',
+            'id_category' => 1
+        ])->setName('admin-categories-update');
+        $this->add('/categories/update-image/:int', [
+            'controller' => 'categories',
+            'action' => 'updateImage',
+            'id_category' => 1
+        ])->setName('admin-categories-update-image');
     }
 
 

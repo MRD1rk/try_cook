@@ -38,5 +38,9 @@ class ApiRoutes extends RouterGroup
             'controller' => 'index',
             'action' => 'getUnits'
         ]);
+        $this->add('/get-link-rewrite',[
+            'controller'=>'index',
+            'action' => 'getLinkRewrite'
+        ]);
     }
 }

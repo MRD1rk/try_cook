@@ -8,8 +8,9 @@ class BreadCrumbsWidget extends BaseWidget
 
     public function run($view = 'nav')
     {
-        $controller_name = $this->getDi()->get('router')->getControllerName();
-        $action_name = $this->getDi()->get('router')->getActionName();
+        $router = $this->getDi()->get('router');
+        $controller_name = $router->getControllerName();
+        $action_name = $router->getActionName();
         if ($controller_name !== 'index'){
             $links[] = [
                 'link' => $this->getDi()->getUrl()->get(['for' => 'admin-index-index']),
@@ -22,8 +23,9 @@ class BreadCrumbsWidget extends BaseWidget
                 'name' => $this->getDi()->getT()->_($controller_name . '_index')
             ];
         }
+
         $links[] = [
-            'link' => $this->getDi()->getUrl()->get(['for' => 'admin-' . $controller_name . '-' . $action_name]),
+            'link' => $this->getDi()->getUrl()->get(['for' => $router->getMatchedRoute()->getName()]),
             'name' => $this->getDi()->getT()->_($controller_name . '_' . $action_name)
         ];
         $this->view->breadcrumbs = $links;

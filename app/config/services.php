@@ -1,6 +1,7 @@
 <?php
 
 use Models\Translate;
+use Phalcon\Logger\Factory;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\Url as UrlResolver;
@@ -141,5 +142,13 @@ $di->setShared('url', function () {
 $di->setShared('tag',function (){
    $tag = new \Overwrite\Tag();
    return $tag;
+});
+$di->setShared('logger',function (){
+    $options = [
+        'name'    => 'log.txt',
+        'adapter' => 'file',
+    ];
+    $logger = Phalcon\Logger\Factory::load($options);
+    return $logger;
 });
 

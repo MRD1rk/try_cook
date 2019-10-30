@@ -29,12 +29,14 @@ class TranslationsController extends BaseController
         $this->view->langs = Lang::find('active = 1');
         $this->tag->setTitle($this->t->_('add-translation'));
         if ($this->request->isPost()) {
+            $category = $this->request->getPost('category', 'striptags');
             $pattern = $this->request->getPost('pattern', 'striptags');
             $pattern = str_replace([' ', '-'], '_', $pattern);
             $pattern = strtolower($pattern);
             $translations = $this->request->getPost('value', 'striptags');
             $translation = new Translate();
             $translation->setPattern($pattern);
+            $translation->setCategory($category);
             if (!$translation->save()) {
                 $messages = $translation->getMessages();
                 foreach ($messages as $message) {
