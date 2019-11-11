@@ -5,7 +5,7 @@
                 <h4 class="header-title">{{ t._('translations') }}</h4>
                 <div class="text-center mb-3">
                     <a class="btn btn-success"
-                       href="{{ url.get(['for':'admin-translations-add']) }}">{{ t._('add-translation') }}</a>
+                       href="{{ url.get(['for':'admin-translations-add']) }}">{{ t._('translations_add') }}</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -13,9 +13,9 @@
                         <tr>
                             <th>{{ t._('pattern') }}</th>
                             {% for lang in langs %}
-                                <th>{{ t._(lang.iso_code~'-translation') }}</th>
+                                <th>{{ t._(lang.iso_code~'_translation') }}</th>
                             {% endfor %}
-                            <th>{{ t._('action') }}</th>
+                            <th>{{ t._('control') }}</th>
                         </tr>
                         </thead>
                         <tbody>

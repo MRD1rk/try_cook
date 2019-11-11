@@ -2,9 +2,20 @@
 
 namespace Models;
 
+use Phalcon\Http\Request\File;
+use Phalcon\Image\Adapter\Imagick;
+use Phalcon\Mvc\Model\Message;
+use Phalcon\Mvc\Model\Relation;
+
 class Category extends BaseModel
 {
 
+    /**
+     * @var array Allowed image extension
+     */
+    protected $allow_extension = ['png', 'jpg', 'jpeg'];
+
+    protected $icon_path = BASE_PATH . '/img/category/';
     /**
      *
      * @var integer
@@ -213,10 +224,13 @@ class Category extends BaseModel
      */
     public function initialize()
     {
+        $this->keepSnapshots(true);
         $this->hasOne('id', 'Models\CategoryLang', 'id_category', [
             'alias' => 'lang',
         ]);
+        $this->hasMany('id', 'Models\CategoryLang', 'id_category', ['alias' => 'langs']);
         $this->hasMany('id', 'Models\CategoryRecipe', 'id_category', ['alias' => 'categoryRecipes']);
+        $this->hasMany('id', 'Models\CategoryFeature', 'id_category', ['alias' => 'categoryFeatures']);
     }
 
     /**
@@ -270,4 +284,71 @@ class Category extends BaseModel
         ];
     }
 
+    private function getIconPath()
+    {
+        $extension = 'jpg';
+        $type = 'default';
+        $filename = $this->getId() . '-' . $type . '.' . $extension;
+        $filepath = $this->icon_path . $filename;
+        return $filepath;
+    }
+
+    public function uploadIcon(File $file)
+    {
+        if (!in_array($file->getExtension(), $this->allow_extension)) {
+            $message = new Message('no_allowed_extension');
+            $this->appendMessage($message);
+            return false;
+        }
+        $imagick = new Imagick($file->getTempName());
+        $imagick->background('#ffffff');
+        $filepath = $this->getIconPath();
+        $result = $imagick->save($filepath);
+        if (!$result) {
+            $message = new Message('failure_upload');
+            $this->appendMessage($message);
+            return false;
+        }
+        return true;
+    }
+
+
+    public function afterDelete()
+    {
+        $filepath = $this->getIconPath();
+        if (file_exists($filepath))
+            unlink($filepath);
+    }
+
+    public function beforeValidationOnCreate()
+    {
+        $this->setPosition(Category::count() + 1);
+    }
+
+    public function afterSave()
+    {
+        if ($this->hasSnapshotData()) {
+            if ($this->hasChanged('position')) {
+                $old_position = $this->getSnapshotData()['position'];
+                $new_position = $this->getPosition();
+                if ($old_position > $new_position) {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position + 1
+                WHERE position >=' . $new_position . ' 
+                AND position < ' . $old_position . ' 
+                AND id != ' . $this->getId();
+                } else {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position - 1
+                WHERE position <=' . $new_position . ' 
+                AND position > ' . $old_position . ' 
+                AND id != ' . $this->getId();
+                }
+                if (!$result = $this->getWriteConnection()->query($phql)) {
+                    $message = new Message('sql query error (position). Result: ' . var_dump($result));
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }

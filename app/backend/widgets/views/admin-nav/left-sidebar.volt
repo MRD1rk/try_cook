@@ -4,11 +4,11 @@
         {% if count_childs > 0 %}
             <li>
                 <a href="javascript:void(0)">
-                    <i class="{{ tab.icon }}"></i><span>{{ tab.title }}</span>
+                    <i class="{{ tab.icon }}"></i><span>{{ t._(tab.title) }}</span>
                 </a>
                 <ul class="collapse submenu">
                     {% for child in tab.childs %}
-                        <li><a href="{{ url.get(['for':child.getRouteName()]) }}">{{ child.title }}</a></li>
+                        <li><a href="{{ url.get(['for':child.getRouteName()]) }}">{{ t._(child.title) }}</a></li>
                     {% endfor %}
                 </ul>
             </li>

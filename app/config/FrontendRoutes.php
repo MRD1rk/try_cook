@@ -55,11 +55,13 @@ class FrontendRoutes extends RouterGroup
             'id_recipe' => 2,
             'link_rewrite' => 3
         ))->setName('recipes-view');
+        $this->add('/([a-z]{2})/([0-9]+)[-]([a-zA-Z0-9\_\-]+)', [
+            'controller' => 'categories',
+            'action' => 'view',
+            'iso_code' => 1,
+            'id_category' => 2,
+            'link_rewrite' => 3
+        ])->setName('categories-view');
 
-        $this->add('/([a-z]{2})/import-ingredient', [
-            'controller' => 'index',
-            'action' => 'importIngredient',
-            'iso_code' => 1
-        ]);
     }
 }

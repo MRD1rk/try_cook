@@ -31,7 +31,8 @@ function showAlert(text, status = true) {
 }
 
 $(function () {
-    Translation.load('global');
+    // Translation.load('global');
+
     //Generate link_rewrite
     $('.generate-link_rewrite').on('click', function (e) {
         let button = $(this);
@@ -53,7 +54,7 @@ $(function () {
                     return true;
                 }
                 button.siblings('input').val(data.content);
-                showAlert(Translation.get('updated'))
+                // showAlert(Translation.get('updated'))
             }
         })
     });

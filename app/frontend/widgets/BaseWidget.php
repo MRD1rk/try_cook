@@ -26,11 +26,11 @@ class BaseWidget
         $this->view->iso_code = Context::getInstance()->getLang()->iso_code;
     }
 
-    public function render($partial_path)
+    public function render($view)
     {
-        $this->partial_path = $partial_path;
+        $this->partial_path = $view;
         if ($this->view_dir)
-            $this->partial_path = $this->view_dir . '/' . $partial_path;
+            $this->partial_path = $this->view_dir . '/' . $view;
         return $this->view->getPartial($this->partial_path);
     }
 

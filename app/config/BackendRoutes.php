@@ -147,16 +147,39 @@ class BackendRoutes extends RouterGroup
             'controller' => 'categories',
             'action' => 'add',
         ])->setName('admin-categories-add');
+        $this->add('/categories/update-position', [
+            'controller' => 'categories',
+            'action' => 'updatePosition',
+        ])->setName('admin-categories-update-position');
+        $this->add('/categories/update-active', [
+            'controller' => 'categories',
+            'action' => 'updateActive',
+        ])->setName('admin-categories-update-active');
         $this->add('/categories/update/:int', [
             'controller' => 'categories',
             'action' => 'update',
             'id_category' => 1
         ])->setName('admin-categories-update');
+        $this->add('/categories/view/:int', [
+            'controller' => 'categories',
+            'action' => 'view',
+            'id_category' => 1
+        ])->setName('admin-categories-view');
+        $this->add('/categories/delete/:int', [
+            'controller' => 'categories',
+            'action' => 'delete',
+            'id_category' => 1
+        ])->setName('admin-categories-delete');
         $this->add('/categories/update-image/:int', [
             'controller' => 'categories',
             'action' => 'updateImage',
             'id_category' => 1
         ])->setName('admin-categories-update-image');
+        $this->add('/categories/update-feature/:int', [
+            'controller' => 'categories',
+            'action' => 'updateFeatures',
+            'id_category' => 1
+        ])->setName('admin-categories-update-feature');
     }
 
 

@@ -6,9 +6,9 @@
                     {{ AdminSidebarWidget.run('categories',category.id) }}
                 </div>
                 <div class="card-body">
-                    <h4 class="header-title">{{ t._('update_category') }}</h4>
-                    <div id="category_add">
-                        <form id="category_add_form" method="post">
+                    <h4 class="header-title text-center">{{ category.lang.title }}</h4>
+                    <div id="category_update">
+                        <form id="category_update_form" method="post">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -40,9 +40,7 @@
                                         <div class="form-group">
                                             <label for="description_{{ lang.id }}">{{ t._(lang.iso_code~'_description') }}:</label>
                                             <textarea rows="4" name="lang[{{ lang.id }}][description]" id="description_{{ lang.id }}"
-                                                      class="form-control">
-                                                {{ category.getRelated('lang',['conditions':'id_lang='~lang.id]).description|default('')}}
-                                            </textarea>
+                                                      class="form-control">{{ category.getRelated('lang',['conditions':'id_lang='~lang.id]).description|default('')}}</textarea>
                                         </div>
                                     </div>
                                 {% endfor %}

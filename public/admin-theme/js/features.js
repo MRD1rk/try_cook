@@ -68,5 +68,28 @@ $(function () {
             },
             dragHandle: ".drugHandler",
         },
-    )
+    );
+    $('#category-filters-table').tableDnD({
+            onDrop: function (table, row) {
+                let rows = table.tBodies[0].rows;
+                for (var i = 0; i < rows.length; i++) {
+                    $('#' + rows[i].id+' .position').val(i + 1);
+                }
+                let position = $('#' + row.id+' .position').val();
+                let id_feature_value = row.id;
+                $.ajax({
+                    type:'POST',
+                    url:prefix+'/features/update-value-position',
+                    dataType:'json',
+                    data:{id_feature_value:id_feature_value,position:position},
+                    success:function (data) {
+                        showAlert(data.message,data.status)
+                    }
+                })
+            },
+            dragHandle: ".drugHandler",
+        },
+    );
+    let table = document.getElementById('category-filters-table');
+    sortTable(table,0,-1);
 });

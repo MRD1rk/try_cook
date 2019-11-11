@@ -46,6 +46,7 @@ class Tools
         );
         return strtr($string, $converter);
     }
+
     /**
      * Return a friendly url made from the provided string
      * If the mbstring library is available, the output is the same as the js function of the same name
@@ -298,7 +299,7 @@ class Tools
 
     public static function assoc($array, $field)
     {
-        if(!isset($array[0]))
+        if (!isset($array[0]))
             return false;
         $tmp_array = array();
         $item = $array[0];
@@ -403,7 +404,7 @@ class Tools
                 $str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 break;
             case 'CAPTCHA':
-                $str= 'ABDEFGHJKLMNPQRSTUVWXYZ23456789';//без O, 0, C, 1, I
+                $str = 'ABDEFGHJKLMNPQRSTUVWXYZ23456789';//без O, 0, C, 1, I
                 break;
             case 'ALPHANUMERIC':
             default:
@@ -412,26 +413,39 @@ class Tools
         }
         $result = '';
         for ($i = 0; $i < $length; $i++) {
-            $result .= $str[$random->number(strlen($str)-1)];
+            $result .= $str[$random->number(strlen($str) - 1)];
         }
         return $result;
 
     }
 
 
-
-    public static function sanitize($string, $filters=[], $only_valid = false)
+    public static function sanitize($string, $filters = [], $only_valid = false)
     {
-        if(!is_array($filters)){
+        if (!is_array($filters)) {
             $tmp = [];
             $filters = array_push($tmp, $filters);
         }
-        $result = filter_var($string,FILTER_SANITIZE_MAGIC_QUOTES,$filters);
+        $result = filter_var($string, FILTER_SANITIZE_MAGIC_QUOTES, $filters);
         //Only numbers, and English and Russian literals
-        if($only_valid) {
+        if ($only_valid) {
             return preg_replace('/[^A-Za-z0-9\-\x{0410}-\x{042F}x{0430}-\x{0451}]/u', '', $result);
         }
-        $result = preg_replace('/[%;]/','', $result);
+        $result = preg_replace('/[%;]/', '', $result);
         return $result;
+    }
+
+    /**
+     * Transform array to string
+     * @param $value array|string
+     * @param string $glue
+     * @return string
+     */
+    public static function arrToString($value = null, $glue = ', '): string
+    {
+        if (!is_array($value))
+            return $value;
+        $value = implode($glue, $value);
+        return $value;
     }
 }

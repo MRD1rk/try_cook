@@ -6,6 +6,7 @@ use Components\CSRF;
 use Helpers\Converter;
 use Models\Context;
 use Modules\Frontend\Widgets\BreadCrumbsWidget;
+use Modules\Frontend\Widgets\FilterWidget;
 use Modules\Frontend\Widgets\NavWidget;
 use Modules\Frontend\Widgets\PopularRecipesWidget;
 use Modules\Frontend\Widgets\SelectLangWidget;
@@ -143,6 +144,9 @@ class Module
         });
         $di->set('PopularRecipesWidget', function () {
             return new PopularRecipesWidget();
+        });
+        $di->set('FilterWidget', function () {
+            return new FilterWidget();
         });
     }
 }

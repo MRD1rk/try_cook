@@ -73,3 +73,29 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
 }
+.category-item-title{
+    position: absolute;
+    color: #ffffff;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    background-color: #686089BF;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+.category-item:hover .category-item-title{
+    background-color: #64b400;
+}
+#recipes-index{
+    margin-bottom: 40px;
+}
+.category-title-block{
+    position: relative;
+    top: -43px;
+}

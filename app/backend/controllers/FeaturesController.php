@@ -4,9 +4,11 @@
 namespace Modules\Backend\Controllers;
 
 
+use Helpers\Tools;
 use Models\Feature;
 use Models\FeatureLang;
 use Models\FeatureValue;
+use Phalcon\Mvc\View;
 
 class FeaturesController extends BaseController
 {
@@ -68,7 +70,7 @@ class FeaturesController extends BaseController
 
     public function updateActiveAction()
     {
-        $this->view->disable();
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
         if ($this->request->isPost() && $this->request->isAjax()) {
             $message = null;
             $id_feature = $this->request->getPost('id_feature', 'int');
@@ -82,18 +84,18 @@ class FeaturesController extends BaseController
                 }
             } else {
                 $status = true;
-                $message = $this->t->_('active_successfully-updated');
+                $message = $this->t->_('active_successfully_updated');
             }
             return json_encode([
                 'status' => $status,
-                'message' => is_array($message) ? implode(', ', $message) : $message
+                'message' => Tools::arrToString($message)
             ]);
         }
     }
 
     public function updatePositionAction()
     {
-        $this->view->disable();
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
         if ($this->request->isPost() && $this->request->isAjax()) {
             $message = null;
             $id_feature = $this->request->getPost('id_feature', 'int');
@@ -107,11 +109,11 @@ class FeaturesController extends BaseController
                 }
             } else {
                 $status = true;
-                $message = $this->t->_('position_successfully-updated');
+                $message = $this->t->_('position_successfully_updated');
             }
             return json_encode([
                 'status' => $status,
-                'message' => is_array($message) ? implode(', ', $message) : $message
+                'message' => Tools::arrToString($message)
             ]);
         }
     }

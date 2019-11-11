@@ -27,7 +27,6 @@ class TranslationsController extends BaseController
     public function addAction()
     {
         $this->view->langs = Lang::find('active = 1');
-        $this->tag->setTitle($this->t->_('add-translation'));
         if ($this->request->isPost()) {
             $category = $this->request->getPost('category', 'striptags');
             $pattern = $this->request->getPost('pattern', 'striptags');
@@ -57,7 +56,7 @@ class TranslationsController extends BaseController
                     return true;
                 }
             }
-            $this->flash->success($this->t->_('translation-successfully-added'));
+            $this->flash->success($this->t->_('translation_successfully_added'));
             return $this->response->redirect($this->url->get(['for' => 'admin-translations-index']));
         }
     }
@@ -70,7 +69,6 @@ class TranslationsController extends BaseController
             $message = null;
             if (!empty($post)) {
                 foreach ($post as $item) {
-//                    $translationLang = translationLang::findFirst('id_translation=' . $item['id_pattern'] . ' AND id_lang=' . $item['id_lang']);
                     $translationLang = new TranslateLang();
                     if (!$translationLang->save($item)) {
                         foreach ($translationLang->getMessages() as $errorMessage) {
@@ -80,12 +78,12 @@ class TranslationsController extends BaseController
                         continue;
                     } else {
                         $status = true;
-                        $message = $this->t->_('translation-successfully-updated');
+                        $message = $this->t->_('translation_successfully_updated');
                         continue;
                     }
 
                 }
-                return json_encode(['status' => $status, 'message' => is_array($message) ? implode(', ', $message) : $message]);
+                return $this->response->setJsonContent(['status' => $status, 'message' => Tools::arrToString($message)]);
             }
         }
     }
@@ -104,24 +102,4 @@ class TranslationsController extends BaseController
         }
     }
 
-    public function parseAction()
-    {
-        $subject = file_get_contents('/var/www/try.cook/app/backend/controllers/TranslationsController.php');
-        $currentTranslator = 't\._';//in view files
-        $currentTranslator = '\$this->t->_'; // in php files
-        $pattern = '/\b.*?' . $currentTranslator . '\(\'(.+?)\'\)/';
-        $countMatches = preg_match_all(
-            $pattern,
-            $subject,
-            $matches,
-            PREG_SET_ORDER
-        );
-        $translationPatterns = [];
-        if ($countMatches) {
-            foreach ($matches as $match) {
-                $translationPatterns[] = $match[1];
-            }
-        }
-        return $translationPatterns;
-    }
 }

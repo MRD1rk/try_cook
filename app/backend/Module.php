@@ -114,21 +114,21 @@ class Module
                 ->addCss('/admin-theme/css/responsive.css');
             $assets->collection('footerJs')
                 ->addJs('/vendor/jquery/jquery.min.js')
-                ->addJs('/admin-theme/js/popper.min.js')
+                ->addJs('/admin-theme/js/library/popper.min.js')
                 ->addJs('/vendor/bootstrap/js/bootstrap.bundle.min.js')
                 ->addJs('/admin-theme/js/global.js')
-                ->addJs('/admin-theme/js/owl.carousel.min.js')
-                ->addJs('/admin-theme/js/metisMenu.min.js')
-                ->addJs('/admin-theme/js/jquery.slimscroll.min.js')
-                ->addJs('/admin-theme/js/jquery.slicknav.min.js')
-                ->addJs('/admin-theme/js/chart.min.js')
-                ->addJs('/admin-theme/js/highcharts.js')
-                ->addJs('/admin-theme/js/highcharts-exporting.js')
-                ->addJs('/admin-theme/js/highcharts-export-data.js')
-                ->addJs('/admin-theme/js/pie-chart.js')
-                ->addJs('/admin-theme/js/bar-chart.js')
-                ->addJs('/admin-theme/js/plugins.js')
-                ->addJs('/admin-theme/js/scripts.js');
+                ->addJs('/admin-theme/js/library/owl.carousel.min.js')
+                ->addJs('/admin-theme/js/library/metisMenu.min.js')
+                ->addJs('/admin-theme/js/library/jquery.slimscroll.min.js')
+                ->addJs('/admin-theme/js/library/jquery.slicknav.min.js')
+                ->addJs('/admin-theme/js/library/chart.min.js')
+                ->addJs('/admin-theme/js/library/highcharts.js')
+                ->addJs('/admin-theme/js/library/highcharts-exporting.js')
+                ->addJs('/admin-theme/js/library/highcharts-export-data.js')
+                ->addJs('/admin-theme/js/library/pie-chart.js')
+                ->addJs('/admin-theme/js/library/bar-chart.js')
+                ->addJs('/admin-theme/js/library/plugins.js')
+                ->addJs('/admin-theme/js/library/scripts.js');
 
             return $assets;
         }, true);

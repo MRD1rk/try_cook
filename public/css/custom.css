@@ -223,12 +223,19 @@ input[type="file"] {
     color: #b9b9ba;
     font-size: 24px;
 }
-
-#header-navbar .nav-link:hover:after {
+#header-navbar .nav-link:after{
     content: "";
+    margin: 0 auto;
     display: block;
+    width: 15%;
     padding: 2px 0;
     border-bottom: 4px solid #65b401;
+    opacity: 0;
+    transition: 0.3s;
+}
+#header-navbar .nav-link:hover:after {
+    opacity: 1;
+    width: 100%;
 }
 
 .tc-header {

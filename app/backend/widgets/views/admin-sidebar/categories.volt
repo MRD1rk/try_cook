@@ -10,6 +10,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url.get(['for':'admin-categories-update-image','id_category':id]) }}">{{ t._('update_image') }}</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url.get(['for':'admin-categories-update-feature','id_category':id]) }}">{{ t._('update_feature') }}</a>
+            </li>
         </ul>
     </div>
 </nav>

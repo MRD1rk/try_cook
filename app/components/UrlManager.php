@@ -24,12 +24,27 @@ class UrlManager extends Url
         return $url;
     }
 
+    /**
+     * @param $id_category
+     * @param string $link_rewrite
+     * @param bool $absolute
+     * @return string url for category
+     */
     public function getCategoryLink($id_category, $link_rewrite = 'category', $absolute = false)
     {
         $iso_code = Context::getInstance()->getLang()->iso_code;
         $url = '/' . $iso_code . '/' . $id_category . '-' . $link_rewrite;
         if ($absolute)
-            $url = Configuration::get('DOMAIN') . $url;
+            $url = $this->domain_url . $url;
+        return $url;
+    }
+
+    public function getCategoryIconLink($id_category, $type = 'default', $link_rewrite = 'category', $absolute = false)
+    {
+        $extension = 'jpg';
+        $url = '/c/' . $id_category . '-' . $type . '/' . $link_rewrite . '.' . $extension;
+        if ($absolute)
+            $url = $this->domain_url . $url;
         return $url;
     }
 }
