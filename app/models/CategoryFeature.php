@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\Message;
+
 class CategoryFeature extends BaseModel
 {
 
@@ -97,6 +99,7 @@ class CategoryFeature extends BaseModel
      */
     public function initialize()
     {
+        $this->keepSnapshots(true);
         $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'category']);
         $this->belongsTo('id_feature', 'Models\Feature', 'id', ['alias' => 'feature']);
     }
@@ -146,6 +149,38 @@ class CategoryFeature extends BaseModel
             'id_feature' => 'id_feature',
             'position' => 'position'
         ];
+    }
+
+    public function beforeValidationOnCreate()
+    {
+        $this->setPosition(CategoryFeature::count('id_category='.$this->getIdCategory()) + 1);
+    }
+
+    public function afterSave()
+    {
+        if ($this->hasSnapshotData()) {
+            if ($this->hasChanged('position')) {
+                $old_position = $this->getSnapshotData()['position'];
+                $new_position = $this->getPosition();
+                if ($old_position > $new_position) {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position + 1
+                WHERE position >=' . $new_position . ' 
+                AND position < ' . $old_position . ' 
+                AND id_category = ' . $this->getIdCategory().' AND id_feature !='.$this->getIdFeature();
+                } else {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position - 1
+                WHERE position <=' . $new_position . ' 
+                AND position > ' . $old_position . ' 
+                AND id_category = ' . $this->getIdCategory().' AND id_feature !='.$this->getIdFeature();
+                }
+                if (!$result = $this->getWriteConnection()->query($phql)) {
+                    $message = new Message('sql query error (position). Result: ' . var_dump($result));
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
 }

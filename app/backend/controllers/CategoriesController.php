@@ -173,17 +173,53 @@ class CategoriesController extends BaseController
         $this->assets->collection('footerJs')->addJs('admin-theme/js/features.js');
         $id_category = $this->dispatcher->getParam('id_category');
         $category = Category::findFirst($id_category);
-        $features = Feature::find(['order'=>'position DESC']);
-        $category_features = $category->categoryFeatures ?: new CategoryFeature();
-        $category_features = Tools::assoc($category_features,'id_feature');
+        $features = Feature::find(['order' => 'position']);
+        $category_features = $category->getCategoryFeatures(['order'=>'position']) ?: new CategoryFeature();
+        $category_features_assoc = Tools::assoc($category_features, 'id_feature');
         if ($this->request->isPost()) {
+            $category_features->delete();
             $filters = $this->request->getPost('category_filters');
-            echo '<pre>';
-            var_dump($filters);
-            die();
+            foreach ($filters as $filter) {
+                $category_feature = new CategoryFeature();
+                $category_feature->setIdCategory($id_category);
+                $category_feature->setIdFeature($filter['id_feature']);
+                if (!$category_feature->save()) {
+                    foreach ($category_feature->getMessages() as $message) {
+                        $this->flash->error($message->getMessage());
+                    }
+                }
+            }
+            $this->flash->success($this->t->_('feature_successfully_updated'));
+            return $this->response->redirect($this->url->get(['for'=>'admin-categories-update-feature', 'id_category' => $id_category]));
         }
         $this->view->category = $category;
-        $this->view->category_features = $category_features;
+        $this->view->category_features = $category_features_assoc;
         $this->view->features = $features;
+    }
+
+    public function updateFeaturePositionAction()
+    {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $message = null;
+            $id_category = $this->request->getPost('id_category', 'int');
+            $id_feature = $this->request->getPost('id_feature', 'int');
+            $position = $this->request->getPost('position', 'int');
+            $category_feature = CategoryFeature::findFirst('id_category=' . $id_category . ' AND id_feature=' . $id_feature);
+            $category_feature->setPosition($position);
+            if (!$category_feature->save()) {
+                $status = false;
+                foreach ($category_feature->getMessages() as $error) {
+                    $message[] = $error->getMessage();
+                }
+            } else {
+                $status = true;
+                $message = $this->t->_('position_successfully_updated');
+            }
+            return json_encode([
+                'status' => $status,
+                'message' => Tools::arrToString($message)
+            ]);
+        }
     }
 }

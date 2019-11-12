@@ -151,6 +151,10 @@ class BackendRoutes extends RouterGroup
             'controller' => 'categories',
             'action' => 'updatePosition',
         ])->setName('admin-categories-update-position');
+        $this->add('/categories/update-feature-position', [
+            'controller' => 'categories',
+            'action' => 'updateFeaturePosition',
+        ])->setName('admin-categories-update-feature-position');
         $this->add('/categories/update-active', [
             'controller' => 'categories',
             'action' => 'updateActive',
