@@ -30,9 +30,9 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 <!-- preloader area start -->
-{#<div id="preloader">#}
-{#    <div class="loader"></div>#}
-{#</div>#}
+<div id="preloader">
+    <div class="loader"></div>
+</div>
 <!-- preloader area end -->
 <!-- page container area start -->
 <div class="page-container">

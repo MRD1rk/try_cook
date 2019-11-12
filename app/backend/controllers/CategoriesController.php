@@ -173,8 +173,8 @@ class CategoriesController extends BaseController
         $this->assets->collection('footerJs')->addJs('admin-theme/js/features.js');
         $id_category = $this->dispatcher->getParam('id_category');
         $category = Category::findFirst($id_category);
-        $features = Feature::find(['order' => 'position']);
-        $category_features = $category->getCategoryFeatures(['order'=>'position']) ?: new CategoryFeature();
+        $features = Feature::find();
+        $category_features = $category->getCategoryFeatures() ?: new CategoryFeature();
         $category_features_assoc = Tools::assoc($category_features, 'id_feature');
         if ($this->request->isPost()) {
             $category_features->delete();

@@ -8,8 +8,8 @@
                 <h1 class="category-title">{{ t._(category.lang.title) }}</h1>
             </div>
         </div>
-        <div class="col-4">
-            {{ FilterWidget.run() }}
+        <div class="col-2">
+            {{ FilterWidget.run(category) }}
         </div>
     </div>
 </div>

@@ -1,3 +1,4 @@
+'use strict';
 function updateFeatureActive(object) {
     let is_active = +object.is(':checked');
     let id_feature = object.data('id_feature');
@@ -108,8 +109,8 @@ $(function () {
             $('tr').css('display', 'table-row');
         }
 
-    })
-    // let table = document.getElementById('category-filters-table');
-    // if (table)
-    //     sortTable(table, 0, -1);
+    });
+    let table = document.getElementById('category-filters-table');
+    if (table)
+        sortTable(table, 0, 1);
 });

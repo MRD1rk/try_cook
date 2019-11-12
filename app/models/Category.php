@@ -228,6 +228,12 @@ class Category extends BaseModel
         $this->hasOne('id', 'Models\CategoryLang', 'id_category', [
             'alias' => 'lang',
         ]);
+        $this->hasManyToMany(
+            'id', 'Models\CategoryFeature', 'id_category',
+            'id_feature', 'Models\Feature', 'id',
+            [
+                'alias' => 'features'
+            ]);
         $this->hasMany('id', 'Models\CategoryLang', 'id_category', ['alias' => 'langs']);
         $this->hasMany('id', 'Models\CategoryRecipe', 'id_category', ['alias' => 'categoryRecipes']);
         $this->hasMany('id', 'Models\CategoryFeature', 'id_category', ['alias' => 'categoryFeatures']);

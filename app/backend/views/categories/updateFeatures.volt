@@ -21,10 +21,10 @@
                                 <tbody>
                                 {% for feature in features %}
                                     {% set checked  = '' %}
-                                    {% set checked_first = 0 %}
+                                    {% set checked_first = 10000 %}
                                     {% if category_features[feature.id] is defined %}
                                         {% set checked = 'checked' %}
-                                        {% set checked_first = 1 %}
+                                        {% set checked_first = category_features[feature.id].position %}
                                     {% endif %}
                                     <tr id="{{ feature.id }}">
                                         <td>
@@ -37,10 +37,10 @@
                                         </td>
                                         <td><span>{{ feature.lang.value }}</span></td>
                                         <td class="text-center"><input type="hidden"
-                                                                       class="{% if checked_first %}position{% endif %}"
+                                                                       class="{% if checked_first is not 10000 %}position{% endif %}"
 
                                                                        value="{% if category_filters[feature.id] is defined %}{{ category_filters[feature.id].position }}{% endif %}">
-                                            {% if checked_first %}<i class="ti-move drugHandler">
+                                            {% if checked_first  is not 10000 %}<i class="ti-move drugHandler">
                                             </i>
                                             {% endif %}
                                         </td>
