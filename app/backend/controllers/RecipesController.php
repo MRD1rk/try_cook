@@ -4,6 +4,7 @@
 namespace Modules\Backend\Controllers;
 
 
+use Models\Feature;
 use Models\Recipe;
 
 class RecipesController extends BaseController
@@ -19,8 +20,19 @@ class RecipesController extends BaseController
         $this->view->recipes = $recipes;
     }
 
-    public function addAction()
+    public function updateAction()
     {
+        $id_recipe = $this->dispatcher->getParam('id_recipe');
+        $recipe = Recipe::findFirst($id_recipe);
+        $this->view->recipe = $recipe;
+    }
 
+    public function updateFeatureAction()
+    {
+        $id_recipe = $this->dispatcher->getParam('id_recipe');
+        $recipe = Recipe::findFirst($id_recipe);
+        $features = Feature::find();
+        $this->view->recipe = $recipe;
+        $this->view->features = $features;
     }
 }

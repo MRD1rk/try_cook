@@ -25,7 +25,7 @@
                             <td>{{ feature.id }}</td>
                             {% for lang in langs %}
                                 <td>
-                                    <span>{{ feature.getLang(['id_lang='~lang.id])?feature.getLang(['id_lang='~lang.id]).getValue():'' }}</span>
+                                    <span>{{ feature.getLang(['id_lang='~lang.id])?feature.getLang(['id_lang='~lang.id]).getValue():'' }} ({{ feature.countValues() }})</span>
                                 </td>
                             {% endfor %}
                             <td class="text-center">

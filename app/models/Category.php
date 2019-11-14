@@ -5,6 +5,7 @@ namespace Models;
 use Phalcon\Http\Request\File;
 use Phalcon\Image\Adapter\Imagick;
 use Phalcon\Mvc\Model\Message;
+use Phalcon\Mvc\Model\Query;
 use Phalcon\Mvc\Model\Relation;
 
 class Category extends BaseModel
@@ -234,6 +235,12 @@ class Category extends BaseModel
             [
                 'alias' => 'features'
             ]);
+        $this->hasManyToMany(
+            'id', 'Models\CategoryRecipe', 'id_category',
+            'id_recipe', 'Models\Recipe', 'id',
+            [
+                'alias' => 'recipes'
+            ]);
         $this->hasMany('id', 'Models\CategoryLang', 'id_category', ['alias' => 'langs']);
         $this->hasMany('id', 'Models\CategoryRecipe', 'id_category', ['alias' => 'categoryRecipes']);
         $this->hasMany('id', 'Models\CategoryFeature', 'id_category', ['alias' => 'categoryFeatures']);
@@ -356,5 +363,45 @@ class Category extends BaseModel
             }
             return true;
         }
+    }
+
+    public function getFeaturesCategory($selected_features = [])
+    {
+        $id_lang = Context::getInstance()->getLang()->id;
+        $conditions[] = 'cf.id_category = ' . $this->getId();
+        $conditions[] = 'fvl.id_lang = ' . $id_lang;
+        $conditions[] = 'fl.id_lang = ' . $id_lang;
+        if (!empty($selected_features['features'])) {
+            foreach ($selected_features['features'] as $id_feature => $selected_feature) {
+                $conditions[] = 'fr.id_feature = ' . $id_feature;
+                $conditions[] = 'fr.id_feature_value IN (' . implode(',', $selected_feature) . ')';
+            }
+        }
+        $phql = 'SELECT fr.id_feature, fl.value AS feature, fvl.id_feature_value ,fvl.value AS feature_value, cf.id_category, 
+                COUNT(fr.id_feature_value) AS count_recipes
+                FROM Models\CategoryRecipe cr
+                INNER JOIN Models\CategoryFeature cf ON cr.id_category = cf.id_category
+                LEFT JOIN Models\FeatureRecipe fr ON (fr.id_feature = cf.id_feature AND fr.id_recipe = cr.id_recipe)
+                LEFT JOIN Models\FeatureLang fl ON fl.id_feature = cf.id_feature
+                LEFT JOIN Models\FeatureValueLang fvl ON fvl.id_feature_value = fr.id_feature_value
+                WHERE ' . implode(' AND ', $conditions) . '
+                GROUP BY fvl.id_feature_value, cf.id_feature
+                ORDER BY cf.position ASC, fr.id_feature ASC, fvl.value ASC';
+        $model = new Category();
+        $query = new Query($phql, $model->getDI());
+        $rows = $query->execute();
+        $result = [];
+        if ($rows->count()) {
+            foreach ($rows as $row) {
+                $result[$row['id_feature']]['id_feature'] = $row['id_feature'];
+                $result[$row['id_feature']]['value'] = $row['feature'];
+                $result[$row['id_feature']]['feature_values'][$row['id_feature_value']] = [
+                    'id_feature_value' => $row['id_feature_value'],
+                    'value' => $row['feature_value'],
+                    'count' => $row['count_recipes']
+                ];
+            }
+        }
+        return $result;
     }
 }

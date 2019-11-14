@@ -173,5 +173,4 @@ $(function () {
         branding: false,
         toolbar: " undo redo | removeformat | bold italic | alignleft aligncenter alignright alignjustify"
     });
-
 });

@@ -48,6 +48,11 @@ class FrontendRoutes extends RouterGroup
             'action' => 'add',
             'iso_code' => 1,
         ))->setName('recipes-add');
+        $this->add('/([a-z]{2})/categories/filter', array(
+            'controller' => 'categories',
+            'action' => 'filter',
+            'iso_code' => 1,
+        ))->setName('categories-filter');
         $this->add('/([a-z]{2})/recipes/([0-9]+)[-]([a-zA-Z0-9\_\-]+)[.]html', array(
             'controller' => 'recipes',
             'action' => 'view',

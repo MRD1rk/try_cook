@@ -33,7 +33,7 @@
                             {% endfor %}
                             <td class="text-center">
                                 <div class="s-swtich">
-                                    <input onchange="updateFeatureValueActive($(this))" data-id_feature_value="{{ feature_value.id }}" {% if feature_value.active %}checked{% endif %} type="checkbox" id="active-{{ feature.id }}" class="update-active">
+                                    <input onchange="updateFeatureValueActive($(this))" data-id_feature_value="{{ feature_value.id }}" {% if feature_value.active %}checked{% endif %} type="checkbox" id="active-{{ feature_value.id }}" class="update-active">
                                     <label for="active-{{ feature_value.id }}">{{ t._('toggle') }}</label>
                                 </div>
                             </td>

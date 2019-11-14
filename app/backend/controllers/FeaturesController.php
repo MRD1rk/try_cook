@@ -8,6 +8,7 @@ use Helpers\Tools;
 use Models\Feature;
 use Models\FeatureLang;
 use Models\FeatureValue;
+use Models\FeatureValueLang;
 use Phalcon\Mvc\View;
 
 class FeaturesController extends BaseController
@@ -46,6 +47,34 @@ class FeaturesController extends BaseController
                 }
                 $this->flash->success($this->t->_('feature_successfully_added'));
                 return $this->response->redirect($this->url->get(['for' => 'admin-features-index', 'id' => $feature->getId()]));
+            }
+
+        }
+    }
+
+    public function addFeatureValueAction()
+    {
+        if ($this->request->isPost()) {
+            $id_feature = $this->dispatcher->getParam('id_feature');
+            $feature_value_langs = $this->request->getPost('value');
+            $feature_value = new FeatureValue();
+            $feature_value->setIdFeature($id_feature);
+            $feature_value->save();
+            if (!empty($feature_value_langs)) {
+                foreach ($feature_value_langs as $id_lang => $value) {
+                    $feature_value_lang = new FeatureValueLang();
+                    $feature_value_lang->setIdFeatureValue($feature_value->getId());
+                    $feature_value_lang->setIdLang($id_lang);
+                    $feature_value_lang->setValue($value);
+                    if (!$feature_value_lang->save()) {
+                        foreach ($feature_value_lang->getMessages() as $message) {
+                            $this->flash->error($this->t->_($message));
+                        }
+                        return true;
+                    }
+                }
+                $this->flash->success($this->t->_('feature_value_successfully_added'));
+                return $this->response->redirect($this->url->get(['for' => 'admin-features-view', 'id_feature' => $id_feature]));
             }
 
         }

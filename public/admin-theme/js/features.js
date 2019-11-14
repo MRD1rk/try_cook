@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 function updateFeatureActive(object) {
     let is_active = +object.is(':checked');
     let id_feature = object.data('id_feature');
