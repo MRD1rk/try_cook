@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Phalcon\Cache\Backend\Redis;
 use \Phalcon\Mvc\Model\Query;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email as EmailValidator;
@@ -236,6 +237,7 @@ class Translate extends BaseModel
     {
         $model = new self();
         $di = $model->getDI();
+        /** @var Redis $redis */
         $redis = $di->get('redis');
         $id_lang = \Models\Context::getInstance()->getLang()->id;
         $translates = $redis->get('translation_' . $id_lang);

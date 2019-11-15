@@ -240,7 +240,7 @@ class Recipe extends BaseModel
      */
     public function initialize()
     {
-        $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category','Models\Category', 'id', ['alias' => 'categories']);
+        $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category', 'Models\Category', 'id', ['alias' => 'categories']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients']);
         $this->hasOne('id_user', 'Models\User', 'id', ['alias' => 'user']);
         $this->hasOne('id', 'Models\RecipeLang', 'id_recipe', [
@@ -249,6 +249,7 @@ class Recipe extends BaseModel
                 'id_lang=' . Context::getInstance()->getLang()->id
             ]
         ]);
+        $this->hasMany('id', 'Models\FeatureRecipe', 'id_recipe', ['alias' => 'recipeFeatures']);
     }
 
     /**
@@ -302,6 +303,27 @@ class Recipe extends BaseModel
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'
         ];
+    }
+
+    /**
+     * Update recipe's feature
+     * @param $features array
+     * @return bool
+     */
+    public function updateFeature($features)
+    {
+        if (!$features)
+            return false;
+        $this->recipeFeatures->delete();
+        foreach ($features as $id_feature => $id_feature_value) {
+            $recipe_feature = new FeatureRecipe();
+            $recipe_feature->setIdRecipe($this->getId());
+            $recipe_feature->setIdFeature($id_feature);
+            $recipe_feature->setIdFeatureValue($id_feature_value);
+            if (!$recipe_feature->save())
+                return false;
+        }
+        return true;
     }
 
 }

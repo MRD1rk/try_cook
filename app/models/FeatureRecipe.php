@@ -7,18 +7,21 @@ class FeatureRecipe extends BaseModel
 
     /**
      *
+     * @primary
      * @var integer
      */
     protected $id_feature;
 
     /**
      *
+     * @primary
      * @var integer
      */
     protected $id_recipe;
 
     /**
      *
+     * @primary
      * @var integer
      */
     protected $id_feature_value;
@@ -97,6 +100,7 @@ class FeatureRecipe extends BaseModel
      */
     public function initialize()
     {
+        $this->belongsTo('id_feature_value', 'Models\FeatureValue', 'id', ['alias' => 'featureValue']);
         $this->belongsTo('id_feature', 'Models\Feature', 'id', ['alias' => 'feature']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }

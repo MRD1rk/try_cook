@@ -133,6 +133,22 @@ $di->setShared('redis', function () {
             "auth" => "",
             "persistent" => false,
         ]);
+//    $redis = new \Redis();
+//    $redis->connect('localhost');
+//    for ($i=0;$i<=10000;$i++){
+//        $redis->setBit('size_2',$i,rand(0,1));
+//        $redis->setBit('weight_2',$i,rand(0,1));
+//    }
+//    $redis->bitOp('OR','result','weight_2','size_2');
+//    $r = $redis->get('result');
+//    $bytes = unpack('C*', $r);
+//    $bin = join(array_map(function($byte){
+//        return sprintf("%08b", $byte);
+//    }, $bytes));
+//    echo '<pre>';
+//    var_dump($bin);
+//    die();
+//    return $bin;
     return $redis;
 });
 $di->setShared('url', function () {

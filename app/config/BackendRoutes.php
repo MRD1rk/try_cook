@@ -59,10 +59,11 @@ class BackendRoutes extends RouterGroup
             'controller' => 'recipes',
             'action' => 'index'
         ])->setName('admin-recipes-index');
-        $this->add('/recipes', [
+        $this->add('/recipes/update-feature/:int', [
             'controller' => 'recipes',
-            'action' => 'index'
-        ])->setName('admin-recipes-index');
+            'action' => 'updateFeature',
+            'id_recipe' => 1
+        ])->setName('admin-recipes-update-feature');
         $this->add('/recipes/add', [
             'controller' => 'recipes',
             'action' => 'add'

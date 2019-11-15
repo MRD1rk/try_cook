@@ -297,6 +297,11 @@ class Tools
         return strtolower($str);
     }
 
+    /**
+     * @param $array array
+     * @param $field string
+     * @return array|bool
+     */
     public static function assoc($array, $field)
     {
         if (!isset($array[0]))

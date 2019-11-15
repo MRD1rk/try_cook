@@ -2,32 +2,6 @@
 <div id="content" class="recipes-index">
     <div class="row">
         <div class="col-4">
-            {#            <div class="feature-block">#}
-            {#                <div class=>#}
-            {#                    <label class="feature-label">{{ t._('categories') }}:</label>#}
-            {#                    <select id="category" name="category" class="feature-select" placeholder="{{ t._('begin_input') }}">#}
-            {#                        <option value=""></option>#}
-            {#                        {% for category in categories %}#}
-            {#                            <option value="{{ category.id }}">{{ category.lang.name }}</option>#}
-            {#                        {% endfor %}#}
-            {#                    </select>#}
-            {#                </div>#}
-            {#            </div>#}
-            {#            {% for feature in features %}#}
-            {#                <div class="feature-block">#}
-            {#                    <div class=>#}
-            {#                        <label class="feature-label">{{ t._(feature.lang.value) }}:</label>#}
-            {#                        <select name="features[{{ feature.id }}]" data-id_feature="{{ feature.id }}"#}
-            {#                                class="feature-select" placeholder="{{ t._('begin_input') }}">#}
-            {#                            <option value=""></option>#}
-            {#                            {% for feature_value in feature.values %}#}
-            {#                                <option name="features[{{ feature.id }}][{{ feature_value.id }}]"#}
-            {#                                        value="{{ feature_value.id }}">{{ feature_value.lang.value }}</option>#}
-            {#                            {% endfor %}#}
-            {#                        </select>#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            {% endfor %}#}
         </div>
         <div class="col-8">
             <div class="recipe-block row justify-content-between">
@@ -139,62 +113,6 @@
                     </div>
                 </div>
             </div>
-                {#                <div class="col-12 recipe-part-block">#}
-                {#                    <div class="row">#}
-                {#                        <div class="col-12">#}
-                {#                            <div class="row">#}
-                {#                                <div class="col-6">#}
-                {#                                    <div class="form-group">#}
-                {#                                        <select id="recipe_part" name="recipe_part[id]" class="recipe-part-select"#}
-                {#                                                placeholder="{{ t._('begin_input') }}">#}
-                {#                                            <option value=""></option>#}
-                {#                                            <option>Основное</option>#}
-                {#                                            <option>Заправка</option>#}
-                {#                                            <option>Крем</option>#}
-                {#                                        </select>#}
-                {#                                    </div>#}
-                {#                                </div>#}
-                {#                            </div>#}
-                {#                        </div>#}
-                {#                        <div class="col-6">#}
-                {#                            <p class="input-rounded form-control text-left">{{ t._('add_ingredient') }}<i#}
-                {#                                        class="fa fa-plus"></i></p>#}
-                {#                        </div>#}
-                {#                        <div class="col-12">#}
-                {#                            <div class="ingredient-item">#}
-                {#                                <div class="row">#}
-                {#                                    <div class="col-6">#}
-                {#                                        <select class="ingredient-select">#}
-                {#                                            <option value="">{{ t._('begin_input') }}</option>#}
-                {#                                            <option value="2">Рис</option>#}
-                {#                                            <option value="3">Ананас</option>#}
-                {#                                            <option value="4">Авокадо</option>#}
-                {#                                        </select>#}
-                {#                                    </div>#}
-                {#                                    <div class="col-6">#}
-                {#                                        <div class="row">#}
-                {#                                            <div class="col-5">#}
-                {#                                                <input placeholder="{{ t._('weight') }}" class="form-control">#}
-                {#                                            </div>#}
-                {#                                            <div class="col-5">#}
-                {#                                                <select class="unit-select">#}
-                {#                                                    <option value="">...</option>#}
-                {#                                                    <option value="1">шт</option>#}
-                {#                                                    <option value="2">кг</option>#}
-                {#                                                    <option value="3">пучек</option>#}
-                {#                                                </select>#}
-                {#                                            </div>#}
-                {#                                            <div class="col-2">#}
-                {#                                                <div class="delete-ingredient"><i class="fas fa-trash fa-2x"></i></div>#}
-                {#                                            </div>#}
-                {#                                        </div>#}
-                {#                                    </div>#}
-                {#                                </div>#}
-                {#                            </div>#}
-                {#                        </div>#}
-                {#                    </div>#}
-
-                {#                </div>#}
             </div>
         </div>
     </div>
