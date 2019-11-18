@@ -6,7 +6,7 @@ use Phalcon\Http\Request\File;
 use Phalcon\Image\Adapter\Imagick;
 use Phalcon\Mvc\Model\Message;
 use Phalcon\Mvc\Model\Query;
-use Phalcon\Mvc\Model\Relation;
+use Phalcon\Mvc\Model\Resultset\Simple as Resultset;
 
 class Category extends BaseModel
 {
@@ -365,17 +365,19 @@ class Category extends BaseModel
         }
     }
 
-    public function getFeaturesCategory($selected_features = [])
+    public function getCategoryFeatures($selected_features = [])
     {
         $id_lang = Context::getInstance()->getLang()->id;
         $conditions[] = 'cf.id_category = ' . $this->getId();
         $conditions[] = 'fvl.id_lang = ' . $id_lang;
         $conditions[] = 'fl.id_lang = ' . $id_lang;
         if (!empty($selected_features['features'])) {
+            $filter = [];
             foreach ($selected_features['features'] as $id_feature => $selected_feature) {
-                $conditions[] = 'fr.id_feature = ' . $id_feature;
-                $conditions[] = 'fr.id_feature_value IN (' . implode(',', $selected_feature) . ')';
+                $filter[] = 'fr.id_recipe IN (SELECT tfr.id_recipe FROM Models\FeatureRecipe tfr WHERE tfr.id_feature=' . $id_feature . ' AND 
+               tfr.id_feature_value IN (' . implode(',', $selected_feature) . '))';
             }
+            $conditions[] = implode(' OR ', $filter);
         }
         $phql = 'SELECT fr.id_feature, fl.value AS feature, fvl.id_feature_value ,fvl.value AS feature_value, cf.id_category, 
                 COUNT(fr.id_feature_value) AS count_recipes
@@ -403,5 +405,18 @@ class Category extends BaseModel
             }
         }
         return $result;
+    }
+
+    public function getRecipesByFilter($filters = [], $page = 1, $limit = 0, $order = '')
+    {
+        $id_lang = Context::getInstance()->getLang()->id;
+        $phql = 'SELECT r.id, r.id_user, r.date_add
+                 FROM Models\Recipe r
+                 LEFT JOIN Models\RecipeLang rl ON r.id = rl.id_recipe AND rl.id_lang='.$id_lang.'
+                 LEFT JOIN Models\FeatureRecipe fr ON r.id = fr.id_recipe';
+        $model = new Category();
+        $query = new Query($phql, $model->getDI());
+        $rows = $query->execute();
+        return $rows;
     }
 }
