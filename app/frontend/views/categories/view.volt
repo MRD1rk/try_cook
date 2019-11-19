@@ -9,7 +9,10 @@
             </div>
         </div>
         <div class="col-2">
-            {{ FilterWidget.run(category) }}
+            {{ FilterWidget.run('desktop',category) }}
+        </div>
+        <div class="col-10">
+            {{ RecipeListWidget.run('categories-view',recipes) }}
         </div>
     </div>
 </div>

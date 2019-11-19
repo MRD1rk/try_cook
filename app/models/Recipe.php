@@ -242,7 +242,7 @@ class Recipe extends BaseModel
     {
         $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category', 'Models\Category', 'id', ['alias' => 'categories']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients']);
-        $this->hasOne('id_user', 'Models\User', 'id', ['alias' => 'user']);
+        $this->hasOne('id_user', 'Models\User', 'id', ['alias' => 'author']);
         $this->hasOne('id', 'Models\RecipeLang', 'id_recipe', [
             'alias' => 'lang',
             'params' => [

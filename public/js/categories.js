@@ -24,6 +24,7 @@ function changeFilter() {
         url: '/' + iso_code + '/categories/filter',
         success: function (data) {
             $('#filter-block').replaceWith(data.filter_block);
+            $('#recipes').replaceWith(data.recipes_block);
         }
     })
 }

@@ -10,7 +10,7 @@ class FilterWidget extends BaseWidget
 {
     public $view_dir = 'filter';
 
-    public function run(Category $category = null, $selected = [], $view = 'desktop')
+    public function run($view = 'desktop',Category $category = null, $selected = [])
     {
         $features = $category->getCategoryFeatures($selected);
         $selected_features = [];
@@ -22,10 +22,9 @@ class FilterWidget extends BaseWidget
 
             }
         }
-        $total_recipes = count($features);
+        $total_recipes = $category->getCountRecipesByFilter($selected);
         $this->view->id_category = $category->getId();
         $this->view->features = $features;
-        $this->view->recipes = $category->getRecipesByFilter();
         $this->view->selected_features = $selected_features;
         $this->view->total_recipes = $total_recipes;
         return $this->render($view);

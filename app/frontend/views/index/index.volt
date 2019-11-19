@@ -43,7 +43,7 @@
                     <div class="col-4 p-0 bg-white">
                         <div class="new-big-item p-3">
                             <h3 class="title">Салат с курицей в азиатском стиле</h3>
-                            <p class="recipe-short-description pt-3">Куриное филе нарезать пооой,
+                            <p class="short-description pt-3">Куриное филе нарезать пооой,
                                 добавить 2 столовые ложки соевого
                                 соуса и чайную ложку кунжутного масла.
                                 Перемешать, чтобы все куски курицы
@@ -60,7 +60,7 @@
                     <div class="col-8 p-0">
                         <div class="row mt-3">
                             <div class="col-4 p-0">
-                                <div class="recipe-item">
+                                <div class="blur-item">
                                     <div class="recipe-img">
                                         <a href="#">
                                             <figure><img src="/img/1.png"></figure>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="col-4 p-0">
-                                <div class="recipe-item">
+                                <div class="blur-item">
                                     <div class="recipe-img">
                                         <a href="#">
                                             <figure><img src="/img/1.png"></figure>
@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                             <div class="col-4 p-0">
-                                <div class="recipe-item">
+                                <div class="blur-item">
                                     <div class="recipe-img">
                                         <a href="#">
                                             <figure><img src="/img/1.png"></figure>

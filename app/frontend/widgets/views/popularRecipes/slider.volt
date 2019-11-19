@@ -1,5 +1,5 @@
 <div class="popular-recipes-slider">
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -7,7 +7,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -15,7 +15,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -23,7 +23,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -31,7 +31,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -39,7 +39,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -47,7 +47,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -55,7 +55,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -63,7 +63,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>
@@ -71,7 +71,7 @@
             </a>
         </div>
     </div>
-    <div class="recipe-item">
+    <div class="blur-item">
         <div class="recipe-img">
             <a href="#">
                 <figure><img src="/img/1.png"></figure>

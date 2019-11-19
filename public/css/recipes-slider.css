@@ -1,8 +1,8 @@
-.recipe-item{
+.blur-item{
     margin: 0 10px;
     position: relative;
 }
-.recipe-item span{
+.blur-item span{
     display: none;
     position: absolute;
     top: 40%;
@@ -18,7 +18,7 @@
 .recipe-img img{
     width: 100%;
 }
-.recipe-item figure{
+.blur-item figure{
     overflow: hidden;
 }
 figure img {
@@ -29,12 +29,12 @@ figure img {
     -webkit-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
 }
-.recipe-item:hover img {
+.blur-item:hover img {
     -webkit-filter: grayscale(50%) blur(1px);
     filter: grayscale(50%) blur(1px);
     -webkit-transform: scale(1.5);
     transform: scale(1.5);
 }
-.recipe-item:hover span{
+.blur-item:hover span{
     display: block;
 }

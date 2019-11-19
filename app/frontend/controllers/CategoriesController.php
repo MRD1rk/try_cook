@@ -24,11 +24,12 @@ class CategoriesController extends BaseController
 
     public function viewAction()
     {
+        $this->assets->collection('headerCss')->addCss('css/recipes.css');
         $id_category = $this->dispatcher->getParam('id_category');
         $category = Category::findFirst($id_category);
-        $products = $category->recipes;
+        $recipes = $category->getRecipesByFilter();
         $this->view->category = $category;
-        $this->view->products = $products;
+        $this->view->recipes = $recipes;
     }
 
     public function filterAction()
@@ -46,10 +47,13 @@ class CategoriesController extends BaseController
                 }
             }
             $selected['features'] = $selected_features;
-            $filter = $this->FilterWidget->run($category, $selected);
+            $filtered_recipes = $category->getRecipesByFilter($selected);
+            $recipes = $this->RecipeListWidget->run('categories-view',$filtered_recipes);
+            $filter = $this->FilterWidget->run('desktop', $category, $selected);
             $response = [
                 'status' => true,
-                'filter_block' => $filter
+                'filter_block' => $filter,
+                'recipes_block' => $recipes
             ];
             return $this->response->setJsonContent($response);
 

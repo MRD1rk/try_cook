@@ -374,7 +374,7 @@ class Category extends BaseModel
         if (!empty($selected_features['features'])) {
             $filter = [];
             foreach ($selected_features['features'] as $id_feature => $selected_feature) {
-                $filter[] = 'fr.id_recipe IN (SELECT tfr.id_recipe FROM Models\FeatureRecipe tfr WHERE tfr.id_feature=' . $id_feature . ' AND 
+                $filter[] = 'fr.id_recipe IN (SELECT tfr.id_recipe FROM Models\FeatureRecipe tfr WHERE tfr.id_feature=' . $id_feature . ' AND
                tfr.id_feature_value IN (' . implode(',', $selected_feature) . '))';
             }
             $conditions[] = implode(' OR ', $filter);
@@ -410,13 +410,44 @@ class Category extends BaseModel
     public function getRecipesByFilter($filters = [], $page = 1, $limit = 0, $order = '')
     {
         $id_lang = Context::getInstance()->getLang()->id;
-        $phql = 'SELECT r.id, r.id_user, r.date_add
-                 FROM Models\Recipe r
-                 LEFT JOIN Models\RecipeLang rl ON r.id = rl.id_recipe AND rl.id_lang='.$id_lang.'
-                 LEFT JOIN Models\FeatureRecipe fr ON r.id = fr.id_recipe';
+        $conditions[] = 'rl.id_lang=' . $id_lang;
+        if (!empty($filters['features'])) {
+            foreach ($filters['features'] as $id_feature => $selected_feature) {
+                $conditions[] = 'fr.id_feature = ' . $id_feature;
+                $conditions[] = '.fr.id_feature_value IN (' . implode(',', $selected_feature) . ')';
+            }
+        }
+        $sql = 'SELECT r.id, r.id_user, r.date_add, rl.title, rl.description, rl.link_rewrite
+                 FROM tc_recipes r
+                 LEFT JOIN tc_recipe_lang rl ON r.id = rl.id_recipe
+                 LEFT JOIN tc_feature_recipe fr ON r.id = fr.id_recipe
+                 WHERE ' . implode(' AND ', $conditions).'
+                 GROUP BY r.id';
+        $model = new Recipe();
+        $recipes = new Resultset(
+            null,
+            $model,
+            $model->getReadConnection()->query($sql)
+        );
+        return $recipes;
+    }
+
+    public function getCountRecipesByFilter($filters = [])
+    {
+
+        $conditions[] = 'cr.id_category=' . $this->getId();
+        if (!empty($filters['features'])) {
+            foreach ($filters['features'] as $id_feature => $selected_feature) {
+                $conditions[] = 'fr.id_feature = ' . $id_feature;
+                $conditions[] = 'fr.id_feature_value IN (' . implode(',', $selected_feature) . ')';
+            }
+        }
+        $phql = 'SELECT COUNT(DISTINCT fr.id_recipe) as recipes_count FROM Models\FeatureRecipe fr
+                 LEFT JOIN Models\CategoryRecipe cr ON cr.id_recipe=fr.id_recipe
+                 WHERE ' . implode(' AND ', $conditions);
         $model = new Category();
         $query = new Query($phql, $model->getDI());
-        $rows = $query->execute();
-        return $rows;
+        $rows = $query->getSingleResult();
+        return $rows['recipes_count'];
     }
 }

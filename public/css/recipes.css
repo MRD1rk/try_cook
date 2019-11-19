@@ -99,3 +99,24 @@
     position: relative;
     top: -43px;
 }
+
+
+/*recipes-list*/
+
+#recipes .recipe-item{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid grey;
+    padding: 10px;
+}
+
+#recipes .recipe-meta-block .recipe-title{
+    font-weight: bold;
+}
+#recipes .recipe-author-block .author-avatar{
+    width: 50px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
