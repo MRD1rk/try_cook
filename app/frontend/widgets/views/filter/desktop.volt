@@ -12,7 +12,7 @@
                     {% for feature_value in feature['feature_values'] %}
                         <div class="filter-item-value">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"
+                                <input type="checkbox" class="custom-control-input" {% if feature_value['disabled']%} disabled {% endif %}
                                        value="{{ feature['id_feature'] }}_{{ feature_value['id_feature_value'] }}"
                                        id="feature-check-{{ feature_value['id_feature_value'] }}" {% if selected_features[feature_value['id_feature_value']] is defined %}
                                 checked{% endif %}>

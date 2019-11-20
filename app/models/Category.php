@@ -371,39 +371,53 @@ class Category extends BaseModel
         $conditions[] = 'cf.id_category = ' . $this->getId();
         $conditions[] = 'fvl.id_lang = ' . $id_lang;
         $conditions[] = 'fl.id_lang = ' . $id_lang;
+        $ids_feature_value[] = 'null';
         if (!empty($selected_features['features'])) {
-            $filter = [];
             foreach ($selected_features['features'] as $id_feature => $selected_feature) {
-                $filter[] = 'fr.id_recipe IN (SELECT tfr.id_recipe FROM Models\FeatureRecipe tfr WHERE tfr.id_feature=' . $id_feature . ' AND
-               tfr.id_feature_value IN (' . implode(',', $selected_feature) . '))';
+                $ids_feature_value = array_merge($ids_feature_value, $selected_feature);
+                $ids_feature_value = array_unique($ids_feature_value);
             }
-            $conditions[] = implode(' OR ', $filter);
         }
-        $phql = 'SELECT fr.id_feature, fl.value AS feature, fvl.id_feature_value ,fvl.value AS feature_value, cf.id_category, 
-                COUNT(fr.id_feature_value) AS count_recipes
-                FROM Models\CategoryRecipe cr
-                INNER JOIN Models\CategoryFeature cf ON cr.id_category = cf.id_category
-                LEFT JOIN Models\FeatureRecipe fr ON (fr.id_feature = cf.id_feature AND fr.id_recipe = cr.id_recipe)
-                LEFT JOIN Models\FeatureLang fl ON fl.id_feature = cf.id_feature
-                LEFT JOIN Models\FeatureValueLang fvl ON fvl.id_feature_value = fr.id_feature_value
-                WHERE ' . implode(' AND ', $conditions) . '
-                GROUP BY fvl.id_feature_value, cf.id_feature
-                ORDER BY cf.position ASC, fr.id_feature ASC, fvl.value ASC';
-        $model = new Category();
-        $query = new Query($phql, $model->getDI());
-        $rows = $query->execute();
+
+        $sql = 'SELECT *,CASE WHEN id_recipe IN(sub.id_recipes) OR sub.id_recipes IS NULL THEN 0 ELSE 1 END AS disabled
+					 FROM (
+					    SELECT fr.id_feature, fl.value AS feature, fr.id_feature_value ,fvl.value AS feature_value, cf.id_category,fr.id_recipe,
+                        COUNT(fr.id_feature_value) AS count_recipes,
+                        (SELECT GROUP_CONCAT(id_recipe) FROM tc_feature_recipe frr WHERE frr.id_feature_value IN(' . implode(',', $ids_feature_value) . ')) AS id_recipes
+                            FROM tc_category_recipe  cr
+                                INNER JOIN tc_category_feature cf ON cr.id_category = cf.id_category
+                                LEFT JOIN tc_feature_recipe fr ON (fr.id_feature = cf.id_feature AND fr.id_recipe = cr.id_recipe)
+                                LEFT JOIN tc_feature_lang fl ON fl.id_feature = cf.id_feature
+                                LEFT JOIN tc_feature_value_lang fvl ON fvl.id_feature_value = fr.id_feature_value
+                                WHERE cf.id_category = 3 AND fvl.id_lang = 1 AND fl.id_lang = 1
+                                
+                                GROUP BY fvl.id_feature_value, cf.id_feature,fr.id_recipe
+                                ORDER BY cf.position ASC, fr.id_feature ASC, fvl.value ASC) AS sub';
+
+        $model = new Recipe();
+        $rows = new Resultset(
+            null,
+            $model,
+            $model->getReadConnection()->query($sql)
+        );
         $result = [];
         if ($rows->count()) {
+            $rows = $rows->toArray();
+            $count = [];
             foreach ($rows as $row) {
+                $count[$row['id_feature_value']] = ($count[$row['id_feature_value']] ?? 0) + $row['count_recipes'];
                 $result[$row['id_feature']]['id_feature'] = $row['id_feature'];
                 $result[$row['id_feature']]['value'] = $row['feature'];
                 $result[$row['id_feature']]['feature_values'][$row['id_feature_value']] = [
                     'id_feature_value' => $row['id_feature_value'],
                     'value' => $row['feature_value'],
-                    'count' => $row['count_recipes']
+                    'disabled' => $row['disabled'] ?? 0,
+                    'count' => $count[$row['id_feature_value']]
                 ];
             }
         }
+
+
         return $result;
     }
 
@@ -421,7 +435,7 @@ class Category extends BaseModel
                  FROM tc_recipes r
                  LEFT JOIN tc_recipe_lang rl ON r.id = rl.id_recipe
                  LEFT JOIN tc_feature_recipe fr ON r.id = fr.id_recipe
-                 WHERE ' . implode(' AND ', $conditions).'
+                 WHERE ' . implode(' AND ', $conditions) . '
                  GROUP BY r.id';
         $model = new Recipe();
         $recipes = new Resultset(
