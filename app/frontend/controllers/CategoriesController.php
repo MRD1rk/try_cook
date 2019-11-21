@@ -27,9 +27,12 @@ class CategoriesController extends BaseController
         $this->assets->collection('headerCss')->addCss('css/recipes.css');
         $id_category = $this->dispatcher->getParam('id_category');
         $category = Category::findFirst($id_category);
-        $recipes = $category->getRecipesByFilter();
+        $features = $category->getCategoryFeatures();
+        $filteredRecipes = $category->getRecipesByFilter();
         $this->view->category = $category;
-        $this->view->recipes = $recipes;
+        $this->view->recipes = $filteredRecipes['recipes'];
+        $this->view->total_count = $filteredRecipes['count'];
+        $this->view->features = $features;
     }
 
     public function filterAction()
@@ -39,24 +42,29 @@ class CategoriesController extends BaseController
             $id_category = $this->request->getPost('id_category');
             $category = Category::findFirst($id_category);
             $features = $this->request->getPost('features');
-            $selected_features = [];
+            $input_selected_features = [];
             if ($features) {
                 foreach ($features as $feature) {
                     $value = explode('_', $feature);
-                    $selected_features[$value[0]][] = $value[1];
+                    $input_selected_features[$value[0]][] = $value[1];
                 }
             }
-            $selected['features'] = $selected_features;
+            $selected['features'] = $input_selected_features;
+
+            $features = $category->getCategoryFeatures($selected);
             $filtered_recipes = $category->getRecipesByFilter($selected);
-            $recipes = $this->RecipeListWidget->run('categories-view',$filtered_recipes);
-            $filter = $this->FilterWidget->run('desktop', $category, $selected);
+            $selected_features = $category->getAssocSelectedFeatures($selected, $features);
+            $recipes = $this->RecipeListWidget->run('categories-view', $filtered_recipes['recipes']);
+            $filter = $this->FilterWidget->run('desktop', $category, $features, $filtered_recipes['count'], $selected_features);
             $response = [
                 'status' => true,
                 'filter_block' => $filter,
-                'recipes_block' => $recipes
+                'recipes_block' => $recipes,
+                'selected_features' => $selected_features
             ];
             return $this->response->setJsonContent($response);
 
         }
     }
+
 }

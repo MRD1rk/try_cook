@@ -10,12 +10,10 @@
         </div>
         <div class="offset-2 col-10">
             <div id="selected-filters">
-                <div class="selected-filter-item">Сбросить все</div>
-                <div class="selected-filter-item">Средне</div>
             </div>
         </div>
         <div class="col-2">
-            {{ FilterWidget.run('desktop',category) }}
+            {{ FilterWidget.run('desktop',category,features,total_count) }}
         </div>
         <div class="col-10">
             {{ RecipeListWidget.run('categories-view',recipes) }}

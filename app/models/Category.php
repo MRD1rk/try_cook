@@ -391,7 +391,7 @@ class Category extends BaseModel
                                 LEFT JOIN tc_feature_recipe fr ON (fr.id_feature = cf.id_feature AND fr.id_recipe = cr.id_recipe)
                                 LEFT JOIN tc_feature_lang fl ON fl.id_feature = cf.id_feature
                                 LEFT JOIN tc_feature_value_lang fvl ON fvl.id_feature_value = fr.id_feature_value
-                                WHERE cf.id_category = '.$this->getId().' AND fvl.id_lang = '.$id_lang.' AND fl.id_lang = '.$id_lang.'
+                                WHERE cf.id_category = ' . $this->getId() . ' AND fvl.id_lang = ' . $id_lang . ' AND fl.id_lang = ' . $id_lang . '
                                 GROUP BY fvl.id_feature_value, cf.id_feature,fr.id_recipe
                                 ORDER BY cf.position ASC, fr.id_feature ASC, fvl.value ASC) AS sub';
         $model = new Recipe();
@@ -426,31 +426,33 @@ class Category extends BaseModel
         $id_lang = Context::getInstance()->getLang()->id;
         $conditions[] = 'rl.id_lang=' . $id_lang;
         if (!empty($filters['features'])) {
-            $ids_feature = [];
-            $ids_feature_value = [];
+            $sub_queries = [];
             foreach ($filters['features'] as $id_feature => $selected_feature) {
-                $ids_feature[] = $id_feature;
-                $ids_feature_value = array_merge($selected_feature,$ids_feature_value);
+                if (!isset($sub_queries[$id_feature]))
+                    $sub_queries[$id_feature] = [];
+                foreach ($selected_feature as $id_feature_value) {
+                    $sub_queries[$id_feature][] = 'id_feature_value=' . (int)$id_feature_value;
+                }
             }
-            $conditions[] = 'fr.id_feature IN (' . implode(',', $ids_feature) . ')';
-            $conditions[] = 'fr.id_feature_value IN (' . implode(',', $ids_feature_value) . ')';
+            foreach ($sub_queries as $sub_query) {
+                $conditions[] = 'r.id IN (SELECT id_recipe FROM tc_feature_recipe WHERE ' . implode(' OR ', $sub_query) . ')';
+
+            }
         }
         $sql = 'SELECT r.id, r.id_user, r.date_add, rl.title, rl.description, rl.link_rewrite
                  FROM tc_recipes r
+                 LEFT JOIN tc_category_recipe cr ON r.id = cr.id_recipe AND cr.id_category = ' . (int)$this->getId() . '
                  LEFT JOIN tc_recipe_lang rl ON r.id = rl.id_recipe
                  LEFT JOIN tc_feature_recipe fr ON r.id = fr.id_recipe
-                 WHERE ' . implode(' AND ', $conditions) . '
-                 GROUP BY r.id';
-        echo '<pre>';
-        var_dump($sql);
-        die();
+                 WHERE ' . implode(' AND ', $conditions) .
+            ' GROUP BY r.id';
         $model = new Recipe();
         $recipes = new Resultset(
             null,
             $model,
             $model->getReadConnection()->query($sql)
         );
-        return $recipes;
+        return ['recipes' => $recipes, 'count' => count($recipes)];
     }
 
     public function getCountRecipesByFilter($filters = [])
@@ -470,5 +472,21 @@ class Category extends BaseModel
         $query = new Query($phql, $model->getDI());
         $rows = $query->getSingleResult();
         return $rows['recipes_count'];
+    }
+
+
+    public function getAssocSelectedFeatures(array $selected, $features)
+    {
+        $selected_features = [];
+        if (isset($selected['features']) && !empty($selected['features'])) {
+            foreach ($selected['features'] as $id_feature => $selected_feature_items) {
+                foreach ($selected_feature_items as $id_feature_value) {
+                    $selected_features[$id_feature_value]['id_feature_value'] = $id_feature.'_'.$id_feature_value;
+                    $selected_features[$id_feature_value]['feature_value'] = $features[$id_feature]['feature_values'][$id_feature_value]['value'];
+                }
+
+            }
+        }
+        return $selected_features;
     }
 }

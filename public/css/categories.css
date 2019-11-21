@@ -8,17 +8,8 @@
     0% {
         transform: rotate(0deg);
     }
-    25% {
-        transform: rotate(360deg);
-    }
-    50% {
-        transform: rotate(90deg);
-    }
-    75% {
-        transform: rotate(15deg);
-    }
     100% {
-        transform: rotate(0deg);
+        transform: rotate(180deg);
     }
 }
 
@@ -91,6 +82,6 @@
 }
 
 #selected-filters .selected-filter-item:hover:after {
-    animation: rotating 2s linear;
+    animation: rotating 0.3s linear;
 
 }
