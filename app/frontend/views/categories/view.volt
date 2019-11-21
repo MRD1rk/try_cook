@@ -8,6 +8,12 @@
                 <h1 class="category-title">{{ t._(category.lang.title) }}</h1>
             </div>
         </div>
+        <div class="offset-2 col-10">
+            <div id="selected-filters">
+                <div class="selected-filter-item">Сбросить все</div>
+                <div class="selected-filter-item">Средне</div>
+            </div>
+        </div>
         <div class="col-2">
             {{ FilterWidget.run('desktop',category) }}
         </div>

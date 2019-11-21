@@ -371,29 +371,29 @@ class Category extends BaseModel
         $conditions[] = 'cf.id_category = ' . $this->getId();
         $conditions[] = 'fvl.id_lang = ' . $id_lang;
         $conditions[] = 'fl.id_lang = ' . $id_lang;
-        $ids_feature_value[] = 'null';
+        $ids_feature_value[] = 'null';//need for mysql query.If create empty array - implode function ignore this element and in query will be IN () => error
         if (!empty($selected_features['features'])) {
             foreach ($selected_features['features'] as $id_feature => $selected_feature) {
+                $ids_feature_value = [];
                 $ids_feature_value = array_merge($ids_feature_value, $selected_feature);
                 $ids_feature_value = array_unique($ids_feature_value);
             }
         }
 
-        $sql = 'SELECT *,CASE WHEN id_recipe IN(sub.id_recipes) OR sub.id_recipes IS NULL THEN 0 ELSE 1 END AS disabled
+        $sql = 'SELECT *,CASE WHEN sub.id_recipes IS NULL THEN 0 WHEN FIND_IN_SET(id_recipe ,sub.id_recipes) = 0 THEN 1 ELSE 0 END AS disabled
 					 FROM (
 					    SELECT fr.id_feature, fl.value AS feature, fr.id_feature_value ,fvl.value AS feature_value, cf.id_category,fr.id_recipe,
                         COUNT(fr.id_feature_value) AS count_recipes,
-                        (SELECT GROUP_CONCAT(id_recipe) FROM tc_feature_recipe frr WHERE frr.id_feature_value IN(' . implode(',', $ids_feature_value) . ')) AS id_recipes
+                        (SELECT GROUP_CONCAT(id_recipe) FROM tc_feature_recipe frr 
+                         WHERE frr.id_feature_value IN(' . implode(',', $ids_feature_value) . ')) AS id_recipes
                             FROM tc_category_recipe  cr
                                 INNER JOIN tc_category_feature cf ON cr.id_category = cf.id_category
                                 LEFT JOIN tc_feature_recipe fr ON (fr.id_feature = cf.id_feature AND fr.id_recipe = cr.id_recipe)
                                 LEFT JOIN tc_feature_lang fl ON fl.id_feature = cf.id_feature
                                 LEFT JOIN tc_feature_value_lang fvl ON fvl.id_feature_value = fr.id_feature_value
-                                WHERE cf.id_category = 3 AND fvl.id_lang = 1 AND fl.id_lang = 1
-                                
+                                WHERE cf.id_category = '.$this->getId().' AND fvl.id_lang = '.$id_lang.' AND fl.id_lang = '.$id_lang.'
                                 GROUP BY fvl.id_feature_value, cf.id_feature,fr.id_recipe
                                 ORDER BY cf.position ASC, fr.id_feature ASC, fvl.value ASC) AS sub';
-
         $model = new Recipe();
         $rows = new Resultset(
             null,
@@ -426,10 +426,14 @@ class Category extends BaseModel
         $id_lang = Context::getInstance()->getLang()->id;
         $conditions[] = 'rl.id_lang=' . $id_lang;
         if (!empty($filters['features'])) {
+            $ids_feature = [];
+            $ids_feature_value = [];
             foreach ($filters['features'] as $id_feature => $selected_feature) {
-                $conditions[] = 'fr.id_feature = ' . $id_feature;
-                $conditions[] = '.fr.id_feature_value IN (' . implode(',', $selected_feature) . ')';
+                $ids_feature[] = $id_feature;
+                $ids_feature_value = array_merge($selected_feature,$ids_feature_value);
             }
+            $conditions[] = 'fr.id_feature IN (' . implode(',', $ids_feature) . ')';
+            $conditions[] = 'fr.id_feature_value IN (' . implode(',', $ids_feature_value) . ')';
         }
         $sql = 'SELECT r.id, r.id_user, r.date_add, rl.title, rl.description, rl.link_rewrite
                  FROM tc_recipes r
@@ -437,6 +441,9 @@ class Category extends BaseModel
                  LEFT JOIN tc_feature_recipe fr ON r.id = fr.id_recipe
                  WHERE ' . implode(' AND ', $conditions) . '
                  GROUP BY r.id';
+        echo '<pre>';
+        var_dump($sql);
+        die();
         $model = new Recipe();
         $recipes = new Resultset(
             null,

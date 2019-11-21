@@ -34,6 +34,11 @@
 </head>
 
 <body id="page-top">
+<!-- preloader area start -->
+<div id="preloader">
+    <div class="loader"></div>
+</div>
+<!-- preloader area end -->
 <div class="container-fluid p-0">
     <div class="tc-header">
         <div class="tc-header-top">

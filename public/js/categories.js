@@ -23,8 +23,11 @@ function changeFilter() {
         data: data,
         url: '/' + iso_code + '/categories/filter',
         success: function (data) {
-            $('#filter-block').replaceWith(data.filter_block);
-            $('#recipes').replaceWith(data.recipes_block);
+            $('#filter-block').html(data.filter_block);
+            $('#recipes').hide(function(){
+                $('#recipes').html(data.recipes_block);
+                $('#recipes').show("slow");
+            });
         }
     })
 }
