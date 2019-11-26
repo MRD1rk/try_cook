@@ -3,6 +3,8 @@
 namespace Models;
 
 use Phalcon\Mvc\Model\Message;
+use Phalcon\Mvc\Model\Resultset\Simple as Resultset;
+
 
 class Feature extends BaseModel
 {
@@ -228,5 +230,35 @@ class Feature extends BaseModel
         if ($this->getValues()) {
             $this->getValues()->delete();
         }
+    }
+
+    public static function getFeatures()
+    {
+        $id_lang = Context::getInstance()->getLang()->id;
+        $sql = 'SELECT f.id as id_feature,fv.id as id_feature_value,fl.value as feature, fvl.value as feature_value FROM tc_features f
+            LEFT JOIN tc_feature_values fv ON f.id = fv.id_feature
+            LEFT JOIN tc_feature_lang fl ON f.id = fl.id_feature
+            LEFT JOIN tc_feature_value_lang fvl ON fv.id = fvl.id_feature_value
+            WHERE fvl.id_lang = '.$id_lang.' AND fl.id_lang = '.$id_lang.'
+            ORDER BY f.id';
+        $model = new self;
+        $rows = new Resultset(
+            null,
+            null,
+            $model->getReadConnection()->query($sql)
+        );
+        $result = [];
+        if ($rows->count()){
+            $rows = $rows->toArray();
+            foreach ($rows as $row) {
+                $result[$row['id_feature']]['id_feature'] = $row['id_feature'];
+                $result[$row['id_feature']]['value'] = $row['feature'];
+                $result[$row['id_feature']]['feature_values'][$row['id_feature_value']] = [
+                    'id_feature_value' => $row['id_feature_value'],
+                    'value' => $row['feature_value'],
+                ];
+            }
+        }
+        return $result;
     }
 }

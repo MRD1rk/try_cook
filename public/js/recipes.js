@@ -31,7 +31,7 @@ $(function () {
     //delete ingredient
     $('body').on('click', '.delete-ingredient', function () {
         let block = $(this).parents('.ingredient-item');
-        block.fadeOut()
+        block.fadeOut();
         setTimeout(function () {
 
             block.remove()
@@ -79,6 +79,38 @@ $(function () {
             persist: true
         });
     });
+    $('body').on('click', '.show-all-filter', function () {
+        let button = $(this);
+        let parent = button.siblings('.filter-item-values');
+        let marked_filter = parent.find('.marked.filter-item-value');
+        setTimeout(function () {
+            marked_filter.toggleClass('visible-hidden')
+        }, 20);
+        marked_filter.toggleClass('hide');
+        button.find('i').toggleClass('fa-angle-double-up');
+    });
+    $('body').on('change', '#recipe_image', function () {
+        let file = $(this).prop('files') && $(this).prop('files')[0] || null;
+        if (!file)
+            return true;
+        let data = new FormData();
+        data.append('preview_img', file);
+        $.ajax({
+            type: 'POST',
+            url: '',
+            processData: false,
+            contentType: false,
+            data:data,
+            success: function (data) {
+                console.log(data)
+            }
+
+        })
+    });
+    // $('body').on('change', 'input[name=id_category]', function () {
+    //     let id_category = $(this).val();
+    //
+    // });
     $('body').on('click', '.btn-add-ingredient', function () {
         let parent = $(this).parents('.add-ingredient-block');
         let count = parent.parent().find('.ingredient-item').length + 1;
@@ -165,6 +197,7 @@ $(function () {
             },
             persist: true
         });
+
 
     });
     tinyMCE.init({

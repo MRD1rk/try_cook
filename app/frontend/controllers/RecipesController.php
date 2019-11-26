@@ -35,7 +35,7 @@ class RecipesController extends BaseController
             $units_data[$unit->getId()] = $unit->lang->getTitle();
         }
         $categories = Category::find('id_parent = 0');
-        $features = Feature::find('id=1');
+        $features = Feature::getFeatures();
         if ($this->request->isPost() && $this->request->isAjax()) {
             $data = $this->request->getPost();
         }
@@ -43,6 +43,17 @@ class RecipesController extends BaseController
         $this->view->units = json_encode($units_data);
         $this->view->features = $features;
         $this->view->categories = $categories;
+    }
+
+    public function uploadImageAction()
+    {
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $post = $this->request->getPost();
+            echo '<pre>';
+            var_dump('2');
+            die();
+
+        }
     }
 
     public function viewAction()

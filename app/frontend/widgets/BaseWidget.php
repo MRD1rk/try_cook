@@ -26,11 +26,11 @@ class BaseWidget
         $this->view->iso_code = Context::getInstance()->getLang()->iso_code;
     }
 
-    public function render($view)
+    public function render($template)
     {
-        $this->partial_path = $view;
+        $this->partial_path = $template;
         if ($this->view_dir)
-            $this->partial_path = $this->view_dir . '/' . $view;
+            $this->partial_path = $this->view_dir . '/' . $template;
         return $this->view->getPartial($this->partial_path);
     }
 
@@ -69,5 +69,15 @@ class BaseWidget
     public function getDi()
     {
         return Di::getDefault();
+    }
+
+    public function partial($partial_view, ...$params)
+    {
+        if (!empty($params)){
+            foreach ($params as $key => $param) {
+                $this->view->key = $params;
+            }
+        }
+        return $this->render($partial_view);
     }
 }

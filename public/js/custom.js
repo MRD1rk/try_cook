@@ -8,8 +8,3 @@ function getToken() {
     data[tokenKey] = tokenValue;
     return data;
 }
-
-function showLoading() {
-    var preloader = $('#preloader');
-    preloader.fadeOut('slow');
-}

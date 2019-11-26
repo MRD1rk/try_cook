@@ -1,9 +1,6 @@
 <?php
 
 use Phalcon\Di\FactoryDefault;
-if (function_exists('xdebug_disable')) {
-    xdebug_disable();
-}
 define('BASE_PATH',__DIR__);
 define('ROOT_PATH', dirname(__DIR__));
 define('APP_PATH', ROOT_PATH . '/app');

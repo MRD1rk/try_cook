@@ -1,9 +1,10 @@
 <h1 class="tc-title">{{ t._('new-recipe') }}</h1>
 <div id="content" class="recipes-index">
     <div class="row">
-        <div class="col-4">
+        <div class="col-2">
+            {{ partial('recipes/filter-block',['categories':categories]) }}
         </div>
-        <div class="col-8">
+        <div class="col-6">
             <div class="recipe-block row justify-content-between">
                 <div class="col-12">
                     <div class="form-group">
@@ -12,8 +13,9 @@
                 </div>
                 <div class="col-12">
                     <div class="form-group">
-                        <div class="preview-image">
+                        <div class="preview-image-block">
                             <label class="add-recipe-preview-img" for="recipe_image">
+                                <img id="recipe-preview-img" src="/img/no_photo.png">
                                 <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
                             </label>
                             <input id="recipe_image" type="file">
@@ -108,11 +110,10 @@
                 <div class="col-12">
                     <div class="row justify-content-end">
                         <div class="col-6">
-                            <p class="text-right hovered-red add-recipe-part">{{ t._('add_recipe_part') }}</p>
+                            <p class="text-right hovered-red add-recipe-part"><i class="far fa-list-alt"></i>&nbsp;{{ t._('add_recipe_part') }}</p>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>

@@ -18,11 +18,16 @@ class Search
 
     }
 
+    /**
+     * @param string $query
+     * @param string $from
+     * @param int $limit
+     * @return array of recipe's ids
+     */
     public function query($query = '', $from = '*', $limit = 20)
     {
         $this->sphinx->setLimits(0, $limit, $limit);
         $results = $this->sphinx->query($query, $from);
-        $this->sphinx->setFilter('id_lang','1');
         $results = $results['matches'];
         $ids = [];
         if ($results) {

@@ -3,7 +3,7 @@
         <h2 class="filter-head">{{ t._('total_recipes') }} {{ total_recipes }}</h2>
     </div>
     <div class="filters-items">
-        {% for feature in features %}
+        {% for feature in features['features'] %}
             <div class="filter-item">
                 <div class="filter-item-title">
                     <span>{{ feature['value'] }}</span>
