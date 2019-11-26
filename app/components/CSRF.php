@@ -39,7 +39,7 @@ class CSRF extends Component
                         $response->send();
                         exit();
                     } else {
-                        $dispatcher->forward(['controller' => 'index', 'action' => 'csrf']);
+                        $dispatcher->forward(['controller' => 'errors', 'action' => 'csrf']);
                     }
                 }
             }

@@ -32,22 +32,38 @@ final class Context extends BaseModel
         return self::$instance;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
 
     /**
      * @param mixed $user
+     * @return Context
      */
-    public function setUser($user): void
+    public function setUser($user)
     {
         $this->user = $user;
+        return $this;
     }
 
+    public function getUser()
+    {
+        if (isset($this->user))
+            return $this->user;
+        $authData = $this->getDI()->getSession()->get('user_data');
+        $user = null;
+        if (!empty($authData)) {
+            $user = User::findFirstById($authData['id']);
+            if ($user) {
+                $user->setLogged(1);
+            } else
+                $user = new User();
+        } else {
+            $user = new User();
+        }
+        $this->user = $user;
+        return $this->user;
+    }
+    /**
+     * @return bool|Employee|\Phalcon\Mvc\Model
+     */
     public function getEmployee()
     {
         if (isset($this->employee))
@@ -65,7 +81,6 @@ final class Context extends BaseModel
         }
         $this->employee = $employee;
         return $this->employee;
-
     }
 
     public function setEmployee($employee)

@@ -76,5 +76,20 @@ class FrontendRoutes extends RouterGroup
             'link_rewrite' => 3
         ])->setName('categories-view');
 
+        $this->add('/([a-z]{2})/auth/signup', [
+            'controller' => 'auth',
+            'action' => 'signup',
+            'iso_code' => 1
+        ])->setName('auth-signup');
+        $this->add('/([a-z]{2})/auth/signin', [
+            'controller' => 'auth',
+            'action' => 'signin',
+            'iso_code' => 1
+        ])->setName('auth-signin');
+        $this->add('/([a-z]{2})/auth/logout', [
+            'controller' => 'auth',
+            'action' => 'logout',
+            'iso_code' => 1
+        ])->setName('auth-logout');
     }
 }

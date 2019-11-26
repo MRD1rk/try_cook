@@ -5,6 +5,7 @@ namespace Modules\Frontend;
 use Components\CSRF;
 use Helpers\Converter;
 use Models\Context;
+use Modules\Frontend\Widgets\AuthWidget;
 use Modules\Frontend\Widgets\BreadCrumbsWidget;
 use Modules\Frontend\Widgets\FilterWidget;
 use Modules\Frontend\Widgets\NavWidget;
@@ -38,7 +39,6 @@ class Module
             'Overwrite' => __DIR__ . '/../overwrite/',
             'Modules\Frontend\Forms' => __DIR__ . '/forms/',
             'Modules\Frontend\Plugins' => __DIR__ . '/plugins/',
-            'Modules\Frontend\Components' => __DIR__ . '/components/',
             'Modules\Frontend\Widgets' => __DIR__ . '/widgets/',
         ));
 
@@ -151,6 +151,9 @@ class Module
         });
         $di->set('RecipeListWidget', function () {
             return new RecipeListWidget();
+        });
+        $di->set('AuthWidget', function () {
+            return new AuthWidget();
         });
     }
 }

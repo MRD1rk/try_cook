@@ -5,7 +5,7 @@
         </div>
         <div class="col-12">
             <div class="text-center">
-                <h1 class="category-title">{{ t._('recipes') }}</h1>
+                <h1 class="title">{{ t._('recipes') }}</h1>
             </div>
         </div>
         <div class="col-12">

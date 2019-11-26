@@ -72,6 +72,10 @@ class User extends BaseModel
     protected $last_login;
 
     /**
+     * @var int
+     */
+    protected $logged = 0;
+    /**
      * Method to set the value of field id
      *
      * @param integer $id
@@ -186,6 +190,19 @@ class User extends BaseModel
     public function setDateAdd($date_add)
     {
         $this->date_add = $date_add;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field logged
+     *
+     * @param integer $logged
+     * @return $this
+     */
+    public function setLogged($logged)
+    {
+        $this->logged = $logged;
 
         return $this;
     }
@@ -323,6 +340,7 @@ class User extends BaseModel
      */
     public function initialize()
     {
+        $this->hasMany('id','Models\Recipe','id_user',['alias'=>'recipes']);
     }
 
     /**

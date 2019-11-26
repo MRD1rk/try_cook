@@ -1,0 +1,1 @@
+<div class="container">Not valid CSRF</div>

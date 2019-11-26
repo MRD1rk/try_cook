@@ -61,10 +61,7 @@
                 <div class="col-lg-6 col-xs-6">
                     <div class="row justify-content-end">
                         <div class="col-lg-5">
-                            <div class="header-sign">
-                                <a href="#" class="btn-tc">{{ t._('signin') }}</a>
-                                <a href="#" class="btn-tc btn-green">{{ t._('signup') }}</a>
-                            </div>
+                            {{ AuthWidget.run() }}
                         </div>
                         <div class="col-lg-3">
                             {{ SelectLangWidget.run() }}
