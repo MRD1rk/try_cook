@@ -133,12 +133,6 @@ class Module
             return $assets;
         }, true);
 
-        $di->set('auth',function () {
-            $options = [
-                'rememberMeDuration' => 1096000 // Optional, default: 604800 (1 week)
-            ];
-            return new Auth(new \Models\Employee(), $options);
-        });
         $di->set('context', function () {
             return Context::getInstance();
         });

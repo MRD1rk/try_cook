@@ -5,7 +5,6 @@ namespace Models;
 use Phalcon\Security;
 use Phalcon\Security\Random;
 use Phalcon\Validation;
-use Phalcon\Validation\Validator\Email as EmailValidator;
 
 /**
  * @property int logged
@@ -56,6 +55,10 @@ class User extends BaseModel
     protected $password;
 
     /**
+     * @var integer
+     */
+    protected $active;
+    /**
      *
      * @var string
      */
@@ -75,6 +78,7 @@ class User extends BaseModel
      * @var int
      */
     protected $logged = 0;
+
     /**
      * Method to set the value of field id
      *
@@ -165,6 +169,30 @@ class User extends BaseModel
         $password = $security->hash($password);
         $this->password = $password;
 
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field active
+     *
+     * @param integer $active
+     * @return $this
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field password
+     *
+     * @param integer $last_login
+     * @return $this
+     */
+    public function setLastLogin($last_login)
+    {
+        $this->last_login = $last_login;
         return $this;
     }
 
@@ -278,19 +306,21 @@ class User extends BaseModel
     }
 
     /**
+     * Returns the value of field active
+     *
+     * @return string
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * @return false|string
      */
     public function getLastLogin()
     {
         return $this->last_login;
-    }
-
-    /**
-     * @param false|string $last_login
-     */
-    public function setLastLogin($last_login): void
-    {
-        $this->last_login = $last_login;
     }
 
     /**
@@ -314,6 +344,14 @@ class User extends BaseModel
     }
 
     /**
+     * Returns the value of field logged
+     * @return int
+     */
+    public function getLogged()
+    {
+        return $this->logged;
+    }
+    /**
      * Validations and business logic
      *
      * @return boolean
@@ -322,16 +360,18 @@ class User extends BaseModel
     {
         $validator = new Validation();
 
-        $validator->add(
-            'email',
-            new EmailValidator(
+        $validator->add('email',
+            new Validation\Validator\Email([
+                'model' => $this,
+                'message' => 'incorrect_email'
+            ]));
+        $validator->add('email',
+            new Validation\Validator\Uniqueness(
                 [
                     'model' => $this,
-                    'message' => 'Please enter a correct email address',
+                    'message' => 'user_with_this_email_already_exists'
                 ]
-            )
-        );
-
+            ));
         return $this->validate($validator);
     }
 
@@ -340,7 +380,7 @@ class User extends BaseModel
      */
     public function initialize()
     {
-        $this->hasMany('id','Models\Recipe','id_user',['alias'=>'recipes']);
+        $this->hasMany('id', 'Models\Recipe', 'id_user', ['alias' => 'recipes']);
     }
 
     /**
@@ -440,5 +480,7 @@ class User extends BaseModel
             'name' => $this->getFullName()
         ]);
     }
+
+
 
 }

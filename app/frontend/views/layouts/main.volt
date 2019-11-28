@@ -34,11 +34,6 @@
 </head>
 
 <body id="page-top">
-<!-- preloader area start -->
-<div id="preloader">
-    <div class="loader"></div>
-</div>
-<!-- preloader area end -->
 <div class="container-fluid p-0">
     <div class="tc-header">
         <div class="tc-header-top">
@@ -61,7 +56,7 @@
                 <div class="col-lg-6 col-xs-6">
                     <div class="row justify-content-end">
                         <div class="col-lg-5">
-                            {{ AuthWidget.run() }}
+                            {{ AccountWidget.run('header') }}
                         </div>
                         <div class="col-lg-3">
                             {{ SelectLangWidget.run() }}
@@ -80,6 +75,7 @@
     </div>
 </div>
 <div class="content-block {{ container_class }}">
+    {{ flash.output() }}<!--Вывод всех ошибок flash-->
     {{ content() }}
 </div>
 <footer id="footer">
@@ -160,20 +156,12 @@
         </div>
     </div>
 </footer>
-{#<img style="width: 100%;" src="/img/template.png">#}
-
-
-<!-- Footer -->
-{#<footer class="bg-black small text-center text-white-50">#}
-{#    <div class="container">#}
-{#        Copyright &copy; Your Website 2019#}
-{#    </div>#}
-{#</footer>#}
 <script>
     let iso_code = '{{ iso_code }}';
 </script>
 {{ assets.outputJs('footerJs') }}
 <input id="token" type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
+{{ AuthWidget.run('modal') }}
 </body>
 
 </html>

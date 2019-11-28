@@ -2,9 +2,12 @@
 
 namespace Modules\Frontend;
 
+use Components\Auth\Auth;
 use Components\CSRF;
 use Helpers\Converter;
+use Models\Configuration;
 use Models\Context;
+use Modules\Frontend\Widgets\AccountWidget;
 use Modules\Frontend\Widgets\AuthWidget;
 use Modules\Frontend\Widgets\BreadCrumbsWidget;
 use Modules\Frontend\Widgets\FilterWidget;
@@ -78,8 +81,13 @@ class Module
             $dispatcher->setDefaultNamespace('Modules\Frontend\Controllers');
             $dispatcher->setEventsManager($eventsManager);
             return $dispatcher;
-        },true);
+        }, true);
 
+        $di->set('auth', function () {
+            $expire = Configuration::get('REMEMBER_ME_EXPIRE');
+            $auth = new Auth($expire);
+            return $auth;
+        });
         $di->set('view', function () {
 
             $view = new View();
@@ -107,7 +115,7 @@ class Module
             $compiler->addFunction('strtotime', 'strtotime');
             return $volt;
         }, true);
-        $di->set('converter',function (){
+        $di->set('converter', function () {
             $converter = new Converter();
             return $converter;
         });
@@ -154,6 +162,9 @@ class Module
         });
         $di->set('AuthWidget', function () {
             return new AuthWidget();
+        });
+        $di->set('AccountWidget', function () {
+            return new AccountWidget();
         });
     }
 }

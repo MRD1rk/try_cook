@@ -7,9 +7,6 @@ use Phalcon\Security;
 
 class TokenStorage extends BaseModel
 {
-
-    const TOKEN_EXPIRES = 60 * 60 * 24 * 7;
-    const SERIES_EXPIRES = 60 * 60 * 24 * 30;
     /**
      *
      * @var integer
@@ -17,10 +14,9 @@ class TokenStorage extends BaseModel
     protected $id;
 
     /**
-     *
-     * @var string
+     * @var integer
      */
-    protected $type;
+    protected $id_user;
 
     /**
      *
@@ -29,17 +25,9 @@ class TokenStorage extends BaseModel
     protected $token;
 
     /**
-     *
      * @var string
      */
-    protected $series;
-
-    /**
-     *
-     * @var integer
-     */
-    protected $expires;
-
+    protected $user_agent;
     /**
      *
      * @var string
@@ -66,14 +54,14 @@ class TokenStorage extends BaseModel
     }
 
     /**
-     * Method to set the value of field type
+     * Method to set the value of field id_user
      *
-     * @param string $type
+     * @param string $id_user
      * @return $this
      */
-    public function setType($type)
+    public function setIdUser($id_user)
     {
-        $this->type = $type;
+        $this->id_user = $id_user;
 
         return $this;
     }
@@ -94,25 +82,12 @@ class TokenStorage extends BaseModel
     /**
      * Method to set the value of field series
      *
-     * @param string $series
+     * @param string $user_agent
      * @return $this
      */
-    public function setSeries($series)
+    public function setUserAgent($user_agent)
     {
-        $this->series = $series;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field expires
-     *
-     * @param integer $expires
-     * @return $this
-     */
-    public function setExpires($expires)
-    {
-        $this->expires = $expires;
+        $this->user_agent = $user_agent;
 
         return $this;
     }
@@ -154,13 +129,13 @@ class TokenStorage extends BaseModel
     }
 
     /**
-     * Returns the value of field type
+     * Returns the value of field id_user
      *
      * @return string
      */
-    public function getType()
+    public function getIdUser()
     {
-        return $this->type;
+        return $this->id_user;
     }
 
     /**
@@ -178,19 +153,9 @@ class TokenStorage extends BaseModel
      *
      * @return string
      */
-    public function getSeries()
+    public function getUserAgent()
     {
-        return $this->series;
-    }
-
-    /**
-     * Returns the value of field expires
-     *
-     * @return integer
-     */
-    public function getExpires()
-    {
-        return $this->expires;
+        return $this->user_agent;
     }
 
     /**
@@ -218,8 +183,9 @@ class TokenStorage extends BaseModel
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
-        $this->setSource("token_storage");
+        $this->belongsTo('id_user',   'Models\Users', 'id', [
+            'alias' => 'user'
+        ]);
     }
 
     /**
@@ -264,39 +230,18 @@ class TokenStorage extends BaseModel
     {
         return [
             'id' => 'id',
-            'type' => 'type',
+            'id_user'=>'id_user',
             'token' => 'token',
-            'series' => 'series',
-            'expires' => 'expires',
             'ip' => 'ip',
+            'user_agent' => 'user_agent',
             'date_add' => 'date_add'
         ];
     }
 
     public function beforeValidationOnCreate()
     {
-        $expires = time() + self::TOKEN_EXPIRES;//7 days
-        $random = new Security\Random();
-        $token = $random->hex(32);
-        $series = $random->hex(32);
-        $this->token = $token;
-        $this->series = $series;
-        $this->expires = $expires;
+        $this->date_add = date('Y-m-d H:i:s');
     }
 
-    public function refreshToken()
-    {
-        $expires = time() + self::TOKEN_EXPIRES;//7 days
-        $random = new Security\Random();
-        $token = $random->hex(32);
-        $this->token = $token;
-        $this->expires = $expires;
-        $this->save();
-    }
-
-    public function checkSeries()
-    {
-
-    }
 
 }

@@ -9,15 +9,58 @@ function getToken() {
     return data;
 }
 
+function buttonUpdateStart(button) {
+    button.html('<i class="fa fa-spinner fa-spin"></i> ' + button.text());
+}
+
+function buttonUpdateOk(button) {
+    button.html('<i class="fa fa-check" aria-hidden="true"></i> ' + button.text());
+}
+
+function buttonUpdateError(button) {
+    button.html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + button.text());
+}
+
 $(function () {
     $('.needs-validation').on('submit', function (e) {
         let form = $(this);
-        if (!form[0].checkValidity()){
+        if (!form[0].checkValidity()) {
             e.preventDefault();
             e.stopPropagation()
         }
         form.addClass('was-validated');
-
+    });
+    $('#signup_form').on('submit', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let form = $(this);
+        let button = form.find('button');
+        let data = {};
+        buttonUpdateStart(button);
+        data.email = $('#signup_form #email').val();
+        data.password = $('#signup_form #password').val();
+        data.remember_me = +$('#signup_form #remember_me').is(':checked');
+        data = $.extend(data, getToken());
+        $.ajax({
+            url: '/' + iso_code + '/auth/signin',
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                if (data.status) {
+                    buttonUpdateOk(button);
+                    let output = form.find('.valid-feedback');
+                    output.html(data.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500)
+                } else {
+                    buttonUpdateError(button);
+                    let output = form.find('.invalid-feedback');
+                    output.html(data.message);
+                }
+            }
+        })
     })
 });
 // (function () {

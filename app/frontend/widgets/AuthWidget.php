@@ -8,8 +8,8 @@ class AuthWidget extends BaseWidget
 {
     public $view_dir = 'auth';
 
-    public function run()
+    public function run($template = 'header')
     {
-
+        return $this->render($template);
     }
 }

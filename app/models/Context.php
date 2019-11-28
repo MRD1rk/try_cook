@@ -47,7 +47,7 @@ final class Context extends BaseModel
     {
         if (isset($this->user))
             return $this->user;
-        $authData = $this->getDI()->getSession()->get('user_data');
+        $authData = $this->getDI()->getSession()->get('auth-identity');
         $user = null;
         if (!empty($authData)) {
             $user = User::findFirstById($authData['id']);
@@ -68,7 +68,7 @@ final class Context extends BaseModel
     {
         if (isset($this->employee))
             return $this->employee;
-        $authData = $this->getDI()->getSession()->get('employee_data');
+        $authData = $this->getDI()->getSession()->get('backend_auth');
         $employee = null;
         if (!empty($authData)) {
             $employee = Employee::findFirstById($authData['id']);

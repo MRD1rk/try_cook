@@ -292,12 +292,11 @@ input[type="file"] {
 
 .btn-tc {
     border: 1px solid #e6e6e6;
-    height: 2.5rem;
+    height: auto;
     line-height: 2.5rem;
     display: -moz-inline-stack;
     display: inline-block;
     box-sizing: border-box;
-    padding: 0 1.25rem;
     color: #cccccc;
     text-transform: uppercase;
     border-radius: 1.25rem;
@@ -504,7 +503,12 @@ h1.tc-title {
     padding: 5px 10px 0px;
 }
 
-#filter-block .filter-item .custom-control-input:checked ~ .custom-control-label::before {
+/*#filter-block .filter-item .custom-control-input:checked ~ .custom-control-label::before {*/
+/*    color: #fff;*/
+/*    border-color: #65b401;*/
+/*    background-color: #65b401;*/
+/*}*/
+.custom-control-input:checked ~ .custom-control-label::before {
     color: #fff;
     border-color: #65b401;
     background-color: #65b401;
@@ -520,6 +524,21 @@ h1.tc-title {
 #filter-block .filter-item-value.marked.visible-hidden{
     opacity: 0;
 }
+#header-account-btn .user-avatar{
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    max-width: 30px;
+}
+#header-account-btn .user-name{
+    color: #666;
+}
+.header-sign a{
+    padding: 0 15px;
+}
+/*#header-account-btn .btn-tc{*/
+/*    padding: 0;*/
+/*}*/
 @media (min-width: 768px) {
     .container-lg {
         width: 100%;

@@ -7,7 +7,15 @@
         </div>
         <div class="col-8">
             <div class="jumbotron">
-                <form method="post"  novalidate>
+                {% for message in messages %}
+                    <div class="alert-overwrite alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <form method="post" novalidate>
                     {{ form.renderDecorated('firstname') }}
                     {{ form.renderDecorated('lastname') }}
                     {{ form.renderDecorated('email') }}
