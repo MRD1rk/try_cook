@@ -43,6 +43,12 @@ class Recipe extends BaseModel
      *
      * @var string
      */
+    protected $state;
+
+    /**
+     *
+     * @var string
+     */
     protected $date_add;
 
     /**
@@ -130,6 +136,19 @@ class Recipe extends BaseModel
     }
 
     /**
+     * Method to set the value of field state
+     *
+     * @param integer $state
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
      * Method to set the value of field date_add
      *
      * @param string $date_add
@@ -203,6 +222,16 @@ class Recipe extends BaseModel
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Returns the value of field state
+     *
+     * @return integer
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 
     /**
@@ -300,6 +329,7 @@ class Recipe extends BaseModel
             'difficulty' => 'difficulty',
             'id_user' => 'id_user',
             'active' => 'active',
+            'state' => 'state',
             'date_add' => 'date_add',
             'date_upd' => 'date_upd'
         ];
@@ -314,7 +344,7 @@ class Recipe extends BaseModel
     {
         if (!$features)
             return false;
-        $this->recipeFeatures->delete();
+        $this->getRecipeFeatures()->delete();
         foreach ($features as $id_feature => $id_feature_value) {
             $recipe_feature = new FeatureRecipe();
             $recipe_feature->setIdRecipe($this->getId());

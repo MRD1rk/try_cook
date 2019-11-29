@@ -351,6 +351,7 @@ class User extends BaseModel
     {
         return $this->logged;
     }
+
     /**
      * Validations and business logic
      *
@@ -381,6 +382,10 @@ class User extends BaseModel
     public function initialize()
     {
         $this->hasMany('id', 'Models\Recipe', 'id_user', ['alias' => 'recipes']);
+        $this->hasOne('id', 'Models\Recipe', 'id_user', [
+            'alias' => 'draftRecipe',
+            'conditions' => 'state = \'draft\''
+        ]);
     }
 
     /**
@@ -449,38 +454,6 @@ class User extends BaseModel
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
     }
-
-    /**
-     * @param $password
-     * @return bool
-     */
-    public function login($password)
-    {
-        $security = new Security();
-        if ($security->checkHash($password, $this->getPassword())) {
-            $this->logged = 1;
-            $this->last_login = date('Y-m-d H:i:s');
-            $this->save();
-            Context::getInstance()->setUser($this);
-            $this->_registerSession();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Register an authenticated user into session data
-     *
-     */
-    private function _registerSession(): void
-    {
-        $this->getDI()->getSession()->set('auth', [
-            'id_user' => $this->getId(),
-            'id_role' => $this->getIdRole(),
-            'name' => $this->getFullName()
-        ]);
-    }
-
 
 
 }

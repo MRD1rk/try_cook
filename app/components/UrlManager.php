@@ -21,7 +21,7 @@ class UrlManager extends Url
         $url = parent::get($uri, $args, $absolute, $baseUri);
         if ($absolute)
             $url = $this->domain_url . '/' . $url;
-        return $url;
+        return rtrim($url);
     }
 
     /**

@@ -9,13 +9,14 @@
         <div class="btn-group">
             <button type="button" class="btn-tc dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                <img class="user-avatar" src="img/default-avatar.png">
+                <img class="user-avatar" src="/img/default-avatar.png">
                 <span class="user-name">{{ user.getFullName() }}</span>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="#">{{ t._('my_profile') }}</a>
+                <a class="dropdown-item" href="#">{{ t._('my_settings') }}</a>
+                <a class="dropdown-item" href="#">{{ t._('my_recipes') }}</a>
+                <a class="dropdown-item" href="#">{{ t._('messages') }}</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url.get(['for':'auth-logout']) }}">{{ t._('logout') }}</a>
             </div>

@@ -129,8 +129,8 @@
 
 .add-recipe-preview-img #recipe-preview-img {
     display: block;
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
 }
 .preview-image-block{
     position: relative;

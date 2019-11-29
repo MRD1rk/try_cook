@@ -9,6 +9,20 @@ function getToken() {
     return data;
 }
 
+function mergeData(data) {
+    let tokenData = getToken();
+    if (tokenData.length === 0)
+        return data;
+    if (data instanceof FormData) {
+        for (let property in tokenData) {
+            data.append(property, tokenData[property])
+        }
+    } else {
+        data = $.extend(data, tokenData);
+        return data;
+    }
+}
+
 function buttonUpdateStart(button) {
     button.html('<i class="fa fa-spinner fa-spin"></i> ' + button.text());
 }

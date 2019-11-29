@@ -3,6 +3,7 @@
 namespace Modules\Frontend\Controllers;
 
 use Models\Category;
+use Models\Context;
 use Models\Feature;
 use Models\Recipe;
 use Models\Unit;
@@ -18,8 +19,22 @@ class RecipesController extends BaseController
 
     public function indexAction()
     {
+
         $categories = Category::find(['conditions' => 'active =1 AND id_parent=0']);
         $this->view->categories = $categories;
+    }
+
+    public function newAction()
+    {
+        $user = Context::getInstance()->getUser();
+        $iso_code = Context::getInstance()->getLang()->iso_code;
+        $drafted_recipe = $user->getDraftRecipe();
+        if (!$drafted_recipe) {
+            $drafted_recipe = new Recipe();
+            $drafted_recipe->setIdUser($user->getId());
+            $drafted_recipe->save();
+        }
+        return $this->response->redirect($this->url->get(['for' => 'recipes-add', 'iso_code' => $iso_code, 'id_recipe' => $drafted_recipe->getId()]));
     }
 
     public function addAction()
@@ -29,18 +44,27 @@ class RecipesController extends BaseController
         $this->assets->collection('footerJs')->addJs('vendor/selectize/js/standalone/selectize.min.js');
         $this->assets->collection('footerJs')->addJs('vendor/tinymce/tinymce.min.js');
         $this->assets->collection('footerJs')->addJs('js/recipes.js');
-        $units = Unit::find();
-        $units_data = [];
-        foreach ($units as $unit) {
-            $units_data[$unit->getId()] = $unit->lang->getTitle();
+        $user = Context::getInstance()->getUser();
+        $iso_code = Context::getInstance()->getLang()->iso_code;
+        $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
+        if (!$id_recipe) {
+            return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $iso_code]));
         }
-        $categories = Category::find('id_parent = 0');
+        $recipe = Recipe::findFirst(['id = :id: AND id_user = :id_user:',
+            'bind' => [
+                'id' => $id_recipe,
+                'id_user' => $user->getId()
+            ]]);
+        if (!$recipe) {
+            return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $iso_code]));
+        }
+        $categories = Category::find(['conditions' => 'active =1 AND id_parent=0']);
         $features = Feature::getFeatures();
         if ($this->request->isPost() && $this->request->isAjax()) {
             $data = $this->request->getPost();
         }
 
-        $this->view->units = json_encode($units_data);
+        $this->view->recipe = $recipe;
         $this->view->features = $features;
         $this->view->categories = $categories;
     }
@@ -50,9 +74,8 @@ class RecipesController extends BaseController
         if ($this->request->isPost() && $this->request->isAjax()) {
             $post = $this->request->getPost();
             echo '<pre>';
-            var_dump('2');
+            var_dump($post);
             die();
-
         }
     }
 

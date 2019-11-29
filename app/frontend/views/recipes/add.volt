@@ -110,8 +110,15 @@
                 <div class="col-12">
                     <div class="row justify-content-end">
                         <div class="col-6">
-                            <p class="text-right hovered-red add-recipe-part"><i class="far fa-list-alt"></i>&nbsp;{{ t._('add_recipe_part') }}</p>
+                            <p class="text-right hovered-red add-recipe-part"><i
+                                        class="far fa-list-alt"></i>&nbsp;{{ t._('add_recipe_part') }}</p>
                         </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="text-center">
+                        <input type="hidden" id="id_recipe" value="{{ recipe.id }}">
+                        <button class="btn btn-success">{{ t._('save') }}</button>
                     </div>
                 </div>
             </div>

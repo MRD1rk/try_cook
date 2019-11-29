@@ -4,6 +4,7 @@
 namespace Components\Auth;
 
 
+use Models\Context;
 use Models\FailedLogins;
 use Models\SuccessLogins;
 use Models\TokenStorage;
@@ -21,6 +22,7 @@ class Auth extends Component
     {
         $this->expire = $expire;
     }
+
     /**
      * Checks the user credentials
      *
@@ -33,12 +35,12 @@ class Auth extends Component
         // Check if the user exist
         $user = User::findFirstByEmail($credentials['email']);
         if (!$user) {
-            $this->registerUserThrottling($user->getId());
+            $this->registerUserThrottling(0);
             throw new \Exception('wrong_email_password_combination');
         }
         // Check the password
         if (!$this->security->checkHash($credentials['password'], $user->password)) {
-            $this->registerUserThrottling($user->id);
+            $this->registerUserThrottling($user->getId());
             throw new \Exception('wrong_email_password_combination');
         }
         // Check if the user was flagged
@@ -49,8 +51,13 @@ class Auth extends Component
         if (!empty($credentials['remember_me'])) {
             $this->createRememberEnvironment($user);
         }
+        $user->setLogged(1);
+        $user->setLastLogin(date('Y-m-d H:i:s'));
+        $user->save();
+        Context::getInstance()->setUser($user);
         $this->session->set('auth-identity', [
             'id' => $user->getId(),
+            'id_role' => $user->getIdRole(),
             'name' => $user->getFullName(),
         ]);
     }

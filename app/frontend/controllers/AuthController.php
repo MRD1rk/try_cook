@@ -34,7 +34,7 @@ class AuthController extends BaseController
                         $messages[] = $this->t->_($error_message->getMessage());
                     }
                 } else {
-                    $user->login($post['password']);
+                    $this->auth->check($post);
                     $this->flash->success($this->t->_('welcome', ['name' => $user->getFullName()]));
                     return $this->response->redirect($this->url->get(['for' => 'index-index']));
                 }

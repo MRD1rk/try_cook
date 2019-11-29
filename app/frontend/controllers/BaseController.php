@@ -14,6 +14,10 @@ class BaseController extends Controller
 
     public function initialize()
     {
+        echo '<pre>';
+        var_dump($this->dispatcher->getControllerName());
+        var_dump($this->dispatcher->getActionName());
+        die();
         $session = $this->getDI()->get('session');
         $tokenKey = $session->get('csrf_token_key');
         $tokenValue = $session->get('csrf_token');

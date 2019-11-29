@@ -94,13 +94,18 @@ $(function () {
         if (!file)
             return true;
         let data = new FormData();
+        let type = 'recipe_image';
+        let id_recipe = $('#id_recipe').val();
         data.append('preview_img', file);
+        data.append('type', type);
+        data.append('id_recipe', id_recipe);
+        data = mergeData(data);
         $.ajax({
             type: 'POST',
-            url: '',
+            url: '/recipes/upload-image',
             processData: false,
             contentType: false,
-            data:data,
+            data: data,
             success: function (data) {
                 console.log(data)
             }
