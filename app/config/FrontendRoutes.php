@@ -18,6 +18,14 @@ class FrontendRoutes extends RouterGroup
             ]
         );
 
+        $this->add('/:controller', array(
+            'controller' => 1,
+            'action' => 'index'
+        ));
+        $this->add('/:controller/:action', array(
+            'controller' => 1,
+            'action' => 2
+        ));
         $this->add('/([a-z]{2})', array(
             'controller' => 'index',
             'action' => 'index',
