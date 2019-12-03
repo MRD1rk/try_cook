@@ -19,8 +19,8 @@ function mergeData(data) {
         }
     } else {
         data = $.extend(data, tokenData);
-        return data;
     }
+    return data;
 }
 
 function buttonUpdateStart(button) {

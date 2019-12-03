@@ -2,9 +2,17 @@
 
 namespace Models;
 
+
+use Components\ImageManager;
+use Phalcon\Mvc\Model\Message;
+
 class Recipe extends BaseModel
 {
 
+    /**
+     * @var array Allowed image extension
+     */
+    protected $allow_extension = ['png', 'jpg', 'jpeg'];
     /**
      *
      * @var integer
@@ -354,6 +362,29 @@ class Recipe extends BaseModel
                 return false;
         }
         return true;
+    }
+
+    public function uploadPreviewImage($files)
+    {
+        foreach ($files as $file) {
+            if (!in_array($file->getExtension(), $this->allow_extension)) {
+                $message = new Message('no_allowed_extension');
+                $this->appendMessage($message);
+                return false;
+            }
+            $image = new Media();
+            $image->setType('image');
+            $image->setIdRecipe($this->getId());
+            $image->setActive(1);
+            if (!$image->save()) {
+                $message = new Message('failed_image_save');
+                $this->appendMessage($message);
+                return false;
+            }
+            ImageManager::createPath($image->getId());
+            ImageManager::saveOriginal($file, $image->getPath());
+            ImageManager::resize($image);
+        }
     }
 
 }

@@ -52,13 +52,20 @@ class FrontendRoutes extends RouterGroup
             'action' => 'add',
             'iso_code' => 1
         ))->setName('recipes-add');
-        $this->add('/recipes/upload-image', [
+        $this->add('/([a-z]{2})/recipes/new', array(
             'controller' => 'recipes',
-            'action' => 'uploadImage'
+            'action' => 'new',
+            'iso_code' => 1
+        ))->setName('recipes-new');
+        $this->add('/([a-z]{2})/recipes/upload-image', [
+            'controller' => 'recipes',
+            'action' => 'uploadImage',
+            'iso_code' => 1
         ])->setName('recipes-upload-image');
-        $this->add('/recipes/upload-steps-image', [
+        $this->add('/([a-z]{2})/recipes/upload-steps-image', [
             'controller' => 'recipes',
-            'action' => 'uploadStepsImage'
+            'action' => 'uploadStepsImage',
+            'iso_code' => 1
         ])->setName('recipes-upload-steps-image');
         $this->add('/([a-z]{2})/categories/filter', array(
             'controller' => 'categories',

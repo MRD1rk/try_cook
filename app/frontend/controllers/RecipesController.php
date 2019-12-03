@@ -72,10 +72,20 @@ class RecipesController extends BaseController
     public function uploadImageAction()
     {
         if ($this->request->isPost() && $this->request->isAjax()) {
-            $post = $this->request->getPost();
-            echo '<pre>';
-            var_dump($post);
-            die();
+            $id_recipe = $this->request->getPost('id_recipe', 'int');
+            $type = $this->request->getPost('type');
+            $files = $this->request->getUploadedFiles();
+            if (!$files) {
+                return $this->response->setJsonContent(['status' => false,'message'=>$this->t->_('failed_upload')]);
+            }
+            switch ($type) {
+                case'recipe_image':
+                    $recipe = Recipe::findFirst($id_recipe);
+                    $recipe->uploadPreviewImage($files);
+                    break;
+            }
+
+
         }
     }
 

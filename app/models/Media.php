@@ -2,7 +2,10 @@
 
 namespace Models;
 
-class RecipeMedia extends \Phalcon\Mvc\Model
+
+use Components\ImageManager;
+
+class Media extends BaseModel
 {
 
     /**
@@ -19,21 +22,33 @@ class RecipeMedia extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var integer
+     */
+    protected $active;
+
+    /**
+     *
      * @var string
      */
     protected $type;
 
     /**
      *
-     * @var string
+     * @var integer
      */
-    protected $link;
+    protected $position;
 
     /**
      *
      * @var integer
      */
-    protected $position;
+    protected $cover;
+
+    /**
+     *
+     * @var string
+     */
+    protected $date_add;
 
     /**
      * Method to set the value of field id
@@ -62,6 +77,19 @@ class RecipeMedia extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field active
+     *
+     * @param integer $active
+     * @return $this
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
      * Method to set the value of field type
      *
      * @param string $type
@@ -75,19 +103,6 @@ class RecipeMedia extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Method to set the value of field source
-     *
-     * @param string $link
-     * @return $this
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
      * Method to set the value of field position
      *
      * @param integer $position
@@ -96,6 +111,32 @@ class RecipeMedia extends \Phalcon\Mvc\Model
     public function setPosition($position)
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field cover
+     *
+     * @param integer $cover
+     * @return $this
+     */
+    public function setCover($cover)
+    {
+        $this->cover = $cover;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field date_add
+     *
+     * @param string $date_add
+     * @return $this
+     */
+    public function setDateAdd($date_add)
+    {
+        $this->date_add = $date_add;
 
         return $this;
     }
@@ -121,6 +162,16 @@ class RecipeMedia extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field active
+     *
+     * @return integer
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Returns the value of field type
      *
      * @return string
@@ -128,16 +179,6 @@ class RecipeMedia extends \Phalcon\Mvc\Model
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Returns the value of field source
-     *
-     * @return string
-     */
-    public function getLink()
-    {
-        return $this->link;
     }
 
     /**
@@ -151,11 +192,32 @@ class RecipeMedia extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field cover
+     *
+     * @return integer
+     */
+    public function getCover()
+    {
+        return $this->cover;
+    }
+
+    /**
+     * Returns the value of field date_add
+     *
+     * @return string
+     */
+    public function getDateAdd()
+    {
+        return $this->date_add;
+    }
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
+        $this->hasMany('id', 'Models\TcMediaAdditional', 'id_media', ['alias' => 'mediaAdditional']);
+        $this->belongsTo('id_recipe', 'Models\TcRecipes', 'id', ['alias' => 'recipe']);
     }
 
     /**
@@ -165,14 +227,14 @@ class RecipeMedia extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'tc_recipe_media';
+        return 'tc_media';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return RecipeMedia[]|RecipeMedia|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return Media[]|Media|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -183,7 +245,7 @@ class RecipeMedia extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return RecipeMedia|\Phalcon\Mvc\Model\ResultInterface
+     * @return Media|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {
@@ -201,10 +263,27 @@ class RecipeMedia extends \Phalcon\Mvc\Model
         return [
             'id' => 'id',
             'id_recipe' => 'id_recipe',
+            'active' => 'active',
             'type' => 'type',
-            'link' => 'link',
-            'position' => 'position'
+            'position' => 'position',
+            'cover' => 'cover',
+            'date_add' => 'date_add'
         ];
     }
 
+
+    public function getPath($type = '')
+    {
+        $root_path = ImageManager::getRootPath();
+        $delimiter = '';
+        if ($type)
+            $delimiter = '-';
+        $extension = 'jpg';
+        $path = str_split((string)$this->getId());
+        $path = implode('/', $path);
+        $path = $path . '/' . $this->getId().$delimiter . $type;
+        $path = $path . '.' . $extension;
+        $path = $root_path.$path;
+        return $path;
+    }
 }

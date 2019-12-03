@@ -102,7 +102,7 @@ $(function () {
         data = mergeData(data);
         $.ajax({
             type: 'POST',
-            url: '/recipes/upload-image',
+            url: '/' + iso_code + '/recipes/upload-image',
             processData: false,
             contentType: false,
             data: data,
