@@ -24,32 +24,48 @@ $(function () {
         let show = $(this).is(':checked');
         if (show)
             $('.prepare-time-block').fadeIn();
-        else
+        else {
             $('.prepare-time-block').fadeOut();
+            $('input[name="recipe_prepare_hours"]').val('');
+            $('input[name="recipe_prepare_minutes"]').val('');
+        }
     });
 
-    //delete ingredient
+    /**
+     * Delete ingredient item
+     */
     $('body').on('click', '.delete-ingredient', function () {
         let block = $(this).parents('.ingredient-item');
-        block.fadeOut();
-        setTimeout(function () {
+        block.fadeOut(function () {
+            block.remove();
+        });
 
-            block.remove()
-        }, 1000);
     });
+
+    /**
+     * Add recipe-part block
+     */
     $('body').on('click', '.add-recipe-part', function () {
-        let childs = $('.parts>div').length;
+        let childs = $('.recipe-part-block>div').length;
         let block_number = childs + 1;
         let block_class = 'recipe-part-block-' + block_number;
-        let html = '<div class="row recipe-block"><div class="col-12 recipe-part-block ' + block_class + '">\n' +
+        let html = '<div class="col-12 recipe-part-block"><div class="' + block_class + '">\n' +
             '                    <div class="row">\n' +
             '                        <div class="col-12">\n' +
-            '                            <div class="row ">\n' +
+            '                            <div class="row">\n' +
+            '                                <div class="col-12">' +
+            '                                   <div class="row">' +
+            '                                       <div class="col-6">' +
+            '                                           <label>' + Translation.get('recipe_part_title') + '</label></div>' +
+            '                                       <div class="col-6 text-right">' +
+            '                                           <p class="remove-recipe-part hovered-red"><i class="fas fa-trash"></i>&nbsp;' + Translation.get('remove_recipe_part') + '</p>' +
+            '                                       </div> ' +
+            '                                       </div>' +
+            '                               </div>' +
             '                                <div class="col-10">\n' +
             '                                    <div class="form-group">\n' +
-            '                                       <label>Название подраздела</label>' +
             '                                        <select name="recipe_part[id]" class="recipe-part-select"\n' +
-            '                                                placeholder="' + Translation.get('begin_input') + '">\n' +
+            '                                           placeholder="' + Translation.get('begin_input') + '">\n' +
             '                                            <option value=""></option>\n' +
             '                                            <option>Основное</option>\n' +
             '                                            <option>Заправка</option>\n' +
@@ -66,10 +82,10 @@ $(function () {
             '                           </div>' +
             '                        </div>\n' +
             '                    </div>\n' +
-            '                </div></div> ';
-        let parent = $(this).parents('.recipe-block');
+            '                </div></div>';
+        let parent = $(this).parents('.col-12');
 
-        parent.after(html);
+        parent.before(html);
 
 
         $('.' + block_class + ' .recipe-part-select').selectize({
@@ -78,6 +94,17 @@ $(function () {
         $('.' + block_class + ' .unit-select').selectize({
             persist: true
         });
+    });
+
+    /**
+     * Remove recipe-part
+     */
+    $('body').on('click', '.remove-recipe-part', function () {
+        let block = $(this).parents('.recipe-part-block');
+        block.fadeOut(function () {
+            block.remove();
+            recountPartBlock();
+        })
     });
     $('body').on('click', '.show-all-filter', function () {
         let button = $(this);
@@ -90,7 +117,8 @@ $(function () {
         button.find('i').toggleClass('fa-angle-double-up');
     });
     $('body').on('change', '#recipe_image', function () {
-        let file = $(this).prop('files') && $(this).prop('files')[0] || null;
+        let input = $(this);
+        let file = input.prop('files') && input.prop('files')[0] || null;
         if (!file)
             return true;
         let data = new FormData();
@@ -107,7 +135,39 @@ $(function () {
             contentType: false,
             data: data,
             success: function (data) {
-                console.log(data)
+                if (data.status) {
+                    let parent = input.parent('.preview-image-block');
+                    parent.find('img').attr('src', data.url);
+                }
+            }
+
+        })
+    });
+
+
+    $('body').on('change', '.recipe-step-image', function () {
+        let input = $(this);
+        let file = input.prop('files') && input.prop('files')[0] || null;
+        if (!file)
+            return true;
+        let data = new FormData();
+        let type = 'recipe_step_image';
+        let id_recipe = $('#id_recipe').val();
+        data.append('preview_img', file);
+        data.append('type', type);
+        data.append('id_recipe', id_recipe);
+        data = mergeData(data);
+        $.ajax({
+            type: 'POST',
+            url: '/' + iso_code + '/recipes/upload-image',
+            processData: false,
+            contentType: false,
+            data: data,
+            success: function (data) {
+                if (data.status) {
+                    let parent = input.parent('.preview-image-block');
+                    parent.find('img').attr('src', data.url);
+                }
             }
 
         })
@@ -116,6 +176,10 @@ $(function () {
     //     let id_category = $(this).val();
     //
     // });
+
+    /**
+     * Add ingredients block
+     */
     $('body').on('click', '.btn-add-ingredient', function () {
         let parent = $(this).parents('.add-ingredient-block');
         let count = parent.parent().find('.ingredient-item').length + 1;
@@ -132,7 +196,7 @@ $(function () {
             '                                    <div class="col-6">\n' +
             '                                        <div class="row">\n' +
             '                                            <div class="col-5">\n' +
-            '                                                <input placeholder="' + Translation.get('weight') + '" class="form-control">\n' +
+            '                                                <input placeholder="' + Translation.get('weight') + '" class="weight-input form-control">\n' +
             '                                            </div>\n' +
             '                                            <div class="col-5">\n' +
             '                                                <select class="unit-select">\n' +
@@ -211,4 +275,18 @@ $(function () {
         branding: false,
         toolbar: " undo redo | removeformat | bold italic | alignleft aligncenter alignright alignjustify"
     });
+
+
+
 });
+
+function recountPartBlock() {
+    let childs = $('.recipe-part-block');
+    let count = 1;
+    $.each(childs, function () {
+        let child = $(this).children();
+        child.attr('class', '');//remove all classes
+        child.addClass('recipe-part-block-' + count);
+        count++;
+    });
+}

@@ -25,7 +25,6 @@ class ImageManager extends Component
 
     public static function saveOriginal(File $file, $path)
     {
-        $path = self::getRootPath() . $path;
         $image = new Imagick($file->getTempName());
         $image->save($path);
     }

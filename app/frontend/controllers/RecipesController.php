@@ -39,6 +39,7 @@ class RecipesController extends BaseController
 
     public function addAction()
     {
+        $this->view->container_class = 'container';
         $this->tag->setTitle($this->t->_('add-recipe'));
         $this->assets->collection('headerCss')->addCss('vendor/selectize/css/selectize.css');
         $this->assets->collection('footerJs')->addJs('vendor/selectize/js/standalone/selectize.min.js');
@@ -76,16 +77,15 @@ class RecipesController extends BaseController
             $type = $this->request->getPost('type');
             $files = $this->request->getUploadedFiles();
             if (!$files) {
-                return $this->response->setJsonContent(['status' => false,'message'=>$this->t->_('failed_upload')]);
+                return $this->response->setJsonContent(['status' => false, 'message' => $this->t->_('failed_upload')]);
             }
             switch ($type) {
                 case'recipe_image':
                     $recipe = Recipe::findFirst($id_recipe);
-                    $recipe->uploadPreviewImage($files);
+                    $image = $recipe->uploadPreviewImage($files);
                     break;
             }
-
-
+            return $this->response->setJsonContent(['status' => true, 'url' => $image->getLink('image', 'default')]);
         }
     }
 

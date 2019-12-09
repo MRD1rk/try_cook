@@ -4,8 +4,8 @@
         <div class="col-2">
             {{ partial('recipes/filter-block',['categories':categories]) }}
         </div>
-        <div class="col-6">
-            <div class="recipe-block row justify-content-between">
+        <div class="col-8">
+            <div class="row recipe-block justify-content-between">
                 <div class="col-12">
                     <div class="form-group">
                         <input name="recipe_name" class="form-control" placeholder="{{ t._('enter_recipe_name') }}">
@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <div class="preview-image-block">
                             <label class="add-recipe-preview-img" for="recipe_image">
-                                <img id="recipe-preview-img" src="/img/no_photo.png">
+                                <img class="recipe-preview-img" src="">
                                 <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
                             </label>
                             <input id="recipe_image" type="file">
@@ -38,7 +38,7 @@
                             <div class="col-5 pr-0">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input name="recipe_cooking_hour" class="form-control">
+                                        <input name="recipe_cooking_hours" class="form-control">
                                     </div>
                                     <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span></div>
                                 </div>
@@ -46,7 +46,7 @@
                             <div class="col-5 pr-0">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input name="recipe_cooking_minute" class="form-control">
+                                        <input name="recipe_cooking_minutes" class="form-control">
                                     </div>
                                     <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span></div>
                                 </div>
@@ -87,7 +87,7 @@
                                     <div class="col-5 pr-0">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input name="recipe_cooking_hour" class="form-control">
+                                                <input name="recipe_prepare_hours" class="form-control">
                                             </div>
                                             <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span>
                                             </div>
@@ -96,7 +96,7 @@
                                     <div class="col-5 pr-0">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input name="recipe_cooking_minute" class="form-control">
+                                                <input name="recipe_prepare_minutes" class="form-control">
                                             </div>
                                             <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span>
                                             </div>
@@ -120,6 +120,27 @@
                         <input type="hidden" id="id_recipe" value="{{ recipe.id }}">
                         <button class="btn btn-success">{{ t._('save') }}</button>
                     </div>
+                </div>
+            </div>
+
+
+            <div class="steps-block row">
+                <div class="col-12">
+                    <h5 class="step-count">Шаг 1</h5>
+                </div>
+                <div class="col-12">
+                    <div class="preview-image-block">
+                        <label class="add-recipe-preview-img" for="recipe_step_image_1">
+                            <img class="recipe-step-preview-img" src="">
+                            <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
+                        </label>
+                        <input class="recipe-step-image" id="recipe_step_image_1" type="file">
+                    </div>
+                </div>
+            </div>
+            <div class="w100">
+                <div class="text-center">
+                    <button class="btn btn-primary">Добавить шаг</button>
                 </div>
             </div>
         </div>

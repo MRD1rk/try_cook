@@ -384,6 +384,7 @@ class Recipe extends BaseModel
             ImageManager::createPath($image->getId());
             ImageManager::saveOriginal($file, $image->getPath());
             ImageManager::resize($image);
+            return $image;
         }
     }
 

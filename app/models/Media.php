@@ -281,9 +281,21 @@ class Media extends BaseModel
         $extension = 'jpg';
         $path = str_split((string)$this->getId());
         $path = implode('/', $path);
-        $path = $path . '/' . $this->getId().$delimiter . $type;
+        $path = $path . '/' . $this->getId() . $delimiter . $type;
         $path = $path . '.' . $extension;
-        $path = $root_path.$path;
+        $path = $root_path . $path;
         return $path;
+    }
+
+    public function getLink($type = 'image', $image_type = 'default', $alias = 'recipe', $absolute = false)
+    {
+        switch ($type) {
+            case 'image':
+                $url = '/'.$this->getId() . '-' . $image_type . '/' . $alias . '.jpg';
+                if ($absolute)
+                    $url = Configuration::get('HTTP_SCHEME') . '://' . Configuration::get('DOMAIN') . $url;
+                break;
+        }
+        return $url;
     }
 }
