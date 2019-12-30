@@ -287,6 +287,7 @@ class Recipe extends BaseModel
             ]
         ]);
         $this->hasMany('id', 'Models\FeatureRecipe', 'id_recipe', ['alias' => 'recipeFeatures']);
+        $this->hasMany('id', 'Models\RecipeStep', 'id_recipe', ['alias' => 'steps']);
     }
 
     /**

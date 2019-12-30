@@ -19,7 +19,6 @@ class RecipesController extends BaseController
 
     public function indexAction()
     {
-
         $categories = Category::find(['conditions' => 'active =1 AND id_parent=0']);
         $this->view->categories = $categories;
     }

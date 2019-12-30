@@ -15,7 +15,6 @@
                     <div class="form-group">
                         <div class="preview-image-block">
                             <label class="add-recipe-preview-img" for="recipe_image">
-                                <img class="recipe-preview-img" src="">
                                 <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
                             </label>
                             <input id="recipe_image" type="file">
@@ -124,23 +123,36 @@
             </div>
 
 
-            <div class="steps-block row">
-                <div class="col-12">
-                    <h5 class="step-count">Шаг 1</h5>
-                </div>
-                <div class="col-12">
-                    <div class="preview-image-block">
-                        <label class="add-recipe-preview-img" for="recipe_step_image_1">
-                            <img class="recipe-step-preview-img" src="">
-                            <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
-                        </label>
-                        <input class="recipe-step-image" id="recipe_step_image_1" type="file">
+            <div class="steps-block">
+                {% for step in recipe.getSteps() %}
+                    <div class="step-item step-item-{{ step.step_number }}">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="step-count">{{ t._('step') }} {{ step.step_number }}</h5>
+                            </div>
+                            <div class="col-12">
+                                <div class="preview-image-block">
+                                    <label class="add-recipe-preview-img" for="recipe_step_image_{{ step.step_number }}">
+{#                                        <img class="recipe-step-preview-img" src="{{ step.src }}">#}
+                                        <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
+                                    </label>
+                                    <input class="recipe-step-image" id="recipe_step_image_{{ step.step_number }}" type="file">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="recipe-step-description">
+                                    <textarea name="recipe_steps[description][{{ step.step_number }}]">{{ step.lang.content|default('') }}</textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-            <div class="w100">
-                <div class="text-center">
-                    <button class="btn btn-primary">Добавить шаг</button>
+            <div class="mt-2">
+                <div class="w100">
+                    <div class="text-center">
+                        <button id="add_recipe_step" class="btn btn-primary">{{ t._('add_step') }}</button>
+                    </div>
                 </div>
             </div>
         </div>
