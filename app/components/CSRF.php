@@ -31,7 +31,7 @@ class CSRF extends Component
         # Handle CSRF check
         if ($dispatcher->getControllerName() != 'error' && $dispatcher->getActionName() != 'csrf') {
             if ($this->request->isPost()) {
-                if (!$this->checkToken()) {
+                if (!$this->checkToken($this->request->isAjax())) {
                     if ($this->request->isAjax()) {
                         $response = new Response();
                         $response->setStatusCode(400);
@@ -83,15 +83,18 @@ class CSRF extends Component
     /**
      * Checks $_POST to ensure the proper token key & token were POSTed
      *
+     * @param bool $ajax
      * @return boolean whether or not the appropriate values were found it $_POST
      */
-    public function checkToken(): bool
+    public function checkToken($ajax = true): bool
     {
         $stored_key = $this->getTokenKey();
         $stored_token = $this->getToken();
-        $passed_token = $this->request->getPost($stored_key);
+        $passed_token = $ajax ?
+            $this->request->getHeader('X-CSRF-TOKEN-KEY') . $this->request->getHeader('X-CSRF-TOKEN-VALUE') :
+            $this->getTokenKey() . $this->request->get($this->getTokenKey());
 
-        if ($stored_token !== $passed_token)
+        if ($stored_key . $stored_token !== $passed_token)
             return false;
         return true;
     }

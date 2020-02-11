@@ -1,5 +1,5 @@
 $(function () {
-    Translation.load('recipes_add');
+    Translation.load('recipes_add', 'global');
     let values = {};
     $('.feature-select').selectize({
         persist: true,
@@ -122,22 +122,18 @@ $(function () {
         if (!file)
             return true;
         let data = new FormData();
-        let type = 'recipe_image';
-        let id_recipe = $('#id_recipe').val();
         data.append('preview_img', file);
-        data.append('type', type);
-        data.append('id_recipe', id_recipe);
         data = mergeData(data);
         $.ajax({
             type: 'POST',
-            url: '/' + iso_code + '/recipes/upload-image',
+            url: current_url + '/upload-image',
             processData: false,
             contentType: false,
             data: data,
             success: function (data) {
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
-                    parent.find('.add-recipe-preview-img').css('background-image', 'url('+data.url+')');
+                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + ')');
                 }
             }
 
@@ -145,36 +141,42 @@ $(function () {
     });
 
 
+    /**
+     * Delete this recipe's step
+     *
+     */
+    $('body').on('click', '.remove-recipe-part', function () {
+        let step_block = $(this).parents('.step-item');
+        let id_step = step_block.data('id_step');
+        $.ajax({
+            type: 'POST',
+            url: current_url + '/delete-step/' + id_step,
+            dataType: 'json',
+            success: function (data) {
+                if (data.status) {
+                    step_block.fadeOut(function () {
+                        this.remove();
+                    })
+                }
+            }
+        })
+    });
+    /**
+     * Add new recipe's step
+     */
     $('body').on('click', '#add_recipe_step', function () {
-        let parent = $('.steps-block');
-        let steps = parent.find('.step-item');
-        let count = steps.length + 1;
-        let class_selector = 'step-item-' + count;
-        let html = '<div class="step-item ' + class_selector + ' d-none">\n' +
-            '                        <div class="row">\n' +
-            '                            <div class="col-12">\n' +
-            '                                <h5 class="step-count">' + Translation.get('step') + ' ' + count + '</h5>\n' +
-            '                            </div>\n' +
-            '                            <div class="col-12">\n' +
-            '                                <div class="preview-image-block">\n' +
-            '                                    <label class="add-recipe-preview-img" for="recipe_step_image_' + count + '">\n' +
-            '                                        <img class="recipe-step-preview-img" src="">\n' +
-            '                                        <span title="' + Translation.get('upload_img') + '">' + Translation.get('upload_img') + '</span>\n' +
-            '                                    </label>\n' +
-            '                                    <input class="recipe-step-image" id="recipe_step_image_' + count + '" type="file">\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                            <div class="col-12">\n' +
-            '                                <div class="recipe-step-description">\n' +
-            '                                    <textarea name="recipe_steps[description][' + count + ']"></textarea>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </div>\n' +
-            '                    </div>';
-        console.log('.' + class_selector)
-        parent.append(html);
-        initEditor('.' + class_selector + ' textarea');
-        $('.' + class_selector).removeClass('d-none');
+        $.ajax({
+            type: 'POST',
+            url: current_url + '/add-recipe-step',
+            dataType: 'json',
+            success: function (data) {
+                let parent = $('.steps-block');
+                let html = data.content;
+                let selector = '*[data-id_step="' + data.id_step + '"]';
+                parent.append($(html).hide().fadeIn());
+                initEditor(selector + ' textarea');
+            }
+        });
     });
     /**
      * Add recipe step image
@@ -184,16 +186,14 @@ $(function () {
         let file = input.prop('files') && input.prop('files')[0] || null;
         if (!file)
             return true;
+        let id_step = $(this).parents('.step-item').data('id_step');
         let data = new FormData();
-        let type = 'recipe_step_image';
-        let id_recipe = $('#id_recipe').val();
         data.append('preview_img', file);
-        data.append('type', type);
-        data.append('id_recipe', id_recipe);
+        data.append('id_step', id_step);
         data = mergeData(data);
         $.ajax({
             type: 'POST',
-            url: '/' + iso_code + '/recipes/upload-image',
+            url: current_url + '/upload-step-image',
             processData: false,
             contentType: false,
             data: data,
@@ -300,7 +300,22 @@ $(function () {
 
     });
 
-    initEditor('#recipe_description,.recipe-step-description textarea')
+    initEditor('#recipe_description');
+
+    // DragManager.onDragCancel = function(dragObject) {
+    //     dragObject.avatar.rollback();
+    // };
+    //draggable
+    // $('body').on('dragstart','.draggable' ,function (e) {
+    //     let block = $(this).parents('.step-item');
+    //     let startX = block.css('margin-left').replace('px','');
+    //     let startY = block.css('margin-top').replace('px','');
+    //     // $('.preview-image-block').hide();
+    //     let startCursorX = e.pageX;
+    //     let startCursorY = e.pageY;
+    //     console.log(startX, startY,startCursorX,startCursorY)
+    //
+    // })
 });
 
 function initEditor(selector) {
@@ -308,7 +323,8 @@ function initEditor(selector) {
         selector: selector,
         menubar: false,
         branding: false,
-        toolbar: " undo redo | removeformat | bold italic | alignleft aligncenter alignright alignjustify"
+        language: iso_code||'ru',
+        toolbar: "undo redo | removeformat | bold italic | alignleft aligncenter alignright alignjustify"
     });
 }
 

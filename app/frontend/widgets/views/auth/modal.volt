@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-md-12 mx-auto">
                         <div class="login-form">
-                            <form id="signup_form" method="post" novalidate="novalidate">
+                            <form id="signin_form" method="post" novalidate="novalidate">
                                 <div class="form-group">
                                     <label for="email">{{ t._('email') }}</label>
                                     <input type="email" name="email" class="form-control" id="email"

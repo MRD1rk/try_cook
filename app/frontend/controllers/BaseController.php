@@ -21,7 +21,7 @@ class BaseController extends Controller
             $this->checkAuth();
         } catch (\Exception $e) {
         }
-        $this->assets->collection('footerJs')->addJs('js/translationApp.js');
+        $this->assets->collection('footerJs')->addJs('js/translationApp.js?v=1');
         $this->view->container_class = '';
         $this->view->t = $this->getDI()->get('t');
         $this->view->iso_code = $this->context->getLang()->iso_code;

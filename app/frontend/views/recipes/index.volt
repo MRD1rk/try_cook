@@ -7,6 +7,10 @@
             <div class="text-center">
                 <h1 class="title">{{ t._('recipes') }}</h1>
             </div>
+            <div class="text-right">
+                <a href="{{ url.get(['for':'recipes-new','iso_code' : iso_code]) }}"
+                   class="btn btn-green">{{ t._('add_new_recipe') }}</a>
+            </div>
         </div>
         <div class="col-12">
             <div class="categories">

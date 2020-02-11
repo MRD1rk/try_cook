@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/img/icons/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/img/icons/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/img/icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/img/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/icons/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/img/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/icons/favicon-16x16.png">
@@ -121,8 +121,8 @@
                     <div class="social-link-item">
                         <a href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29">
-                                        <path fill="#8b80a0"
-                                              d="M15.1 5.536c-1.599.423-3.452.335-4.238 1.28-.794.959-.533 2.94-.76 4.68h4.868l-.622 5.296h-4.055v13.01c-1.545 0-2.917-.014-4.289.007-.913.014-.758-.686-.759-1.27-.007-3.318-.004-6.638-.004-9.957v-1.72H1.37v-5.316h3.873c0-1.221-.012-2.28.002-3.338.062-4.821 2.222-7.144 6.633-7.144 3.307 0 3.308 0 3.266 3.57-.005.367-.035.732-.043.902z"></path>
+                                <path fill="#8b80a0"
+                                      d="M15.1 5.536c-1.599.423-3.452.335-4.238 1.28-.794.959-.533 2.94-.76 4.68h4.868l-.622 5.296h-4.055v13.01c-1.545 0-2.917-.014-4.289.007-.913.014-.758-.686-.759-1.27-.007-3.318-.004-6.638-.004-9.957v-1.72H1.37v-5.316h3.873c0-1.221-.012-2.28.002-3.338.062-4.821 2.222-7.144 6.633-7.144 3.307 0 3.308 0 3.266 3.57-.005.367-.035.732-.043.902z"></path>
                             </svg>
                         </a></div>
                     <div class="social-link-item">
@@ -158,8 +158,17 @@
 </footer>
 <script>
     let iso_code = '{{ iso_code }}';
+    let current_url = window.location.href;
 </script>
 {{ assets.outputJs('footerJs') }}
+
+{% if force_login_modal is defined %}
+    <script>
+        $(function () {
+            $('#auth_modal').modal('show');
+        });
+    </script>
+{% endif %}
 <input id="token" type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
 {{ AuthWidget.run('modal') }}
 </body>

@@ -59,8 +59,10 @@ class AuthController extends BaseController
             }
             $response = [
                 'status' => $status,
-                'message' => $message
+                'message' => $message,
+                'login_redirect_url' => $this->session->get('login_redirect_url')
             ];
+            $this->session->remove('login_redirect_url');
             return $this->response->setJsonContent($response);
         }
     }

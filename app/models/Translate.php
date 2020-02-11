@@ -217,7 +217,7 @@ class Translate extends BaseModel
         if (!$translates) {
             $phql = 'SELECT t.pattern, tl.value FROM Models\Translate t
                      LEFT JOIN Models\TranslateLang tl ON t.id= tl.id_translation AND tl.id_lang=' . $id_lang . ' 
-                     WHERE t.category="' . $category . '"';
+                     WHERE t.category IN(' . $category . ')';
             $query = new Query($phql, $di);
             $rows = $query->execute();
             if ($rows->count()) {

@@ -389,4 +389,23 @@ class Recipe extends BaseModel
         }
     }
 
+    public function afterSave()
+    {
+        $recipe_step = new RecipeStep();
+        $recipe_step->setIdRecipe($this->getId());
+        $recipe_step->save();
+    }
+
+    /**
+     * Check if user can update this recipe
+     * @return bool
+     */
+    public function allowEdit()
+    {
+        $context_user = Context::getInstance()->getUser();
+        if ($context_user->getId() != $this->getIdUser())
+            return false;
+        return true;
+    }
+
 }

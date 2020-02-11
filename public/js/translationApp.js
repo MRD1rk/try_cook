@@ -1,14 +1,13 @@
 var Translation = {
     scope: null,
-    load: function (category) {
+    load: function (...category) {
         let data = {};
         data['category'] = category;
-        data = $.extend(data,getToken());
         $.ajax({
             type: 'POST',
             url: '/'+iso_code+'/get-translations',
             dataType: 'json',
-            async: false,
+            async: true,
             data: data,
             success: function (data) {
                 Translation.scope = data.data;

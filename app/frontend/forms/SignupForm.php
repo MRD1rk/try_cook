@@ -66,6 +66,7 @@ class SignupForm extends BaseForm
         ]);
         $this->add($lastname);
         $email = new Email('email');
+        $email->setLabel($this->t->_('email'));
         $email->addValidator(new \Phalcon\Validation\Validator\Email(
             [
                 'message' => 'incorrect_email'

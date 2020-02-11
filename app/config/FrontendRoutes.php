@@ -57,16 +57,31 @@ class FrontendRoutes extends RouterGroup
             'action' => 'new',
             'iso_code' => 1
         ))->setName('recipes-new');
-        $this->add('/([a-z]{2})/recipes/upload-image', [
+        $this->add('/([a-z]{2})/recipes/add/:int/upload-image', [
             'controller' => 'recipes',
             'action' => 'uploadImage',
-            'iso_code' => 1
+            'iso_code' => 1,
+            'id_recipe' => 2
         ])->setName('recipes-upload-image');
-        $this->add('/([a-z]{2})/recipes/upload-steps-image', [
+        $this->add('/([a-z]{2})/recipes/add/:int/upload-step-image', [
             'controller' => 'recipes',
-            'action' => 'uploadStepsImage',
-            'iso_code' => 1
-        ])->setName('recipes-upload-steps-image');
+            'action' => 'uploadStepImage',
+            'iso_code' => 1,
+            'id_recipe' => 2
+        ])->setName('recipes-upload-step-image');
+        $this->add('/([a-z]{2}/recipes/add/:int/add-recipe-step)', [
+            'controller' => 'recipes',
+            'action' => 'addRecipeStep',
+            'iso_code' => 1,
+            'id_recipe' => 2,
+        ])->setName('recipes-add-step');
+        $this->add('/([a-z]{2}/recipes/add/:int/delete-step/:int)', [
+            'controller' => 'recipes',
+            'action' => 'deleteRecipeStep',
+            'iso_code' => 1,
+            'id_recipe' => 2,
+            'id_step' => 3
+        ])->setName('recipes-delete-step');
         $this->add('/([a-z]{2})/categories/filter', array(
             'controller' => 'categories',
             'action' => 'filter',

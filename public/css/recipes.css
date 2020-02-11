@@ -12,6 +12,7 @@
     position: relative;
     height: 200px;
 }
+
 .add-recipe-preview-img .recipe-preview-img {
     display: block;
     width: 100%;
@@ -19,6 +20,7 @@
     height: 100%;
     max-height: 400px;
 }
+
 .add-recipe-preview-img {
     height: 100%;
     padding: 0;
@@ -34,7 +36,7 @@
     border: 1px solid #FBF8F6;
     cursor: pointer;
     background-size: cover;
-    background-image:url('');
+    background-image: url('');
 }
 
 .add-recipe-preview-img span {
@@ -72,7 +74,7 @@
     cursor: pointer;
 }
 
-.recipe-block,.steps-block {
+.recipe-block, .steps-block {
     margin: 10px 0;
     padding: 15px;
     background: #ffffff;
@@ -135,7 +137,7 @@
     border-radius: 50%;
 }
 
-.recipe-preview-img[src=""]{
+.recipe-preview-img[src=""] {
     display: none;
 }
 
@@ -145,4 +147,41 @@
 
 .remove-recipe-part:hover {
     cursor: pointer;
+}
+.draggable{
+    color: #ccc;
+}
+.draggable:hover {
+    cursor: move;
+}
+
+.step-item {
+    background-color: #ffffff;
+    padding: 10px;
+
+}
+.step-item textarea{
+    width: 100%;
+    border-radius: 10px;
+    border-color: #ccc;
+    height: 150px;
+    resize: none;
+    padding: 10px;
+}
+.short .short-hide{
+    display: none;
+}
+.dragging{
+    box-shadow: rgb(230, 219, 219) 0px 2px 4px 0px;
+}
+.dragging .draggable{
+    color: #ff0e0e;
+}
+.step-placeholder{
+    /*background: #ccc;*/
+    border: 3px dashed #ccc;
+    margin: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }

@@ -36,6 +36,17 @@ function buttonUpdateError(button) {
 }
 
 $(function () {
+    let token = $('meta[name=token]');
+    if (token.length === 0)
+        return;
+    let tokenKey = token.attr('title');
+    let tokenValue = token.attr('content');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN-KEY': tokenKey,
+            'X-CSRF-TOKEN-VALUE': tokenValue
+        }
+    });
     $('.needs-validation').on('submit', function (e) {
         let form = $(this);
         if (!form[0].checkValidity()) {
@@ -44,17 +55,16 @@ $(function () {
         }
         form.addClass('was-validated');
     });
-    $('#signup_form').on('submit', function (e) {
+    $('#signin_form').on('submit', function (e) {
         e.preventDefault();
         e.stopPropagation();
         let form = $(this);
         let button = form.find('button');
         let data = {};
         buttonUpdateStart(button);
-        data.email = $('#signup_form #email').val();
-        data.password = $('#signup_form #password').val();
-        data.remember_me = +$('#signup_form #remember_me').is(':checked');
-        data = $.extend(data, getToken());
+        data.email = $('#signin_form #email').val();
+        data.password = $('#signin_form #password').val();
+        data.remember_me = +$('#signin_form #remember_me').is(':checked');
         $.ajax({
             url: '/' + iso_code + '/auth/signin',
             type: 'POST',
@@ -66,7 +76,10 @@ $(function () {
                     let output = form.find('.valid-feedback');
                     output.html(data.message);
                     setTimeout(function () {
-                        location.reload();
+                        if (data.login_redirect_url)
+                            location.href = data.login_redirect_url;
+                        else
+                            location.reload();
                     }, 1500)
                 } else {
                     buttonUpdateError(button);

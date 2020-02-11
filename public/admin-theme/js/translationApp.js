@@ -7,7 +7,7 @@ var Translation = {
             type: 'POST',
             url: prefix+'/get-translations',
             dataType: 'json',
-            async: false,
+            async: true,
             data: data,
             success: function (data) {
                 Translation.scope = data.data;

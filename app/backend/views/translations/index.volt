@@ -15,6 +15,7 @@
                             {% for lang in langs %}
                                 <th>{{ t._(lang.iso_code~'_translation') }}</th>
                             {% endfor %}
+                            <th>{{ t._('category') }}</th>
                             <th>{{ t._('control') }}</th>
                         </tr>
                         </thead>
@@ -28,6 +29,7 @@
                                                   data-id_lang="{{ lang.id }}">{{ translation.getLang(['id_lang='~lang.id])?translation.getLang(['id_lang='~lang.id]).getValue():'' }}</textarea>
                                     </td>
                                 {% endfor %}
+                                <td><span>{{ translation.category }}</span></td>
                                 <td class=" align-middle text-center">
                                     <div class="btn-group">
                                     <button class="update-translation btn btn-success">{{ t._('save') }}</button>

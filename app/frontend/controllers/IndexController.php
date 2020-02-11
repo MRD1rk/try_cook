@@ -3,6 +3,7 @@
 namespace Modules\Frontend\Controllers;
 
 
+use Helpers\Tools;
 use Models\Ingredient;
 use Models\IngredientLang;
 use Models\Translate;
@@ -55,6 +56,10 @@ class IndexController extends BaseController
             $status = false;
             $data = null;
             $category = $this->request->getPost('category');
+            $category = implode(',', array_map(function ($value) {
+                $value = Tools::striptags($value);
+                return $this->db->escapeString($value);
+            }, $category));
             $translations = Translate::getTranslationsByCategory($category);
             if ($translations) {
                 $status = true;
