@@ -12,7 +12,7 @@
                                 <div class="custom-control custom-radio">
                                     <input type="radio" data-type="category" name="id_category"
                                            class="custom-control-input"
-                                           value="{{ category.id }}"
+                                           value="{{ category.getId() }}"
                                            id="category-check-{{ category.id }}">
                                     <label class="custom-control-label"
                                            for="category-check-{{ category.id }}">{{ category.lang.title }}
@@ -41,7 +41,7 @@
                         {% for feature_value in feature['feature_values'] %}
                             <div class="filter-item-value {% if loop.index > 5 %}marked visible-hidden hide{% endif %}">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"
+                                    <input type="checkbox" class="custom-control-input" name="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"
                                            value="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"
                                            id="feature-check-{{ feature_value['id_feature_value'] }}">
                                     <label class="custom-control-label"

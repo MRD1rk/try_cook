@@ -1,5 +1,5 @@
 <h1 class="tc-title">{{ t._('new_recipe') }}</h1>
-<div id="content" class="recipes-index">
+<div id="content" class="recipes-add">
     <div class="row">
         <div class="col-2">
             {{ partial('recipes/filter-block',['categories':categories]) }}
@@ -8,13 +8,14 @@
             <div class="row recipe-block justify-content-between">
                 <div class="col-12">
                     <div class="form-group">
-                        <input name="recipe_name" class="form-control" placeholder="{{ t._('enter_recipe_title') }}">
+                        <input name="recipe_title" id="recipe_title" class="form-control" placeholder="{{ t._('enter_recipe_title') }}">
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
-                        <div class="preview-image-block">
-                            <label class="add-recipe-preview-img" for="recipe_image">
+                        {% set preview_url = url.getRecipeImage(cover.getId()) %}
+                        <div class="preview-image-block {% if !(preview_url is empty) %}not-image {% endif %}">
+                            <label class="add-recipe-preview-img" for="recipe_image" style="background-image: url('{{ preview_url }}');">
                                 <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
                             </label>
                             <input id="recipe_image" type="file">
@@ -37,7 +38,7 @@
                             <div class="col-5 pr-0">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input name="recipe_cooking_hours" class="form-control">
+                                        <input name="recipe_cooking_hours" id="recipe_cooking_hours" class="form-control">
                                     </div>
                                     <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span></div>
                                 </div>
@@ -45,7 +46,7 @@
                             <div class="col-5 pr-0">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input name="recipe_cooking_minutes" class="form-control">
+                                        <input name="recipe_cooking_minutes" id="recipe_cooking_minutes" class="form-control">
                                     </div>
                                     <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span></div>
                                 </div>
@@ -61,7 +62,7 @@
                                 <i class="fas fa-user-friends fa-2x"></i>
                             </div>
                             <div class="col-9">
-                                <input name="recipe_person_count" class="form-control">
+                                <input name="recipe_person_count" id="recipe_person_count" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -70,7 +71,7 @@
                     <div class="row prepare-time">
                         <div class="col-6">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="need_prepare">
+                                <input type="checkbox" class="custom-control-input" id="need_prepare" value="1" name="need_prepare">
                                 <label class="custom-control-label" for="need_prepare">{{ t._('need_prepare') }}</label>
                             </div>
                         </div>
@@ -86,7 +87,7 @@
                                     <div class="col-5 pr-0">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input name="recipe_prepare_hours" class="form-control">
+                                                <input name="recipe_prepare_hours" id="recipe_prepare_hours" class="form-control">
                                             </div>
                                             <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span>
                                             </div>
@@ -95,7 +96,7 @@
                                     <div class="col-5 pr-0">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input name="recipe_prepare_minutes" class="form-control">
+                                                <input name="recipe_prepare_minutes" id="recipe_prepare_minutes" class="form-control">
                                             </div>
                                             <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span>
                                             </div>
@@ -114,12 +115,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="text-center">
-                        <input type="hidden" id="id_recipe" value="{{ recipe.id }}">
-                        <button class="btn btn-success">{{ t._('save') }}</button>
-                    </div>
-                </div>
             </div>
 
 
@@ -131,9 +126,21 @@
             <div class="mt-2">
                 <div class="w100">
                     <div class="text-center">
-                        <button id="add_recipe_step" class="btn btn-primary">{{ t._('add_step') }}</button>
+                        <button id="add_recipe_step"
+                                class="btn btn-default hovered-red border-dark">{{ t._('add_step') }}</button>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-12">
+                <div class="text-center">
+                    <button id="save-recipe" class="btn btn-success">{{ t._('save') }}</button>
+                </div>
+            </div>
+        </div>
+        <!--right block-->
+        <div class="col-2">
+            <div class="row recipe-button-block justify-content-between">
             </div>
         </div>
     </div>

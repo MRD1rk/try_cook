@@ -6,9 +6,11 @@ use Helpers\Tools;
 use Models\Category;
 use Models\Context;
 use Models\Feature;
+use Models\Media;
 use Models\Recipe;
 use Models\RecipeStep;
 use Models\Unit;
+use Phalcon\Image;
 
 class RecipesController extends BaseController
 {
@@ -75,7 +77,10 @@ class RecipesController extends BaseController
             $data = $this->request->getPost();
         }
 
+        $images = $recipe->getImages();
         $this->view->recipe = $recipe;
+        $this->view->images = $recipe->getImages();
+        $this->view->cover = isset($images[0]) ? $images[0] : new Media();
         $this->view->features = $features;
         $this->view->categories = $categories;
     }

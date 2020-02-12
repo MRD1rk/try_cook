@@ -283,7 +283,14 @@ class Recipe extends BaseModel
         $this->hasOne('id', 'Models\RecipeLang', 'id_recipe', [
             'alias' => 'lang',
             'params' => [
-                'id_lang=' . Context::getInstance()->getLang()->id
+                'id_lang=' . Context::getInstance()->getLang()->getId()
+            ]
+        ]);
+        $this->hasMany('id', 'Models\Media', 'id_recipe', [
+            'alias' => 'images',
+            'params' => [
+                'type = "image"',
+                'order' => 'cover DESC'
             ]
         ]);
         $this->hasMany('id', 'Models\FeatureRecipe', 'id_recipe', ['alias' => 'recipeFeatures']);
@@ -373,10 +380,11 @@ class Recipe extends BaseModel
                 $this->appendMessage($message);
                 return false;
             }
-            $image = new Media();
+            $image = isset($this->getImages()[0]) ? $this->getImages()[0] : new Media();//get object with cover = 1(preview)
             $image->setType('image');
             $image->setIdRecipe($this->getId());
             $image->setActive(1);
+            $image->setCover(1);
             if (!$image->save()) {
                 $message = new Message('failed_image_save');
                 $this->appendMessage($message);

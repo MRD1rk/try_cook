@@ -47,4 +47,12 @@ class UrlManager extends Url
             $url = $this->domain_url . $url;
         return $url;
     }
+
+    public function getRecipeImage($id_image, $image_type = 'default', $alias = 'recipe', $absolute = false)
+    {
+        $url = '/'.$id_image . '-' . $image_type . '/' . $alias . '.jpg';
+        if ($absolute)
+            $url = Configuration::get('HTTP_SCHEME') . '://' . Configuration::get('DOMAIN') . $url;
+        return $url;
+    }
 }
