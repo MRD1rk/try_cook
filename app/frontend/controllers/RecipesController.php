@@ -7,6 +7,7 @@ use Models\Category;
 use Models\Context;
 use Models\Feature;
 use Models\Media;
+use Models\Part;
 use Models\Recipe;
 use Models\RecipeStep;
 use Models\Unit;
@@ -58,10 +59,10 @@ class RecipesController extends BaseController
         $this->assets->collection('footerJs')->addJs('js/recipes.js');
         $this->assets->collection('footerJs')->addJs('js/dragManager.js');
         $user = Context::getInstance()->getUser();
-        $iso_code = Context::getInstance()->getLang()->getIsoCode();
+        $lang = Context::getInstance()->getLang();
         $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
         if (!$id_recipe) {
-            return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $iso_code]));
+            return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $lang->getIsoCode()]));
         }
         $recipe = Recipe::findFirst(['id = :id: AND id_user = :id_user:',
             'bind' => [
@@ -69,16 +70,19 @@ class RecipesController extends BaseController
                 'id_user' => $user->getId()
             ]]);
         if (!$recipe) {
-            return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $iso_code]));
+            return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $lang->getIsoCode()]));
         }
         $categories = Category::find(['conditions' => 'active =1 AND id_parent=0']);
         $features = Feature::getFeatures();
+        $parts = Part::getParts();
         if ($this->request->isPost() && $this->request->isAjax()) {
             $data = $this->request->getPost();
         }
 
         $images = $recipe->getImages();
         $this->view->recipe = $recipe;
+        $this->view->parts = $parts;
+        $this->view->recipe_parts = [];
         $this->view->images = $recipe->getImages();
         $this->view->cover = isset($images[0]) ? $images[0] : new Media();
         $this->view->features = $features;
@@ -101,6 +105,20 @@ class RecipesController extends BaseController
         }
     }
 
+
+    public function addRecipePartAction()
+    {
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe');
+            die('33');
+        }
+    }
+
+    public function deleteRecipePartAction()
+    {
+
+    }
     /**
      * Create new recipe's step
      * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface

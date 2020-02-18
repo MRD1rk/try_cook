@@ -82,6 +82,19 @@ class FrontendRoutes extends RouterGroup
             'id_recipe' => 2,
             'id_step' => 3
         ])->setName('recipes-delete-step');
+        $this->add('/([a-z]{2}/recipes/add/:int/add-recipe-part)', [
+            'controller' => 'recipes',
+            'action' => 'addRecipePart',
+            'iso_code' => 1,
+            'id_recipe' => 2,
+        ])->setName('recipes-add-part');
+        $this->add('/([a-z]{2}/recipes/add/:int/delete-part/:int)', [
+            'controller' => 'recipes',
+            'action' => 'deleteRecipeDelete',
+            'iso_code' => 1,
+            'id_recipe' => 2,
+            'id_step' => 3
+        ])->setName('recipes-delete-part');
         $this->add('/([a-z]{2})/categories/filter', array(
             'controller' => 'categories',
             'action' => 'filter',

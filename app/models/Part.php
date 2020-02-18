@@ -2,6 +2,9 @@
 
 namespace Models;
 
+use Phalcon\Di;
+use Phalcon\Mvc\Model\Query;
+
 class Part extends BaseModel
 {
 
@@ -147,6 +150,21 @@ class Part extends BaseModel
             'active' => 'active',
             'date_add' => 'date_add'
         ];
+    }
+
+    /**
+     * @param int $active
+     * @return mixed
+     */
+    public static function getParts($active = 1)
+    {
+        $id_lang = Context::getInstance()->getLang()->getId();
+        $phql = 'SELECT p.id, pl.value as title FROM Models\Part p 
+        LEFT JOIN Models\PartLang pl ON (p.id = pl.id_part)
+        WHERE p.active = ' . (int)$active . ' AND pl.id_lang=' . (int)$id_lang;
+        $query = new Query($phql, Di::getDefault());
+        $rows = $query->execute();
+        return $rows;
     }
 
 }

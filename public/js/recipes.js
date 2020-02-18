@@ -65,9 +65,18 @@ $(function () {
      * Add recipe-part block
      */
     $('body').on('click', '.add-recipe-part', function () {
+        $.ajax({
+            type:'POST',
+            url: current_url + '/add-recipe-part',
+            dataType: 'json',
+            success:function (data) {
+                
+            }
+        });
         let childs = $('.recipe-part-block>div').length;
         let block_number = childs + 1;
         let block_class = 'recipe-part-block-' + block_number;
+        
         let html = '<div class="col-12 recipe-part-block"><div class="' + block_class + '">\n' +
             '                    <div class="row">\n' +
             '                        <div class="col-12">\n' +
@@ -98,9 +107,10 @@ $(function () {
             '                        </div>\n' +
             '                    </div>\n' +
             '                </div></div>';
+        console.log(html);
         let parent = $(this).parents('.col-12');
-
-        parent.before(html);
+        parent.append($(html).hide().fadeIn());
+        // parent.before(html);
 
 
         $('.' + block_class + ' .recipe-part-select').selectize({
@@ -162,7 +172,7 @@ $(function () {
      * Delete this recipe's step
      *
      */
-    $('body').on('click', '.remove-recipe-part', function () {
+    $('body').on('click', '.remove-recipe-step', function () {
         let step_block = $(this).parents('.step-item');
         let textarea = step_block.find('textarea');
         window.sessionStorage.removeItem(textarea.attr('name'));

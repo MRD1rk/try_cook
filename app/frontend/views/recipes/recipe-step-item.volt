@@ -4,7 +4,7 @@
             <span class="draggable"><i class="fas fa-grip-vertical"></i></span> &nbsp;<span class="step-count">{{ t._('step') }} <span>{{ step.step_number }}</span></span>
         </div>
         <div class="col-6 short-hide">
-            <p class="remove-recipe-part hovered-red text-right">
+            <p class="remove-recipe-step hovered-red text-right">
                 <i class="fas fa-trash"></i>
                 {{ t._('remove_recipe_step') }}
             </p>
