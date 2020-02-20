@@ -9,6 +9,7 @@ use Models\Feature;
 use Models\Media;
 use Models\Part;
 use Models\Recipe;
+use Models\RecipePart;
 use Models\RecipeStep;
 use Models\Unit;
 use Phalcon\Image;
@@ -72,17 +73,19 @@ class RecipesController extends BaseController
         if (!$recipe) {
             return $this->response->redirect($this->url->get(['for' => 'recipes-index', 'iso_code' => $lang->getIsoCode()]));
         }
-        $categories = Category::find(['conditions' => 'active =1 AND id_parent=0']);
+        $categories = Category::find(['conditions' => 'active = 1 AND id_parent = 0']);
         $features = Feature::getFeatures();
         $parts = Part::getParts();
+        $recipe_parts = $recipe->getParts();
+        $images = $recipe->getImages();
+        //begin save
         if ($this->request->isPost() && $this->request->isAjax()) {
             $data = $this->request->getPost();
         }
-
-        $images = $recipe->getImages();
         $this->view->recipe = $recipe;
         $this->view->parts = $parts;
-        $this->view->recipe_parts = [];
+        $this->view->ingredients = [];
+        $this->view->recipe_parts = $recipe_parts;
         $this->view->images = $recipe->getImages();
         $this->view->cover = isset($images[0]) ? $images[0] : new Media();
         $this->view->features = $features;
@@ -111,14 +114,95 @@ class RecipesController extends BaseController
         if ($this->request->isPost() && $this->request->isAjax()) {
             $status = false;
             $id_recipe = $this->dispatcher->getParam('id_recipe');
-            die('33');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $parts = Part::getParts();
+            $recipe_part = new RecipePart();
+            $recipe_part->setIdRecipe($recipe->getId());
+            if ($recipe_part->save()) {
+                $status = true;
+                $message = $this->t->_('successfully');
+                $content = $this->view->getPartial('recipes/recipe-part-item', ['recipe_part' => $recipe_part, 'parts' => $parts]);
+                return $this->response->setJsonContent([
+                    'content' => $content,
+                    'position' => $recipe_part->getPosition(),
+                    'status' => $status,
+                    'message' => $message
+                ]);
+            }
         }
     }
 
+    /**
+     * Update recipePart
+     */
+    public function updateRecipePartAction()
+    {
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $id_recipe_part = $this->request->getPost('id_recipe_part');
+            $id_part = $this->request->getPost('id_part');
+            $recipe_part = RecipePart::findFirst($id_recipe_part);
+            $recipe_part->setIdPart($id_part);
+            if ($recipe_part->save()) {
+                $status = true;
+                $message = $this->t->_('successfully');
+                return $this->response->setJsonContent([
+                    'status' => $status,
+                    'message' => $message,
+                    'id_part' => $recipe_part->getId()
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Delete recipePart
+     */
     public function deleteRecipePartAction()
     {
-
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $id_recipe_part = $this->dispatcher->getParam('id_recipe_part');
+            $recipe_part = RecipePart::findFirst($id_recipe_part);
+            if ($recipe_part->delete()) {
+                $status = true;
+                $message = $this->t->_('successfully');
+                return $this->response->setJsonContent([
+                    'status' => $status,
+                    'message' => $message
+                ]);
+            }
+        }
     }
+
     /**
      * Create new recipe's step
      * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface

@@ -164,6 +164,8 @@ class Part extends BaseModel
         WHERE p.active = ' . (int)$active . ' AND pl.id_lang=' . (int)$id_lang;
         $query = new Query($phql, Di::getDefault());
         $rows = $query->execute();
+        if (!$rows->count())
+            return null;
         return $rows;
     }
 

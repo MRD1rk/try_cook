@@ -2,6 +2,9 @@
 
 namespace Models;
 
+use Phalcon\Di;
+use Phalcon\Mvc\Model\Query;
+
 class RecipePart extends BaseModel
 {
 
@@ -178,4 +181,16 @@ class RecipePart extends BaseModel
         ];
     }
 
+    public function afterSave()
+    {
+        $this->position = $this->count('id_recipe=' . $this->getIdRecipe()) + 1;
+    }
+
+    public function afterDelete()
+    {
+        $db = Di::getDefault()->get('db');
+        $current_position = $this->getPosition();
+        $sql = 'UPDATE tc_recipe_part SET `position` =(`position` - 1) WHERE `position` > ' . $current_position . ' AND id_recipe=' . $this->getIdRecipe();
+        $db->execute($sql);
+    }
 }
