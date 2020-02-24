@@ -367,7 +367,7 @@ class Category extends BaseModel
 
     public function getCategoryFeatures($selected_features = [])
     {
-        $id_lang = Context::getInstance()->getLang()->id;
+        $id_lang = Context::getInstance()->getLang()->getId();
         $conditions[] = 'cf.id_category = ' . $this->getId();
         $conditions[] = 'fvl.id_lang = ' . $id_lang;
         $conditions[] = 'fl.id_lang = ' . $id_lang;
@@ -411,19 +411,18 @@ class Category extends BaseModel
                 $result[$row['id_feature']]['feature_values'][$row['id_feature_value']] = [
                     'id_feature_value' => $row['id_feature_value'],
                     'value' => $row['feature_value'],
-                    'disabled' => $row['disabled'] ?? 0,
+                    'disabled' => isset($row['disabled']) ? $row['disabled'] : 0,
                     'count' => $count[$row['id_feature_value']]
                 ];
             }
         }
-
 
         return $result;
     }
 
     public function getRecipesByFilter($filters = [], $page = 1, $limit = 0, $order = '')
     {
-        $id_lang = Context::getInstance()->getLang()->id;
+        $id_lang = Context::getInstance()->getLang()->getId();
         $conditions[] = 'rl.id_lang=' . $id_lang;
         if (!empty($filters['features'])) {
             $sub_queries = [];
@@ -481,7 +480,7 @@ class Category extends BaseModel
         if (isset($selected['features']) && !empty($selected['features'])) {
             foreach ($selected['features'] as $id_feature => $selected_feature_items) {
                 foreach ($selected_feature_items as $id_feature_value) {
-                    $selected_features[$id_feature_value]['id_feature_value'] = $id_feature.'_'.$id_feature_value;
+                    $selected_features[$id_feature_value]['id_feature_value'] = $id_feature . '_' . $id_feature_value;
                     $selected_features[$id_feature_value]['feature_value'] = $features[$id_feature]['feature_values'][$id_feature_value]['value'];
                 }
 

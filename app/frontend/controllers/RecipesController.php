@@ -204,6 +204,33 @@ class RecipesController extends BaseController
     }
 
     /**
+     * Add new RecipeIngredient
+     */
+    public function addRecipeIngredientAction()
+    {
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            die('add');
+        }
+    }
+
+    public function deleteRecipeIngredientAction()
+    {
+
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            var_dump($this->dispatcher->getParam('id_recipe_ingredient'));
+            die('delete');
+        }
+    }
+
+    public function updateRecipeIngredientAction()
+    {
+
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            var_dump($this->dispatcher->getParam('id_recipe_ingredient'));
+            die('update');
+        }
+    }
+    /**
      * Create new recipe's step
      * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
      */
