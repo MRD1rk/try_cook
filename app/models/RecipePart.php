@@ -128,6 +128,7 @@ class RecipePart extends BaseModel
      */
     public function initialize()
     {
+        $this->hasMany('id', RecipeIngredient::class, 'id_recipe_part', ['alias' => 'ingredients']);
         $this->belongsTo('id_part', 'Models\Part', 'id', ['alias' => 'part']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
@@ -180,7 +181,7 @@ class RecipePart extends BaseModel
         ];
     }
 
-    public function afterSave()
+    public function beforeSave()
     {
         $this->position = $this->count('id_recipe=' . $this->getIdRecipe()) + 1;
     }

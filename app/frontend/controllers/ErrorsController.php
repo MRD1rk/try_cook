@@ -13,9 +13,11 @@ class ErrorsController extends BaseController
     }
     public function show404Action()
     {
+        $this->response->setStatusCode(404);
     }
 
     public function csrfAction()
     {
+        $this->response->setStatusCode(400);
     }
 }

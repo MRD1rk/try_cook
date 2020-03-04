@@ -368,13 +368,10 @@ class Category extends BaseModel
     public function getCategoryFeatures($selected_features = [])
     {
         $id_lang = Context::getInstance()->getLang()->getId();
-        $conditions[] = 'cf.id_category = ' . $this->getId();
-        $conditions[] = 'fvl.id_lang = ' . $id_lang;
-        $conditions[] = 'fl.id_lang = ' . $id_lang;
         $ids_feature_value[] = 'null';//need for mysql query.If create empty array - implode function ignore this element and in query will be IN () => error
         if (!empty($selected_features['features'])) {
             $ids_feature_value = [];
-            foreach ($selected_features['features'] as $id_feature => $selected_feature) {
+            foreach ($selected_features['features'] as $selected_feature) {
                 $ids_feature_value = array_merge($ids_feature_value, $selected_feature);
                 $ids_feature_value = array_unique($ids_feature_value);
             }

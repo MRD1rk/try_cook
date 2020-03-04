@@ -54,6 +54,17 @@ class Module
     {
         $di->set('dispatcher', function () use ($di) {
             $eventsManager = $di->getShared('eventsManager');
+
+            $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
+                //Handle 404 exceptions
+                if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception) {
+                    $dispatcher->forward(array(
+                        'controller' => 'errors',
+                        'action' => 'show404'
+                    ));
+                    return false;
+                }
+            });
             /**
              * Check if the user is allowed to access certain action using the SecurityPlugin
              */

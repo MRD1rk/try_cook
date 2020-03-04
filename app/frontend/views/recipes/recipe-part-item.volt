@@ -17,44 +17,17 @@
                                 placeholder="{{ t._('begin_input') }}">
                             <option></option>
                             {% for part in parts %}
-                                <option value="{{ part.id }}">{{ part.title }}</option>
+                                <option {% if recipe_part.id_part == part.id %} selected{% endif %}
+                                        value="{{ part.id }}">{{ part.title }}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
             </div>
         </div>
-        {% if ingredients is defined %}
-            {% for ingredient in ingredients %}
-                <div class="col-12 ingredient-item ingredient-item-1">
-                    <div>
-                        <div class="row">
-                            <div class="col-6">
-                                <select placeholder="{{ t._('begin_input') }}" class="ingredient-select">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <input placeholder="{{ t._('weight') }}" class="weight-input form-control">
-                                    </div>
-                                    <div class="col-5">
-                                        <select class="unit-select">
-                                            <option value="">...</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="hovered-red delete-ingredient"><i class="fas fa-trash fa-2x"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+        {% for ingredient in recipe_part.getIngredients() %}
+            {{ partial('recipes/recipe-ingredient-item',['recipe_ingredient':ingredient]) }}
+        {% endfor %}
         <div class="col-6 add-ingredient-block">
             <div class="btn-group">
                 <button class="btn btn-light btn-add-ingredient">{{ t._('add_ingredient') }}<i

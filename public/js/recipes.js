@@ -54,9 +54,17 @@ $(function () {
      * Delete ingredient item
      */
     $('body').on('click', '.delete-ingredient', function () {
-        let block = $(this).parents('.ingredient-item');
-        block.fadeOut(function () {
-            block.remove();
+        let id_ingredient = $(this).parents('.ingredient-item').data('id_recipe_ingredient');
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: current_url + '/delete-recipe-ingredient/' + id_ingredient,
+            success: function (data) {
+                let block = $(this).parents('.ingredient-item');
+                block.fadeOut(function () {
+                    block.remove();
+                });
+            }
         });
 
     });
@@ -209,94 +217,27 @@ $(function () {
      */
     $('body').on('click', '.btn-add-ingredient', function () {
         let parent = $(this).parents('.add-ingredient-block');
-        let count = parent.parent().find('.ingredient-item').length + 1;
-        let block_class = 'ingredient-item-' + count;
-        let html =
-            '                        <div class="col-12 ingredient-item ' + block_class + '">\n' +
-            '                            <div>\n' +
-            '                                <div class="row">\n' +
-            '                                    <div class="col-6">\n' +
-            '                                        <select placeholder="' + Translation.get('begin_input') + '" class="ingredient-select">\n' +
-            '                                            <option value=""></option>\n' +
-            '                                        </select>\n' +
-            '                                    </div>\n' +
-            '                                    <div class="col-6">\n' +
-            '                                        <div class="row">\n' +
-            '                                            <div class="col-5">\n' +
-            '                                                <input placeholder="' + Translation.get('weight') + '" class="weight-input form-control">\n' +
-            '                                            </div>\n' +
-            '                                            <div class="col-5">\n' +
-            '                                                <select class="unit-select">\n' +
-            '                                                    <option value="">...</option>\n' +
-            '                                                </select>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="col-2">\n' +
-            '                                                <div class="hovered-red delete-ingredient"><i class="fas fa-trash fa-2x"></i></div>\n' +
-            '                                            </div>\n' +
-            '                                        </div>\n' +
-            '                                    </div>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </div>\n';
-        parent.before(html);
-        let unit_selectize = $('.' + block_class + ' .unit-select').selectize({
-            valueField: 'value',
-            labelField: 'title',
-        });
-        $('.' + block_class + ' .ingredient-select').selectize({
-            valueField: 'id',
-            labelField: 'name',
-            searchField: 'name',
-            options: [],
-            create: false,
-            render: {
-                item: function (value) {
-                    let data = {};
-                    data.units = value.unit_available;
-                    $.ajax({
-                        type: 'POST',
-                        url: '/api/get-units',
-                        dataType: 'json',
-                        data: data,
-                        success: function (data) {
-                            var selectize = unit_selectize[0].selectize;
-                            selectize.clearOptions();
-                            for (var i in data.data) {
-                                selectize.addOption(data.data[i]);
-                            }
-                            selectize.refreshOptions()
-
-                        }
-                    });
-                    return '<div data-units="' + value.unit_available + '" data-value="' + value.id + '">' + value.name + '</div>'
+        let id_recipe_part = parent.parents('.recipe-part-item').data('id_recipe_part');
+        $.ajax({
+            type: 'POST',
+            url: current_url + '/add-recipe-ingredient',
+            dataType: 'json',
+            data: {id_recipe_part: id_recipe_part},
+            success: function (data) {
+                if (data.status) {
+                    parent.before(data.content);
+                    let block_class = '.ingredient-item-' + data.position;
+                    initRecipeIngredientSelectize(block_class);
                 }
-            },
-            load: function (query, callback) {
-                if (!query.length || query.length < 3) return callback();
-                let data = {};
-                data['query'] = query;
-                $.ajax({
-                    url: '/api/get-ingredients',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: data,
-                    error: function () {
-                        callback();
-                    },
-                    success: function (res) {
-                        callback(res.data);
+            }
 
-                    }
-                });
-            },
-            persist: true
         });
-
 
     });
 
     initEditor('#recipe_description');
     initRecipePartSelectize('.recipe-part-select');
+    initRecipeIngredientSelectize('.ingredient-item')
 });
 
 function calculateCookTime(hours = 0, minutes = 0) {
@@ -330,6 +271,61 @@ function initRecipePartSelectize(selector) {
                 }
             })
         }
+    });
+}
+
+function initRecipeIngredientSelectize(selector) {
+    let unit_selectize = $(selector + ' .unit-select').selectize({
+        valueField: 'value',
+        labelField: 'title',
+    });
+    $(selector + ' .ingredient-select').selectize({
+        valueField: 'id',
+        labelField: 'name',
+        searchField: 'name',
+        options: [],
+        create: false,
+        render: {
+            item: function (value) {
+                let data = {};
+                data.units = value.unit_available;
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/get-units',
+                    dataType: 'json',
+                    data: data,
+                    success: function (data) {
+                        var selectize = unit_selectize[0].selectize;
+                        selectize.clearOptions();
+                        for (var i in data.data) {
+                            selectize.addOption(data.data[i]);
+                        }
+                        selectize.refreshOptions()
+
+                    }
+                });
+                return '<div data-units="' + value.unit_available + '" data-value="' + value.id + '">' + value.name + '</div>'
+            }
+        },
+        load: function (query, callback) {
+            if (!query.length || query.length < 3) return callback();
+            let data = {};
+            data['query'] = query;
+            $.ajax({
+                url: '/api/get-ingredients',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    callback(res.data);
+
+                }
+            });
+        },
+        persist: true
     });
 }
 

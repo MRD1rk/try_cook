@@ -9,6 +9,7 @@ use Models\Feature;
 use Models\Media;
 use Models\Part;
 use Models\Recipe;
+use Models\RecipeIngredient;
 use Models\RecipePart;
 use Models\RecipeStep;
 use Models\Unit;
@@ -77,6 +78,7 @@ class RecipesController extends BaseController
         $features = Feature::getFeatures();
         $parts = Part::getParts();
         $recipe_parts = $recipe->getParts();
+        $recipe_ingredients = $recipe->getIngredients();
         $images = $recipe->getImages();
         //begin save
         if ($this->request->isPost() && $this->request->isAjax()) {
@@ -86,6 +88,7 @@ class RecipesController extends BaseController
         $this->view->parts = $parts;
         $this->view->ingredients = [];
         $this->view->recipe_parts = $recipe_parts;
+        $this->view->recipe_ingredients = $recipe_ingredients;
         $this->view->images = $recipe->getImages();
         $this->view->cover = isset($images[0]) ? $images[0] : new Media();
         $this->view->features = $features;
@@ -139,6 +142,7 @@ class RecipesController extends BaseController
             }
         }
     }
+
 
     /**
      * Update recipePart
@@ -209,16 +213,65 @@ class RecipesController extends BaseController
     public function addRecipeIngredientAction()
     {
         if ($this->request->isPost() && $this->request->isAjax()) {
-            die('add');
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $id_recipe_part = $this->request->getPost('id_recipe_part', 'int');
+            $recipe_ingredient = new RecipeIngredient();
+            $recipe_ingredient->setIdRecipe($id_recipe);
+            $recipe_ingredient->setIdRecipePart($id_recipe_part);
+            if (!$recipe_ingredient->save()) {
+                $message = $this->t->_('fail');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $status = true;
+            $message = $this->t->_('successfully');
+            $content = $this->view->getPartial('recipes/recipe-ingredient-item', ['recipe_ingredient' => $recipe_ingredient]);
+            return $this->response->setJsonContent([
+                'content' => $content,
+                'position' => $recipe_ingredient->getPosition(),
+                'status' => $status,
+                'message' => $message
+            ]);
+
+
         }
     }
 
     public function deleteRecipeIngredientAction()
     {
-
+        $this->view->disable();
         if ($this->request->isPost() && $this->request->isAjax()) {
-            var_dump($this->dispatcher->getParam('id_recipe_ingredient'));
-            die('delete');
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient', 'int');
+            $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
+            if ($recipe_ingredient->delete()) {
+                $status = true;
+                $message = $this->t->_('successfully');
+                return $this->response->setJsonContent([
+                    'status' => $status,
+                    'message' => $message
+                ]);
+            }
+
         }
     }
 
@@ -230,6 +283,7 @@ class RecipesController extends BaseController
             die('update');
         }
     }
+
     /**
      * Create new recipe's step
      * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface

@@ -1,4 +1,4 @@
-var Translation = {
+const Translation = {
     scope: null,
     load: function (...category) {
         let data = {};

@@ -278,7 +278,11 @@ class Recipe extends BaseModel
     public function initialize()
     {
         $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category', 'Models\Category', 'id', ['alias' => 'categories']);
-        $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients']);
+        $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients',
+            'params' => [
+                'order' => 'position'
+            ]
+        ]);
         $this->hasOne('id_user', 'Models\User', 'id', ['alias' => 'author']);
         $this->hasOne('id', 'Models\RecipeLang', 'id_recipe', [
             'alias' => 'lang',
@@ -295,7 +299,11 @@ class Recipe extends BaseModel
         ]);
         $this->hasMany('id', 'Models\FeatureRecipe', 'id_recipe', ['alias' => 'recipeFeatures']);
         $this->hasMany('id', 'Models\RecipeStep', 'id_recipe', ['alias' => 'steps']);
-        $this->hasMany('id', 'Models\RecipePart', 'id_recipe', ['alias' => 'parts']);
+        $this->hasMany('id', 'Models\RecipePart', 'id_recipe', ['alias' => 'parts',
+            'params' => [
+                'order' => 'position'
+            ]
+        ]);
     }
 
     /**
