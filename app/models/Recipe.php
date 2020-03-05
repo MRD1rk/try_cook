@@ -425,4 +425,8 @@ class Recipe extends BaseModel
         return true;
     }
 
+    public function getRecipe()
+    {
+        $sql = '';
+    }
 }

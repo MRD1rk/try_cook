@@ -54,13 +54,14 @@ $(function () {
      * Delete ingredient item
      */
     $('body').on('click', '.delete-ingredient', function () {
-        let id_ingredient = $(this).parents('.ingredient-item').data('id_recipe_ingredient');
+        let $this = $(this);
+        let id_ingredient = $this.parents('.ingredient-item').data('id_recipe_ingredient');
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: current_url + '/delete-recipe-ingredient/' + id_ingredient,
             success: function (data) {
-                let block = $(this).parents('.ingredient-item');
+                let block = $this.parents('.ingredient-item');
                 block.fadeOut(function () {
                     block.remove();
                 });

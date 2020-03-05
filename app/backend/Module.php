@@ -57,6 +57,7 @@ class Module
 
             $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
                 //Handle 404 exceptions
+
                 if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception) {
                     $dispatcher->forward(array(
                         'controller' => 'errors',

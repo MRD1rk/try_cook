@@ -188,6 +188,10 @@ class Ingredient extends BaseModel
     public function initialize()
     {
         $this->hasMany('id', 'Models\IngredientLang', 'id_ingredient', ['alias' => 'langs']);
+        $this->hasOne('id', 'Models\IngredientLang', 'id_ingredient', ['alias' => 'lang', 'params' =>
+            [
+                'id_lang' => Context::getInstance()->getLang()->getId()
+            ]]);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_ingredient', ['alias' => 'recipeIngredients']);
     }
 
@@ -247,10 +251,10 @@ class Ingredient extends BaseModel
         $where_conditions = [];
         $id_lang = Context::getInstance()->getLang()->id;
         if (isset($params['name'])) {
-            $where_conditions[] = 'MATCH(title) AGAINST ("+'.$params['name'].'" ) > 0';
+            $where_conditions[] = 'MATCH(title) AGAINST ("+' . $params['name'] . '" ) > 0';
         }
         if (isset($params['ids'])) {
-            $where_conditions[] = 'id_ingredient IN ('.implode(',',$params['ids']).')';
+            $where_conditions[] = 'id_ingredient IN (' . implode(',', $params['ids']) . ')';
         }
         $phql = 'SELECT il.*,i.* FROM Models\Ingredient i LEFT JOIN Models\IngredientLang il ON il.id_ingredient = i.id AND il.id_lang=' . $id_lang . ' 
         WHERE ' . implode(' AND ', $where_conditions);
