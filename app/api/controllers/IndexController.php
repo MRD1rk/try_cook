@@ -34,7 +34,7 @@ class IndexController extends BaseController
         foreach ($ingredients as $ingredient) {
             $data['id'] = $ingredient['i']->getId();
             $data['name'] = $ingredient['il']->getTitle();
-            $data['unit_available'] = json_decode($ingredient['i']->getUnitAvailable());
+            $data['unit_available'] = $ingredient['i']->getUnitAvailable();
             $datas[] = $data;
 //        }
         }

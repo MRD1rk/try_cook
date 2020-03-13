@@ -27,9 +27,9 @@ class ImportTask extends MainTask
         $data = json_decode($output);
         foreach ($data as $datum) {
             $exist = Ingredient::findFirst('old_id=' . $datum->id);
+            $units = $this->mapUnit($datum->validAmountTypes);
+            $units = array_values($units);
             if (!$exist) {
-                $units = $this->mapUnit($datum->validAmountTypes);
-                $units = array_values($units);
                 $ingredient = new Ingredient();
                 $ingredient->setActive(1);
                 $ingredient->setOldId($datum->id);
@@ -48,6 +48,9 @@ class ImportTask extends MainTask
                         die();
                     }
                 }
+            } else {
+                $exist->setUnitAvailable(serialize($units));
+                $exist->save();
             }
         }
     }
@@ -116,5 +119,14 @@ class ImportTask extends MainTask
             }
         }
         return $description;
+    }
+
+    public function convertAction()
+    {
+        $ingredients = Ingredient::find();
+        foreach ($ingredients as $ingredient) {
+            $ingredient->setUnitAvailable(unserialize($ingredient->getUnitAvailable()));
+            $ingredient->save();
+        }
     }
 }

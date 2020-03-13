@@ -280,7 +280,7 @@ function initRecipeIngredientSelectize(selector) {
         valueField: 'value',
         labelField: 'title',
     });
-    $(selector + ' .ingredient-select').selectize({
+    let ingredient_selectize = $(selector + ' .ingredient-select').selectize({
         valueField: 'id',
         labelField: 'name',
         searchField: 'name',
@@ -288,23 +288,28 @@ function initRecipeIngredientSelectize(selector) {
         create: false,
         render: {
             item: function (value) {
+                console.log(value);
+                let select = this.$input;
+                let parent = select.parents('.ingredient-item');
                 let data = {};
-                data.units = value.unit_available;
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/get-units',
-                    dataType: 'json',
-                    data: data,
-                    success: function (data) {
-                        var selectize = unit_selectize[0].selectize;
-                        selectize.clearOptions();
-                        for (var i in data.data) {
-                            selectize.addOption(data.data[i]);
-                        }
-                        selectize.refreshOptions()
+                if (!value.get_unit) {
+                    data.units = value.unit_available;
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/get-units',
+                        dataType: 'json',
+                        data: data,
+                        success: function (data) {
+                            var selectize = parent.find('.unit-select')[0].selectize;
+                            selectize.clearOptions();
+                            for (var i in data.data) {
+                                selectize.addOption(data.data[i]);
+                            }
+                            selectize.refreshOptions()
 
-                    }
-                });
+                        }
+                    });
+                }
                 return '<div data-units="' + value.unit_available + '" data-value="' + value.id + '">' + value.name + '</div>'
             }
         },

@@ -6,6 +6,7 @@ use Helpers\Tools;
 use Models\Category;
 use Models\Context;
 use Models\Feature;
+use Models\Ingredient;
 use Models\Media;
 use Models\Part;
 use Models\Recipe;
@@ -79,6 +80,7 @@ class RecipesController extends BaseController
         $parts = Part::getParts();
         $recipe_parts = $recipe->getParts();
         $recipe_ingredients = $recipe->getIngredients();
+
         $images = $recipe->getImages();
         //begin save
         if ($this->request->isPost() && $this->request->isAjax()) {

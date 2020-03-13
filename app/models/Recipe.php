@@ -5,6 +5,7 @@ namespace Models;
 
 use Components\ImageManager;
 use Phalcon\Mvc\Model\Message;
+use Phalcon\Mvc\Model\Resultset\Simple;
 
 class Recipe extends BaseModel
 {
@@ -425,8 +426,56 @@ class Recipe extends BaseModel
         return true;
     }
 
+    /**
+     * @return Simple
+     * @todo change or delete this method.
+     */
     public function getRecipe()
     {
-        $sql = '';
+        $id_lang = Context::getInstance()->getLang()->getId();
+        $sql = 'SELECT 
+                GROUP_CONCAT(u.id) AS id_units,
+                GROUP_CONCAT(ul.title) as unit_title,
+                GROUP_CONCAT(i.id) AS id_ingredients,
+                GROUP_CONCAT(il.title) AS ingredient_title,
+                r.* FROM tc_recipes r
+                LEFT JOIN tc_recipe_lang rl ON r.id = rl.id_recipe
+                LEFT JOIN tc_recipe_part rp ON r.id = rp.id_recipe
+                LEFT JOIN tc_part_lang pl ON rp.id = pl.id_part AND pl.id_lang= ' . $id_lang . '
+                LEFT JOIN tc_recipe_ingredient ri ON r.id = ri.id_recipe AND ri.id_recipe_part = rp.id
+                LEFT JOIN tc_ingredients i ON i.id = ri.id_ingredient
+                LEFT JOIN tc_ingredient_lang il ON i.id = il.id_ingredient AND il.id_lang = ' . $id_lang . '
+                LEFT JOIN tc_units u ON u.id = ri.id_unit
+                LEFT JOIN tc_unit_lang ul ON u.id = ul.id_unit AND ul.id_lang = ' . $id_lang . '
+                WHERE r.id = ' . $this->getId() . ' AND rl.id_lang = ' . $id_lang;
+        $rows = new Simple(
+            null,
+            $this,
+            $this->getReadConnection()->query($sql)
+        );
+
+        $result = [];
+
+        foreach ($rows->toArray() as $row) {
+            $ids_unit = explode(',',$row['id_units']);
+            $unit_titles = explode(',',$row['unit_title']);
+            $ids_id_ingredient = explode(',',$row['id_ingredients']);
+            $ingredient_titles = explode(',',$row['ingredient_title']);
+            $units = [];
+            $ingredients = [];
+            foreach ($ids_id_ingredient as $key => $item) {
+                $ingredients[$item] = $ingredient_titles[$key];
+                $units[$ids_unit[$key]] = $unit_titles[$key];
+            }
+            $result = [
+                'id_recipe' => $row['id'],
+                'units' =>$units,
+                'ingredients' => $ingredients
+            ];
+            echo '<pre>';
+            var_dump($result);
+            die();
+        }
+        return $rows;
     }
 }

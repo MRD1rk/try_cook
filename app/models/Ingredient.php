@@ -18,7 +18,7 @@ class Ingredient extends BaseModel
      *
      * @var string
      */
-    protected $unit_available;
+    protected $unit_available = [];
 
     /**
      *
@@ -139,7 +139,7 @@ class Ingredient extends BaseModel
      */
     public function getUnitAvailable()
     {
-        return $this->unit_available;
+        return unserialize($this->unit_available);
     }
 
     /**
@@ -266,4 +266,8 @@ class Ingredient extends BaseModel
         return $results;
     }
 
+    public function getUnits()
+    {
+        return Unit::find('id IN(' . implode(',', $this->getUnitAvailable()) . ')');
+    }
 }
