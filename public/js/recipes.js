@@ -276,19 +276,41 @@ function initRecipePartSelectize(selector) {
 }
 
 function initRecipeIngredientSelectize(selector) {
-    let unit_selectize = $(selector + ' .unit-select').selectize({
+    $(selector + ' .unit-select').selectize({
         valueField: 'value',
         labelField: 'title',
+        lock:true,
+        onChange: function (id_unit) {
+            let parent = this.$input.parents('.ingredient-item');
+            let id_recipe_ingredient = parent.data('id_recipe_ingredient');
+            let id_ingredient = parent.find('.ingredient-select').val();
+            $.ajax({
+                url: current_url + '/update-recipe-ingredient/' + id_recipe_ingredient,
+                type: 'POST',
+                dataType: 'json',
+                data: {id_ingredient: id_ingredient, id_unit: id_unit},
+                success: function (data) {
+                    parent.find('.weight-input').focus();
+                }
+            })
+        }
     });
-    let ingredient_selectize = $(selector + ' .ingredient-select').selectize({
+    $(selector + ' .ingredient-select').selectize({
         valueField: 'id',
         labelField: 'name',
         searchField: 'name',
         options: [],
         create: false,
+        onChange: function (id_ingredient) {
+            if (!id_ingredient.length) {
+                let parent = this.$input.parents('.ingredient-item');
+                var selectize = parent.find('.unit-select')[0].selectize;
+                selectize.clear();
+                selectize.clearOptions();
+            }
+        },
         render: {
             item: function (value) {
-                console.log(value);
                 let select = this.$input;
                 let parent = select.parents('.ingredient-item');
                 let data = {};

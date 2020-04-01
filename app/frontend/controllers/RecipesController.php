@@ -281,8 +281,24 @@ class RecipesController extends BaseController
     {
 
         if ($this->request->isPost() && $this->request->isAjax()) {
-            var_dump($this->dispatcher->getParam('id_recipe_ingredient'));
-            die('update');
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient', 'int');
+            $id_ingredient = $this->request->getPost('id_ingredient', 'int');
+            $id_unit = $this->request->getPost('id_unit', 'int');
+            $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
+            $recipe_ingredient->setIdIngredient($id_ingredient);
+            $recipe_ingredient->setIdUnit($id_unit);
+            $recipe_ingredient->setCount();
         }
     }
 

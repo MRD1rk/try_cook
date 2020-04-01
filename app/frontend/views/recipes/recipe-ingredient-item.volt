@@ -10,11 +10,11 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-5">
-                    <input placeholder="{{ t._('weight') }}" class="weight-input form-control">
+                    <input placeholder="{{ t._('weight') }}" oninput="this.value = this.value.replace(/\D+/g, '');" class="weight-input form-control">
                 </div>
 
                 <div class="col-5">
-                    <select class="unit-select">
+                    <select placeholder="{{ t._('begin_input') }}" class="unit-select">
                         {% if recipe_ingredient.getIngredient() %}
                             {% for unit in recipe_ingredient.getIngredient().getUnits() %}
                                 <option value="{{ unit.id }}">{{ unit.lang.title }}</option>

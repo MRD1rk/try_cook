@@ -135,7 +135,7 @@ class Ingredient extends BaseModel
     /**
      * Returns the value of field unit_available
      *
-     * @return string
+     * @return array
      */
     public function getUnitAvailable()
     {
@@ -250,9 +250,6 @@ class Ingredient extends BaseModel
     {
         $where_conditions = [];
         $id_lang = Context::getInstance()->getLang()->id;
-        if (isset($params['name'])) {
-            $where_conditions[] = 'MATCH(title) AGAINST ("+' . $params['name'] . '" ) > 0';
-        }
         if (isset($params['ids'])) {
             $where_conditions[] = 'id_ingredient IN (' . implode(',', $params['ids']) . ')';
         }
