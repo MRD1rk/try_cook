@@ -213,6 +213,35 @@ $(function () {
         })
     });
 
+    $('body').on('input', '.weight-input', function () {
+        let input = $(this);
+        let count = input.val();
+        let clean_val = count.replace(/\D+/g, '');
+        if (count !== clean_val) {
+            input.val(clean_val);
+            return;
+        }
+        if (count.length === 0)
+            return;
+        clearTimeout(input.data('timer'));
+        let parent = input.parents('.ingredient-item');
+        let id_recipe_ingredient = parent.data('id_recipe_ingredient');
+        let id_ingredient = parent.find('.ingredient-select').val();
+        let id_unit = parent.find('.unit-select').val();
+        let timer = setTimeout(function () {
+            $.ajax({
+                type: 'POST',
+                url: current_url + '/update-recipe-ingredient/' + id_recipe_ingredient,
+                dataType: 'json',
+                data: {count: count, id_ingredient: id_ingredient, id_unit: id_unit},
+                success: function (data) {
+
+                }
+            })
+        }, 1000);
+        input.data('timer', timer);
+
+    });
     /**
      * Add ingredients block
      */
@@ -279,20 +308,12 @@ function initRecipeIngredientSelectize(selector) {
     $(selector + ' .unit-select').selectize({
         valueField: 'value',
         labelField: 'title',
-        lock:true,
-        onChange: function (id_unit) {
+        lock: true,
+        onChange: function () {
             let parent = this.$input.parents('.ingredient-item');
-            let id_recipe_ingredient = parent.data('id_recipe_ingredient');
-            let id_ingredient = parent.find('.ingredient-select').val();
-            $.ajax({
-                url: current_url + '/update-recipe-ingredient/' + id_recipe_ingredient,
-                type: 'POST',
-                dataType: 'json',
-                data: {id_ingredient: id_ingredient, id_unit: id_unit},
-                success: function (data) {
-                    parent.find('.weight-input').focus();
-                }
-            })
+            let weight_input = parent.find('.weight-input');
+            weight_input.attr('disabled', false);
+            weight_input.focus();
         }
     });
     $(selector + ' .ingredient-select').selectize({

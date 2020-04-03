@@ -46,7 +46,6 @@ function changeFilter() {
 }
 
 function updateFilter(data) {
-    data = $.extend(data, getToken());
     $.ajax({
         type: 'POST',
         dataType: 'json',
