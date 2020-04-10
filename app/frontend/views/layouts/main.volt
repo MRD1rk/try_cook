@@ -171,6 +171,8 @@
 {% endif %}
 <input id="token" type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
 {{ AuthWidget.run('modal') }}
+
+<div class="toast-wrapper"></div>
 </body>
 
 </html>

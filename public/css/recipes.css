@@ -52,6 +52,7 @@
 .hovered-red:hover {
     transition: .3s;
     color: #ff291f;
+    cursor: pointer;
 }
 
 .add-recipe-part {
@@ -146,9 +147,6 @@
     height: 35px;
 }
 
-.remove-recipe-part:hover {
-    cursor: pointer;
-}
 .draggable{
     color: #ccc;
 }

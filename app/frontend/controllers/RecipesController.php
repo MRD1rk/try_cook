@@ -109,7 +109,12 @@ class RecipesController extends BaseController
             $recipe = Recipe::findFirst($id_recipe);
             $image = $recipe->uploadPreviewImage($files);
 
-            return $this->response->setJsonContent(['status' => true, 'url' => $image->getLink('image', 'default')]);
+            return $this->response->setJsonContent(
+                [
+                    'status' => true,
+                    'url' => $image->getLink('image', 'default'),
+                    'message' => $this->t->_('image_added')
+                ]);
         }
     }
 
@@ -133,7 +138,7 @@ class RecipesController extends BaseController
             $recipe_part->setIdRecipe($recipe->getId());
             if ($recipe_part->save()) {
                 $status = true;
-                $message = $this->t->_('successfully');
+                $message = $this->t->_('recipe_part_added');
                 $content = $this->view->getPartial('recipes/recipe-part-item', ['recipe_part' => $recipe_part, 'parts' => $parts]);
                 return $this->response->setJsonContent([
                     'content' => $content,
@@ -169,7 +174,7 @@ class RecipesController extends BaseController
             $recipe_part->setIdPart($id_part);
             if ($recipe_part->save()) {
                 $status = true;
-                $message = $this->t->_('successfully');
+                $message = $this->t->_('recipe_part_updated');
                 return $this->response->setJsonContent([
                     'status' => $status,
                     'message' => $message,
@@ -200,7 +205,7 @@ class RecipesController extends BaseController
             $recipe_part = RecipePart::findFirst($id_recipe_part);
             if ($recipe_part->delete()) {
                 $status = true;
-                $message = $this->t->_('successfully');
+                $message = $this->t->_('recipe_part_deleted');
                 return $this->response->setJsonContent([
                     'status' => $status,
                     'message' => $message
@@ -235,7 +240,7 @@ class RecipesController extends BaseController
                 return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
             }
             $status = true;
-            $message = $this->t->_('successfully');
+            $message = $this->t->_('ingredient_added');
             $content = $this->view->getPartial('recipes/recipe-ingredient-item', ['recipe_ingredient' => $recipe_ingredient]);
             return $this->response->setJsonContent([
                 'content' => $content,
@@ -267,7 +272,7 @@ class RecipesController extends BaseController
             $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
             if ($recipe_ingredient->delete()) {
                 $status = true;
-                $message = $this->t->_('successfully');
+                $message = $this->t->_('ingredient_deleted');
                 return $this->response->setJsonContent([
                     'status' => $status,
                     'message' => $message
@@ -302,7 +307,7 @@ class RecipesController extends BaseController
             $recipe_ingredient->setCount($count);
             if ($recipe_ingredient->save()) {
                 $status = true;
-                $message = $this->t->_('successfully');
+                $message = $this->t->_('ingredient_updated');
                 return $this->response->setJsonContent(
                     [
                         'status' => $status,
@@ -335,7 +340,7 @@ class RecipesController extends BaseController
             $recipe_step->setIdRecipe($recipe->getId());
             if ($recipe_step->save()) {
                 $status = true;
-                $message = $this->t->_('successfully');
+                $message = $this->t->_('recipe_step_added');
                 $content = $this->view->getPartial('recipes/recipe-step-item', ['step' => $recipe_step]);
                 $id_step = $recipe_step->getId();
                 return $this->response->setJsonContent(
@@ -373,7 +378,7 @@ class RecipesController extends BaseController
                 return $this->response->setJsonContent(['status' => $status, 'message' => Tools::arrToString($message)]);
             }
             $status = true;
-            $message = $this->t->_('successfully');
+            $message = $this->t->_('recipe_step_deleted');
             return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
         }
 

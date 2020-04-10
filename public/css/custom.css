@@ -101,14 +101,15 @@ p {
     color: #8b80a0;
 }
 
-.loader{
+.loader {
     margin: auto;
     height: 50px;
     width: 50px;
     border-radius: 50%;
     position: relative;
 }
-.loader:before{
+
+.loader:before {
     content: '';
     position: absolute;
     left: 0;
@@ -120,7 +121,8 @@ p {
     opacity: 0;
     animation: popin 1.5s linear infinite 0s;
 }
-.loader:after{
+
+.loader:after {
     content: '';
     position: absolute;
     left: 0;
@@ -137,21 +139,26 @@ footer#footer {
     background-color: #bbb4cc;
     padding: 15px;
 }
-.breadcrumb-item{
-    font-family: "Gotham Pro Medium",sans-serif;
+
+.breadcrumb-item {
+    font-family: "Gotham Pro Medium", sans-serif;
     text-transform: uppercase;
     color: #64b400;
 }
-.breadcrumb-item>a{
+
+.breadcrumb-item > a {
     color: inherit;
 }
-.breadcrumb-item.active{
+
+.breadcrumb-item.active {
     color: #8b80a0;
 }
-.breadcrumb-item+.breadcrumb-item::before{
+
+.breadcrumb-item + .breadcrumb-item::before {
     content: '•';
     vertical-align: top;
 }
+
 .container-lg {
     padding-right: 15px;
     padding-left: 15px;
@@ -255,7 +262,8 @@ input[type="file"] {
     color: #b9b9ba;
     font-size: 24px;
 }
-#header-navbar .nav-link:after{
+
+#header-navbar .nav-link:after {
     content: "";
     margin: 0 auto;
     display: block;
@@ -265,6 +273,7 @@ input[type="file"] {
     opacity: 0;
     transition: 0.3s;
 }
+
 #header-navbar .nav-link:hover:after {
     opacity: 1;
     width: 100%;
@@ -518,23 +527,73 @@ h1.tc-title {
     box-shadow: 0 0 0 0.2rem rgba(110, 180, 1, .25);
     border: none;
 }
-#filter-block .filter-item-value.marked.hide{
+
+#filter-block .filter-item-value.marked.hide {
     display: none;
 }
-#filter-block .filter-item-value.marked.visible-hidden{
+
+#filter-block .filter-item-value.marked.visible-hidden {
     opacity: 0;
 }
-#header-account-btn .user-avatar{
+
+#header-account-btn .user-avatar {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     max-width: 30px;
 }
-#header-account-btn .user-name{
+
+#header-account-btn .user-name {
     color: #666;
 }
-.header-sign a{
+
+.header-sign a {
     padding: 0 15px;
+}
+
+.toast-wrapper {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+}
+
+.toast {
+    width: 350px;
+}
+
+.toast-body {
+    width: 325px;
+    word-break: break-all;
+}
+
+.toast-progress {
+    height: 5px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    right: 0;
+}
+
+.toast-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.toast-success .toast-progress{
+    background: #155724;
+}
+.toast-error .toast-progress{
+    background: #721c24;
+}
+.toast-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.toast-header{
+    color: inherit;
+    text-transform: capitalize;
+    background-color: inherit;
 }
 /*#header-account-btn .btn-tc{*/
 /*    padding: 0;*/

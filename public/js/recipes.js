@@ -65,6 +65,7 @@ $(function () {
                 block.fadeOut(function () {
                     block.remove();
                 });
+                showAlert(data.message,data.status);
             }
         });
 
@@ -89,6 +90,7 @@ $(function () {
                 $('.' + block_class + ' .unit-select').selectize({
                     persist: true
                 });
+                showAlert(data.message,data.status);
             }
         });
     });
@@ -109,6 +111,7 @@ $(function () {
                         block.remove();
                     })
                 }
+                showAlert(data.message,data.status);
             }
         });
     });
@@ -142,6 +145,7 @@ $(function () {
                     parent.find('.add-recipe-preview-img').css('background-image', 'url()');
                     parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + ')');
                 }
+                showAlert(data.message,data.status);
             }
 
         })
@@ -167,6 +171,7 @@ $(function () {
                         this.remove();
                     })
                 }
+                showAlert(data.message,data.status);
             }
         })
     });
@@ -182,6 +187,7 @@ $(function () {
                 let parent = $('.steps-block');
                 let html = data.content;
                 parent.append($(html).hide().fadeIn());
+                showAlert(data.message,data.status);
             }
         });
     });
@@ -204,6 +210,7 @@ $(function () {
             contentType: false,
             data: data,
             success: function (data) {
+                showAlert(data.message,data.status);
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
                     parent.find('img').attr('src', data.url);
@@ -235,7 +242,7 @@ $(function () {
                 dataType: 'json',
                 data: {count: count, id_ingredient: id_ingredient, id_unit: id_unit},
                 success: function (data) {
-
+                    showAlert(data.message, data.status);
                 }
             })
         }, 1000);
@@ -259,6 +266,7 @@ $(function () {
                     let block_class = '.ingredient-item-' + data.position;
                     initRecipeIngredientSelectize(block_class);
                 }
+                showAlert(data.message,data.status);
             }
 
         });
