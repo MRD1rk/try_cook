@@ -2,6 +2,10 @@
 
 namespace Models;
 
+use Components\ImageManager;
+use Phalcon\Di;
+use Phalcon\Mvc\Model\Message;
+
 class RecipeStep extends BaseModel
 {
 
@@ -21,7 +25,7 @@ class RecipeStep extends BaseModel
      *
      * @var integer
      */
-    protected $step_number;
+    protected $position;
 
     /**
      *
@@ -68,14 +72,14 @@ class RecipeStep extends BaseModel
     }
 
     /**
-     * Method to set the value of field step_number
+     * Method to set the value of field position
      *
-     * @param integer $step_number
+     * @param integer $position
      * @return $this
      */
-    public function setStepNumber($step_number)
+    public function setPosition($position)
     {
-        $this->step_number = $step_number;
+        $this->position = $position;
 
         return $this;
     }
@@ -140,13 +144,13 @@ class RecipeStep extends BaseModel
     }
 
     /**
-     * Returns the value of field step_number
+     * Returns the value of field position
      *
      * @return integer
      */
-    public function getStepNumber()
+    public function getPosition()
     {
-        return $this->step_number;
+        return $this->position;
     }
 
     /**
@@ -236,7 +240,7 @@ class RecipeStep extends BaseModel
         return [
             'id' => 'id',
             'id_recipe' => 'id_recipe',
-            'step_number' => 'step_number',
+            'position' => 'position',
             'type' => 'type',
             'src' => 'src',
             'date_add' => 'date_add'
@@ -246,6 +250,64 @@ class RecipeStep extends BaseModel
 
     public function beforeValidationOnCreate()
     {
-        $this->setStepNumber(RecipeStep::count('id_recipe='.$this->getIdRecipe()) + 1);
+        $this->setPosition(RecipeStep::count('id_recipe=' . $this->getIdRecipe()) + 1);
     }
+
+    public function uploadImage($files)
+    {
+        foreach ($files as $file) {
+            if (!in_array($file->getExtension(), ImageManager::$allowedImageExtensions)) {
+                $message = new Message('no_allowed_extension');
+                $this->appendMessage($message);
+                return false;
+            }
+            $path = $this->getImagePath();
+
+            ImageManager::saveOriginal($file, $path);
+            ImageManager::resize($path);
+            return true;
+        }
+    }
+
+    public function getImagePath($type = '')
+    {
+        $root_path = ImageManager::getRootPath() . ImageManager::$recipe_step_image_dir . DIRECTORY_SEPARATOR;
+        $delimiter = '';
+        if ($type)
+            $delimiter = '-';
+        $extension = 'jpeg';
+        $path = str_split((string)$this->getId());
+        $path = implode('/', $path);
+        $path = $path . DIRECTORY_SEPARATOR . $this->getId() . $delimiter . $type;
+        $path = $path . '.' . $extension;
+        $path = $root_path . $path;
+        return $path;
+    }
+
+    public function getLink($image_type = 'default', $alias = 'recipe_step', $absolute = false)
+    {
+        if (!file_exists($this->getImagePath($image_type)))
+            return false;
+        $url = '/rs/' . $this->getId() . '-' . $image_type . '/' . $alias . '.jpeg';
+        if ($absolute)
+            $url = Configuration::get('HTTP_SCHEME') . '://' . Configuration::get('DOMAIN') . $url;
+
+        return $url;
+    }
+
+    public function beforeDelete()
+    {
+        $image_types = ImageType::find('active=1');
+        foreach ($image_types as $image_type) {
+            if (file_exists($this->getImagePath($image_type->getType())))
+                unlink($this->getImagePath($image_type->getType()));
+        }
+        if (file_exists($this->getImagePath()))
+            unlink($this->getImagePath());
+
+        $db = Di::getDefault()->get('db');
+        $sql = 'UPDATE tc_recipe_steps SET `position` = (`position` - 1) WHERE `position` > ' . $this->getPosition() . ' AND id_recipe=' . $this->getIdRecipe();
+        $db->execute($sql);
+    }
+
 }

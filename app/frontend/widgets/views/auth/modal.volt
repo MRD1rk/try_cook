@@ -14,16 +14,22 @@
                 <div class="row">
                     <div class="col-md-12 mx-auto">
                         <div class="login-form">
-                            <form id="signin_form" method="post" novalidate="novalidate">
+                            <form id="signin_form" method="post" novalidate="novalidate" class="needs-validation">
                                 <div class="form-group">
                                     <label for="email">{{ t._('email') }}</label>
-                                    <input type="email" name="email" class="form-control" id="email"
+                                    <input required type="email" name="email" class="form-control" id="email"
                                            placeholder="{{ t._('enter_email') }}">
+                                    <div class="invalid-feedback">
+                                        {{ t._('email_can_be_empty') }}
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="password">{{ t._('password') }}</label>
-                                    <input type="password" name="password" id="password" class="form-control"
+                                    <input required type="password" name="password" id="password" class="form-control"
                                            placeholder="{{ t._('enter_password') }}">
+                                    <div class="invalid-feedback">
+                                        {{ t._('password_can_be_empty') }}
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">

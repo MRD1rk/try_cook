@@ -80,7 +80,7 @@ class SignupForm extends BaseForm
                 'min' => $password_min_length,
                 'helper' => $this->t->_('password_must_be_longed_message')
             ]);
-        $password->setLabel('password');
+        $password->setLabel($this->t->_('password'));
         $password->addValidators([
             new Confirmation([
                 'with' => 'confirm_password',
@@ -105,7 +105,7 @@ class SignupForm extends BaseForm
             [
                 'min' => $password_min_length
             ]);
-        $confirm_password->setLabel('confirm_password');
+        $confirm_password->setLabel($this->t->_('confirm_password'));
         $confirm_password->addValidators([
             new Confirmation([
                 'with' => 'password',

@@ -5,7 +5,7 @@ namespace Models;
 
 use Components\ImageManager;
 
-class Media extends BaseModel
+class RecipeMedia extends BaseModel
 {
 
     /**
@@ -216,8 +216,8 @@ class Media extends BaseModel
      */
     public function initialize()
     {
-        $this->hasMany('id', 'Models\TcMediaAdditional', 'id_media', ['alias' => 'mediaAdditional']);
-        $this->belongsTo('id_recipe', 'Models\TcRecipes', 'id', ['alias' => 'recipe']);
+        $this->hasMany('id', MediaAdditional::class, 'id_media', ['alias' => 'mediaAdditional']);
+        $this->belongsTo('id_recipe', Recipe::class, 'id', ['alias' => 'recipe']);
     }
 
     /**
@@ -227,14 +227,14 @@ class Media extends BaseModel
      */
     public function getSource()
     {
-        return 'tc_media';
+        return 'tc_recipe_media';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Media[]|Media|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return RecipeMedia[]|RecipeMedia|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -245,7 +245,7 @@ class Media extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Media|\Phalcon\Mvc\Model\ResultInterface
+     * @return RecipeMedia|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {
@@ -274,14 +274,14 @@ class Media extends BaseModel
 
     public function getPath($type = '')
     {
-        $root_path = ImageManager::getRootPath();
+        $root_path = ImageManager::getRootPath() . ImageManager::$recipe_image_dir . DIRECTORY_SEPARATOR ;
         $delimiter = '';
         if ($type)
             $delimiter = '-';
-        $extension = 'jpg';
+        $extension = 'jpeg';
         $path = str_split((string)$this->getId());
         $path = implode('/', $path);
-        $path = $path . '/' . $this->getId() . $delimiter . $type;
+        $path = $path . DIRECTORY_SEPARATOR . $this->getId() . $delimiter . $type;
         $path = $path . '.' . $extension;
         $path = $root_path . $path;
         return $path;
@@ -289,9 +289,10 @@ class Media extends BaseModel
 
     public function getLink($type = 'image', $image_type = 'default', $alias = 'recipe', $absolute = false)
     {
+        $url = '';
         switch ($type) {
             case 'image':
-                $url = '/'.$this->getId() . '-' . $image_type . '/' . $alias . '.jpg';
+                $url = '/r/' . $this->getId() . '-' . $image_type . '/' . $alias . '.jpeg';
                 if ($absolute)
                     $url = Configuration::get('HTTP_SCHEME') . '://' . Configuration::get('DOMAIN') . $url;
                 break;

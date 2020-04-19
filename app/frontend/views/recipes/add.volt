@@ -9,13 +9,14 @@
                 <div class="col-12">
                     <div class="form-group">
                         <input name="recipe_title" id="recipe_title" class="form-control"
+                               data-keep="true"
                                placeholder="{{ t._('enter_recipe_title') }}">
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
                         {% set preview_url = url.getRecipeImage(cover.getId()) %}
-                        <div class="preview-image-block {% if !(preview_url is empty) %}not-image {% endif %}">
+                        <div class="preview-image-block {% if (preview_url is empty) %}not-image {% endif %}">
                             <label class="add-recipe-preview-img" for="recipe_image"
                                    style="background-image: url('{{ preview_url }}');">
                                 <span title="{{ t._('upload_img') }}">{{ t._('upload_img') }}</span>
@@ -27,7 +28,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="recipe_description">{{ t._('add_description') }}</label>
-                        <textarea class="form-control" id="recipe_description"></textarea>
+                        <textarea data-keep="true" class="form-control" id="recipe_description"></textarea>
                     </div>
                 </div>
                 <div class="col-6">
@@ -41,7 +42,9 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <input name="recipe_cooking_hours" id="recipe_cooking_hours"
-                                               class="form-control">
+                                               data-keep="true"
+                                               class="form-control"
+                                        >
                                     </div>
                                     <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span></div>
                                 </div>
@@ -50,6 +53,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <input name="recipe_cooking_minutes" id="recipe_cooking_minutes"
+                                               data-keep="true"
                                                class="form-control">
                                     </div>
                                     <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span></div>
@@ -66,7 +70,7 @@
                                 <i class="fas fa-user-friends fa-2x"></i>
                             </div>
                             <div class="col-9">
-                                <input name="recipe_person_count" id="recipe_person_count" class="form-control">
+                                <input name="recipe_person_count" id="recipe_person_count" data-keep="true" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -76,6 +80,7 @@
                         <div class="col-6">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="need_prepare" value="1"
+                                       data-keep="true"
                                        name="need_prepare">
                                 <label class="custom-control-label" for="need_prepare">{{ t._('need_prepare') }}</label>
                             </div>
@@ -93,6 +98,7 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <input name="recipe_prepare_hours" id="recipe_prepare_hours"
+                                                       data-keep="true"
                                                        class="form-control">
                                             </div>
                                             <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span>
@@ -103,6 +109,7 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <input name="recipe_prepare_minutes" id="recipe_prepare_minutes"
+                                                       data-keep="true"
                                                        class="form-control">
                                             </div>
                                             <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span>

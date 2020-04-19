@@ -5,7 +5,7 @@
                 <div class="recipe-item">
                     <div class="recipe-preview-img-block">
                         <a class="recipe-link" href="#">
-                            <img src="/img/no_photo.png">
+                            <img src="{{ url.getRecipeImage(recipe.id) }}">
                         </a>
                     </div>
                     <div class="recipe-meta-block">

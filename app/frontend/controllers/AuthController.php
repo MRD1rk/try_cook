@@ -48,11 +48,11 @@ class AuthController extends BaseController
     public function signinAction()
     {
         if ($this->request->isPost() && $this->request->isAjax()) {
-            $status = true;
             $post = $this->request->getPost();
             try {
                 $this->auth->check($post);
                 $message = 'welcome';
+                $status = true;
             } catch (\Exception $e) {
                 $status = false;
                 $message = $this->t->_($e->getMessage());

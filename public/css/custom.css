@@ -325,26 +325,28 @@ input[type="file"] {
     color: #afa9a9;
     text-decoration: none;
 }
-
-::-webkit-input-placeholder {
-    /* Chrome/Opera/Safari */
-    color: #62d474;
+.selectize-input:hover{
+    border: 1px solid black;
 }
+/*::-webkit-input-placeholder {*/
+/*    !* Chrome/Opera/Safari *!*/
+/*    color: #62d474;*/
+/*}*/
 
-::-moz-placeholder {
-    /* Firefox 19+ */
-    color: #62d474;
-}
+/*::-moz-placeholder {*/
+/*    !* Firefox 19+ *!*/
+/*    color: #62d474;*/
+/*}*/
 
-:-ms-input-placeholder {
-    /* IE 10+ */
-    color: #62d474;
-}
+/*:-ms-input-placeholder {*/
+/*    !* IE 10+ *!*/
+/*    color: #62d474;*/
+/*}*/
 
-:-moz-placeholder {
-    /* Firefox 18- */
-    color: #62d474;
-}
+/*:-moz-placeholder {*/
+/*    !* Firefox 18- *!*/
+/*    color: #62d474;*/
+/*}*/
 
 
 .tc-header-bottom {
@@ -559,6 +561,7 @@ h1.tc-title {
 
 .toast {
     width: 350px;
+    position: relative;
 }
 
 .toast-body {
@@ -594,6 +597,9 @@ h1.tc-title {
     color: inherit;
     text-transform: capitalize;
     background-color: inherit;
+}
+.delete-ingredient i{
+    vertical-align: -webkit-baseline-middle;
 }
 /*#header-account-btn .btn-tc{*/
 /*    padding: 0;*/

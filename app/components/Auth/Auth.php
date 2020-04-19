@@ -4,6 +4,8 @@
 namespace Components\Auth;
 
 
+use Components\Auth\Exception\EmptyCredentialsException;
+use Components\Auth\Exception\WrongEmailPasswordCombinationException;
 use Models\Context;
 use Models\FailedLogins;
 use Models\SuccessLogins;
@@ -32,16 +34,18 @@ class Auth extends Component
      */
     public function check($credentials)
     {
+        if (!$credentials['email'] || !$credentials['password'])
+            throw new EmptyCredentialsException('empty_credentials');
         // Check if the user exist
         $user = User::findFirstByEmail($credentials['email']);
         if (!$user) {
             $this->registerUserThrottling(0);
-            throw new \Exception('wrong_email_password_combination');
+            throw new WrongEmailPasswordCombinationException('wrong_email_password_combination');
         }
         // Check the password
         if (!$this->security->checkHash($credentials['password'], $user->password)) {
             $this->registerUserThrottling($user->getId());
-            throw new \Exception('wrong_email_password_combination');
+            throw new WrongEmailPasswordCombinationException('wrong_email_password_combination');
         }
         // Check if the user was flagged
         $this->checkUserFlags($user);

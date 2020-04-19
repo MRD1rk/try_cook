@@ -9,6 +9,7 @@ use Phalcon\Mvc\Url;
 
 class UrlManager extends Url
 {
+    private $server_path = ROOT_PATH.'/public';
     protected $domain_url;
 
     public function __construct()
@@ -50,7 +51,7 @@ class UrlManager extends Url
 
     public function getRecipeImage($id_image, $image_type = 'default', $alias = 'recipe', $absolute = false)
     {
-        $url = '/'.$id_image . '-' . $image_type . '/' . $alias . '.jpg';
+        $url = DIRECTORY_SEPARATOR.ImageManager::$recipe_image_dir.DIRECTORY_SEPARATOR.$id_image . '-' . $image_type . '/' . $alias . '.jpeg';
         if ($absolute)
             $url = Configuration::get('HTTP_SCHEME') . '://' . Configuration::get('DOMAIN') . $url;
         return $url;

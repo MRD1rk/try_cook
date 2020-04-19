@@ -10,28 +10,28 @@ $(function () {
             values[name] = input;
         }
     });
-    // //restore from sessionStorage
-    // $.each($('.recipes-add input,textarea'), function () {
-    //     let $this = $(this);
-    //     let value = window.sessionStorage.getItem($this.attr('name'));
-    //     if (value) {
-    //         if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
-    //             if (value === $this.val())
-    //                 $this.prop('checked', true);
-    //         } else
-    //             $this.val(value)
-    //     }
-    // });
-    // $('body').on('input', '.recipes-add input,textarea', function () {
-    //     let $this = $(this);
-    //     if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
-    //         if (!$this.is(':checked')) {
-    //             window.sessionStorage.removeItem($this.attr('name'));
-    //             return true;
-    //         }
-    //     }
-    //     window.sessionStorage.setItem($this.attr('name'), $this.val());
-    // });
+    // restore from sessionStorage
+    $.each($('*[data-keep]'), function () {
+        let $this = $(this);
+        let value = window.sessionStorage.getItem($this.attr('name'));
+        if (value) {
+            if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
+                if (value === $this.val())
+                    $this.prop('checked', true);
+            } else
+                $this.val(value)
+        }
+    });
+    $('body').on('input', '.recipes-add input,textarea', function () {
+        let $this = $(this);
+        if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
+            if (!$this.is(':checked')) {
+                window.sessionStorage.removeItem($this.attr('name'));
+                return true;
+            }
+        }
+        window.sessionStorage.setItem($this.attr('name'), $this.val());
+    });
     //save recipe event
     $('body').on('click', '#save-recipe', function (e) {
         e.preventDefault();
@@ -142,8 +142,7 @@ $(function () {
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
                     parent.removeClass('no-image');
-                    parent.find('.add-recipe-preview-img').css('background-image', 'url()');
-                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + ')');
+                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v='+Math.random()+')');
                 }
                 showAlert(data.message,data.status);
             }
@@ -213,7 +212,8 @@ $(function () {
                 showAlert(data.message,data.status);
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
-                    parent.find('img').attr('src', data.url);
+                    parent.removeClass('no-image');
+                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v='+Math.random()+')');
                 }
             }
 
@@ -290,6 +290,7 @@ function initEditor(selector) {
         selector: selector,
         menubar: false,
         branding: false,
+        height:150,
         language: iso_code || 'ru',
         toolbar: "undo redo | removeformat | bold italic | alignleft aligncenter alignright alignjustify"
     });
@@ -315,6 +316,7 @@ function initRecipePartSelectize(selector) {
 function initRecipeIngredientSelectize(selector) {
     $(selector + ' .unit-select').selectize({
         valueField: 'value',
+        plugins: ['restore_on_backspace'],
         labelField: 'title',
         lock: true,
         onChange: function () {
@@ -327,6 +329,7 @@ function initRecipeIngredientSelectize(selector) {
     $(selector + ' .ingredient-select').selectize({
         valueField: 'id',
         labelField: 'name',
+        plugins: ['restore_on_backspace'],
         searchField: 'name',
         options: [],
         create: false,

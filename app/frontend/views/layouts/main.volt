@@ -29,8 +29,6 @@
     {{ tag.getDescription() }}
     {{ tag.getAppleTouchIcons() }}
     {{ assets.outputCss('headerCss') }}
-
-
 </head>
 
 <body id="page-top">

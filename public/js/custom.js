@@ -69,31 +69,26 @@ function csrf() {
     });
 }
 
-//begin input's filters function
-function numberFilter() {
-
-}
-
-function stringFilter() {
-
-}
-
-//end input's filters function
-
 $(function () {
     csrf();
     $('.needs-validation').on('submit', function (e) {
         let form = $(this);
         if (!form[0].checkValidity()) {
             e.preventDefault();
-            e.stopPropagation()
+            e.stopPropagation();
         }
         form.addClass('was-validated');
     });
     $('#signin_form').on('submit', function (e) {
+        let form = $(this);
+        if (!form[0].checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        form.addClass('was-validated');
         e.preventDefault();
         e.stopPropagation();
-        let form = $(this);
         let button = form.find('button');
         let data = {};
         buttonUpdateStart(button);
@@ -137,6 +132,10 @@ $(function () {
     });
     $('body').on('hidden.bs.toast','.toast', function () {
         $(this).remove();
+    });
+
+    $('.modal').on('hidden.bs.modal', function(){
+        $(this).find('form')[0].reset();
     });
 });
 

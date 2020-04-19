@@ -11,10 +11,6 @@ class Recipe extends BaseModel
 {
 
     /**
-     * @var array Allowed image extension
-     */
-    protected $allow_extension = ['png', 'jpg', 'jpeg'];
-    /**
      *
      * @var integer
      */
@@ -291,7 +287,7 @@ class Recipe extends BaseModel
                 'id_lang=' . Context::getInstance()->getLang()->getId()
             ]
         ]);
-        $this->hasMany('id', 'Models\Media', 'id_recipe', [
+        $this->hasMany('id', 'Models\RecipeMedia', 'id_recipe', [
             'alias' => 'images',
             'params' => [
                 'type = "image"',
@@ -385,12 +381,12 @@ class Recipe extends BaseModel
     public function uploadPreviewImage($files)
     {
         foreach ($files as $file) {
-            if (!in_array($file->getExtension(), $this->allow_extension)) {
+            if (!in_array($file->getExtension(), ImageManager::$allowedImageExtensions)) {
                 $message = new Message('no_allowed_extension');
                 $this->appendMessage($message);
                 return false;
             }
-            $image = isset($this->getImages()[0]) ? $this->getImages()[0] : new Media();//get object with cover = 1(preview)
+            $image = isset($this->getImages()[0]) ? $this->getImages()[0] : new RecipeMedia();//get object with cover = 1(preview)
             $image->setType('image');
             $image->setIdRecipe($this->getId());
             $image->setActive(1);
@@ -400,9 +396,8 @@ class Recipe extends BaseModel
                 $this->appendMessage($message);
                 return false;
             }
-            ImageManager::createPath($image->getId());
             ImageManager::saveOriginal($file, $image->getPath());
-            ImageManager::resize($image);
+            ImageManager::resize($image->getPath());
             return $image;
         }
     }

@@ -11,6 +11,7 @@
                             <div class="filter-item-value">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" data-type="category" name="id_category"
+                                           data-keep="true"
                                            class="custom-control-input"
                                            value="{{ category.getId() }}"
                                            id="category-check-{{ category.id }}">
@@ -40,9 +41,11 @@
                     <div class="filter-item-values">
                         {% for feature_value in feature['feature_values'] %}
                             <div class="filter-item-value {% if loop.index > 5 %}marked visible-hidden hide{% endif %}">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" name="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"
-                                           value="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"
+                                <div class="custom-control custom-radio">
+{#                                    <input type="radio" class="custom-control-input" name="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"#}
+                                    <input type="radio" class="custom-control-input" name="features[{{ feature['id_feature'] }}]"
+                                           data-keep="true"
+                                           value="{{ feature_value['id_feature_value'] }}"
                                            id="feature-check-{{ feature_value['id_feature_value'] }}">
                                     <label class="custom-control-label"
                                            for="feature-check-{{ feature_value['id_feature_value'] }}">{{ feature_value['value'] }}

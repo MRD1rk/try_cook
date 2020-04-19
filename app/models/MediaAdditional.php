@@ -126,7 +126,7 @@ class MediaAdditional extends BaseModel
      */
     public function initialize()
     {
-        $this->belongsTo('id_media', 'Models\Media', 'id', ['alias' => 'source']);
+        $this->belongsTo('id_media', 'Models\RecipeMedia', 'id', ['alias' => 'source']);
     }
 
     /**

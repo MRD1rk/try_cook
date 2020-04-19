@@ -7,7 +7,7 @@ use Models\Category;
 use Models\Context;
 use Models\Feature;
 use Models\Ingredient;
-use Models\Media;
+use Models\RecipeMedia;
 use Models\Part;
 use Models\Recipe;
 use Models\RecipeIngredient;
@@ -92,32 +92,10 @@ class RecipesController extends BaseController
         $this->view->recipe_parts = $recipe_parts;
         $this->view->recipe_ingredients = $recipe_ingredients;
         $this->view->images = $recipe->getImages();
-        $this->view->cover = isset($images[0]) ? $images[0] : new Media();
+        $this->view->cover = isset($images[0]) ? $images[0] : new RecipeMedia();
         $this->view->features = $features;
         $this->view->categories = $categories;
     }
-
-    public function uploadImageAction()
-    {
-        if ($this->request->isPost() && $this->request->isAjax()) {
-//            $id_recipe = $this->request->getPost('id_recipe', 'int');
-            $id_recipe = $this->dispatcher->getParam('id_recipe');
-            $files = $this->request->getUploadedFiles();
-            if (!$files) {
-                return $this->response->setJsonContent(['status' => false, 'message' => $this->t->_('failed_upload')]);
-            }
-            $recipe = Recipe::findFirst($id_recipe);
-            $image = $recipe->uploadPreviewImage($files);
-
-            return $this->response->setJsonContent(
-                [
-                    'status' => true,
-                    'url' => $image->getLink('image', 'default'),
-                    'message' => $this->t->_('image_added')
-                ]);
-        }
-    }
-
 
     public function addRecipePartAction()
     {
@@ -387,16 +365,55 @@ class RecipesController extends BaseController
     public function uploadStepImageAction()
     {
         if ($this->request->isPost() && $this->request->isAjax()) {
+            $status = false;
             $id_recipe = $this->dispatcher->getParam('id_recipe');
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
             $id_step = $this->request->getPost('id_step');
             $files = $this->request->getUploadedFiles();
             if (!$files) {
                 return $this->response->setJsonContent(['status' => false, 'message' => $this->t->_('failed_upload')]);
             }
-            $step = RecipeStep::findFirst($id_step);
+            $recipe_step = RecipeStep::findFirst($id_step);
+            $status = $recipe_step->uploadImage($files);
+            $response = [
+                'status' =>$status,
+                'url' =>$recipe_step->getLink(),
+                'message' => $this->t->_('image_added')
+            ];
+
+            return $this->response->setJsonContent($response);
+
         }
     }
 
+    public function uploadImageAction()
+    {
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe','int');
+            $files = $this->request->getUploadedFiles();
+            if (!$files) {
+                return $this->response->setJsonContent(['status' => $status, 'message' => $this->t->_('failed_upload')]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $image = $recipe->uploadPreviewImage($files);
+
+            return $this->response->setJsonContent(
+                [
+                    'status' => true,
+                    'url' => $image->getLink('image', 'default'),
+                    'message' => $this->t->_('image_added')
+                ]);
+        }
+    }
     public function viewAction()
     {
         $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
