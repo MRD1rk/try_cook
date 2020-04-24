@@ -192,4 +192,12 @@ class RecipePart extends BaseModel
         $sql = 'UPDATE tc_recipe_part SET `position` = (`position` - 1) WHERE `position` > ' . $this->getPosition() . ' AND id_recipe=' . $this->getIdRecipe();
         $db->execute($sql);
     }
+
+    public function afterCreate()
+    {
+        $recipe_ingredient = new RecipeIngredient();
+        $recipe_ingredient->setIdRecipe($this->getIdRecipe());
+        $recipe_ingredient->setIdRecipePart($this->getId());
+        $recipe_ingredient->save();
+    }
 }

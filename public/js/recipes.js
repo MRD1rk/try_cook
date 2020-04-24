@@ -1,6 +1,6 @@
 'use strict';
 $(function () {
-    Translation.load('recipes_add', 'global');
+    // Translation.load('recipes_add', 'global');
     let values = {};
     $('.feature-select').selectize({
         persist: true,
@@ -16,8 +16,12 @@ $(function () {
         let value = window.sessionStorage.getItem($this.attr('name'));
         if (value) {
             if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
-                if (value === $this.val())
+                if (value === $this.val()) {
                     $this.prop('checked', true);
+                    setTimeout(function () {
+                        $this.parents('.filter-item').find('.show-all-filter').click();
+                    }, 100);
+                }
             } else
                 $this.val(value)
         }
@@ -65,7 +69,7 @@ $(function () {
                 block.fadeOut(function () {
                     block.remove();
                 });
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
             }
         });
 
@@ -87,10 +91,9 @@ $(function () {
                 parent.append($(html).hide().fadeIn());
                 let selector = '.' + block_class + ' .recipe-part-select';
                 initRecipePartSelectize(selector);
-                $('.' + block_class + ' .unit-select').selectize({
-                    persist: true
-                });
-                showAlert(data.message,data.status);
+                let ingredient_block_class = '.' + block_class + ' .ingredient-item';
+                initRecipeIngredientSelectize(ingredient_block_class);
+                showAlert(data.message, data.status);
             }
         });
     });
@@ -111,7 +114,7 @@ $(function () {
                         block.remove();
                     })
                 }
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
             }
         });
     });
@@ -142,9 +145,9 @@ $(function () {
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
                     parent.removeClass('no-image');
-                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v='+Math.random()+')');
+                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v=' + Math.random() + ')');
                 }
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
             }
 
         })
@@ -170,7 +173,7 @@ $(function () {
                         this.remove();
                     })
                 }
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
             }
         })
     });
@@ -186,7 +189,7 @@ $(function () {
                 let parent = $('.steps-block');
                 let html = data.content;
                 parent.append($(html).hide().fadeIn());
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
             }
         });
     });
@@ -209,11 +212,11 @@ $(function () {
             contentType: false,
             data: data,
             success: function (data) {
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
                     parent.removeClass('no-image');
-                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v='+Math.random()+')');
+                    parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v=' + Math.random() + ')');
                 }
             }
 
@@ -253,7 +256,7 @@ $(function () {
      * Add ingredients block
      */
     $('body').on('click', '.btn-add-ingredient', function () {
-        let parent = $(this).parents('.add-ingredient-block');
+        let parent = $(this).parents('.ingredient-block');
         let id_recipe_part = parent.parents('.recipe-part-item').data('id_recipe_part');
         $.ajax({
             type: 'POST',
@@ -262,11 +265,11 @@ $(function () {
             data: {id_recipe_part: id_recipe_part},
             success: function (data) {
                 if (data.status) {
-                    parent.before(data.content);
+                    parent.children('.row').append(data.content);
                     let block_class = '.ingredient-item-' + data.position;
                     initRecipeIngredientSelectize(block_class);
                 }
-                showAlert(data.message,data.status);
+                showAlert(data.message, data.status);
             }
 
         });
@@ -290,7 +293,7 @@ function initEditor(selector) {
         selector: selector,
         menubar: false,
         branding: false,
-        height:150,
+        height: 150,
         language: iso_code || 'ru',
         toolbar: "undo redo | removeformat | bold italic | alignleft aligncenter alignright alignjustify"
     });
@@ -313,8 +316,8 @@ function initRecipePartSelectize(selector) {
     });
 }
 
-function initRecipeIngredientSelectize(selector) {
-    $(selector + ' .unit-select').selectize({
+function initRecipeUnitSelectize(unit_selector) {
+    $(unit_selector).selectize({
         valueField: 'value',
         plugins: ['restore_on_backspace'],
         labelField: 'title',
@@ -326,6 +329,10 @@ function initRecipeIngredientSelectize(selector) {
             weight_input.focus();
         }
     });
+}
+
+function initRecipeIngredientSelectize(selector) {
+    initRecipeUnitSelectize(selector + ' .unit-select');
     $(selector + ' .ingredient-select').selectize({
         valueField: 'id',
         labelField: 'name',
@@ -345,6 +352,7 @@ function initRecipeIngredientSelectize(selector) {
             item: function (value) {
                 let select = this.$input;
                 let parent = select.parents('.ingredient-item');
+                console.log(parent);
                 let data = {};
                 if (!value.get_unit) {
                     data.units = value.unit_available;

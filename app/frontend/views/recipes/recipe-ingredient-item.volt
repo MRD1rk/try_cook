@@ -15,6 +15,7 @@
                 </div>
                 <div class="col-7">
                     <select placeholder="{{ t._('begin_input') }}" class="unit-select">
+                        <option value=""></option>
                         {% if recipe_ingredient.getIngredient() %}
                             {% for unit in recipe_ingredient.getIngredient().getUnits() %}
                                 <option value="{{ unit.id }}">{{ unit.lang.title }}</option>

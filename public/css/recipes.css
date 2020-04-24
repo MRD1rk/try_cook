@@ -48,7 +48,9 @@
 .add-recipe-preview-img:hover span {
     color: #ff291f;
 }
-
+.hovered-red{
+    color:#8b80a0;
+}
 .hovered-red:hover {
     transition: .3s;
     color: #ff291f;
@@ -69,23 +71,30 @@
 
 .btn-add-ingredient {
 
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     margin-bottom: 20px;
 }
 
 .delete-ingredient {
     cursor: pointer;
 }
-
-.recipe-block, .steps-block {
-    margin: 10px 0;
-    padding: 15px;
+.recipe-block-item{
     background: #ffffff;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
     border: 1px solid #e6dbdb;
     box-shadow: 0 2px 4px 0 #e6dbdb;
+    padding: 15px;
+    margin-bottom:40px;
+}
+.recipe-block, .steps-block {
+    margin: 10px 0;
+    /*background: #ffffff;*/
+    background: #f9f9f9;
+}
+.steps-block:empty{
+    display: none;
 }
 .category-item-title {
     position: absolute;

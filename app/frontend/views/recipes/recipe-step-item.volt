@@ -21,7 +21,7 @@
         </div>
         <div class="col-12">
             <div class="recipe-step-description-block">
-                <textarea name="recipe_steps[description][{{ step.id }}]">{{ step.lang.content|default('') }}</textarea>
+                <textarea data-keep="true" name="recipe_steps[description][{{ step.id }}]">{{ step.lang.content|default('') }}</textarea>
             </div>
         </div>
     </div>

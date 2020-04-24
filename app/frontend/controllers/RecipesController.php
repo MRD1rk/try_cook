@@ -6,15 +6,12 @@ use Helpers\Tools;
 use Models\Category;
 use Models\Context;
 use Models\Feature;
-use Models\Ingredient;
 use Models\RecipeMedia;
 use Models\Part;
 use Models\Recipe;
 use Models\RecipeIngredient;
 use Models\RecipePart;
 use Models\RecipeStep;
-use Models\Unit;
-use Phalcon\Image;
 
 class RecipesController extends BaseController
 {

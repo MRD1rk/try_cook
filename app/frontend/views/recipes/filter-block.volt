@@ -23,7 +23,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                {% if categories|length > 5 %}
+                {% if categories|length > 3 %}
                     <div class="show-all-filter">
                         <div class="text-center">
                             <i class="fas fa-angle-double-down"></i>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="filter-item-values">
                         {% for feature_value in feature['feature_values'] %}
-                            <div class="filter-item-value {% if loop.index > 5 %}marked visible-hidden hide{% endif %}">
+                            <div class="filter-item-value {% if loop.index > 3 %}marked visible-hidden hide{% endif %}">
                                 <div class="custom-control custom-radio">
 {#                                    <input type="radio" class="custom-control-input" name="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"#}
                                     <input type="radio" class="custom-control-input" name="features[{{ feature['id_feature'] }}]"
@@ -54,7 +54,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    {% if feature['feature_values']|length > 5 %}
+                    {% if feature['feature_values']|length > 3 %}
                         <div class="show-all-filter">
                             <div class="text-center">
                                 <i class="fas fa-angle-double-down"></i>
