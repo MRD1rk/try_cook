@@ -601,6 +601,27 @@ h1.tc-title {
 .delete-ingredient i{
     vertical-align: -webkit-baseline-middle;
 }
+
+.notice-error{
+    position: relative;
+    padding: 5px;
+    color: #FF0000;
+}
+.notice-error .notice-error-icon{
+    position: absolute;
+}
+.notice-error .notice-error-icon i{
+    padding: 3px;
+}
+.notice-error .notice-error-icon:hover{
+    color: white;
+    background: red;
+}
+.notice-error .notice-message {
+    position: relative;
+    left: 28px;
+    display: inline-block;
+}
 /*#header-account-btn .btn-tc{*/
 /*    padding: 0;*/
 /*}*/

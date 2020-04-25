@@ -147,19 +147,25 @@
                     {% endfor %}
                 </div>
                 <div class="col-12 recipe-block-item">
-                    <div class="steps-block">{% for step in recipe.getSteps() %}{{ partial('recipes/recipe-step-item',['step':step]) }}{% endfor %}</div>
+                    <div class="steps-block ">{% for step in recipe.getSteps() %}{{ partial('recipes/recipe-step-item',['step':step]) }}{% endfor %}</div>
+                </div>
+                <div class="col-12">
                     <div class="mt-2">
                         <div class="w100">
                             <div class="text-center">
-
                                 <button id="add_recipe_step"
-                                        class="btn btn-default hovered-red border-dark">{{ t._('add_step') }}</button>
+                                        class="btn btn-default hovered-red border-dark">{{ t._('add_step') }}
+                                </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+            <div class="notice-error">
+                <div class="notice-error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <span class="notice-message">Нужно указать хотя бы один шаг</span></div>
         </div>
         <!--right block-->
         <div class="col-2">
