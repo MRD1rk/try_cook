@@ -1,4 +1,4 @@
-<div id="choose-language">
+ <div id="choose-language">
     <div class="dropdown">
         <div class="dropdown-toggle"
              data-toggle="dropdown">

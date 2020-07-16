@@ -1,7 +1,9 @@
 <div class="col-12 ingredient-item ingredient-item-{{ recipe_ingredient.position }}"
-     data-id_recipe_ingredient="{{ recipe_ingredient.id }}">
+     data-id_recipe_ingredient="{{ recipe_ingredient.id }}" data-position="{{ recipe_ingredient.position }}">
     <div class="row">
-        <div class="col-6">
+        <div class="col-1 pr-0 draggable" >
+            <i class="fas fa-grip-vertical"></i></div>
+        <div class="col-5 pl-0">
             <select placeholder="{{ t._('begin_input') }}" class="ingredient-select">
                 <option data-data='{"unit_available": {{ recipe_ingredient.getIngredient() ? recipe_ingredient.getIngredient().unit_available|json_encode:{} }},"get_unit":{{ recipe_ingredient.id_ingredient|default(false) }}}'
                         value="{{ recipe_ingredient.id_ingredient }}">{{ recipe_ingredient.getIngredient().lang.title|default('') }}</option>

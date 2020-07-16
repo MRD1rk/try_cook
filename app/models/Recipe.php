@@ -295,6 +295,7 @@ class Recipe extends BaseModel
             ]
         ]);
         $this->hasMany('id', 'Models\FeatureRecipe', 'id_recipe', ['alias' => 'recipeFeatures']);
+        $this->hasMany('id', RecipeLang::class, 'id_recipe', ['alias' => 'langs']);
         $this->hasMany('id', 'Models\RecipeStep', 'id_recipe', ['alias' => 'steps']);
         $this->hasMany('id', 'Models\RecipePart', 'id_recipe', ['alias' => 'parts',
             'params' => [
@@ -402,6 +403,13 @@ class Recipe extends BaseModel
         }
     }
 
+    public function beforeDelete()
+    {
+        $this->getParts()->delete();
+        $this->getImages()->delete();
+        $this->getSteps()->delete();
+        $this->getLangs()->delete();
+    }
     public function afterSave()
     {
         $recipe_step = new RecipeStep();

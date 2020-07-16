@@ -24,16 +24,20 @@
         <div class="col-12 ingredient-block">
             <div class="row">
                 <div class="col-12">
-                    <p class="text-center">Список ингридиентов</p>
+                    <p class="text-center">{{ t._('ingredients_list') }}</p>
                 </div>
-            {% for ingredient in recipe_part.getIngredients() %}
-                {{ partial('recipes/recipe-ingredient-item',['recipe_ingredient':ingredient]) }}
-            {% endfor %}
+                <div class="col-12">
+                    <div class="row ingredient-items">
+                        {% for ingredient in recipe_part.getIngredients() %}
+                            {{ partial('recipes/recipe-ingredient-item',['recipe_ingredient':ingredient]) }}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="text-center add-ingredient-block">
-
-                <p class="text-center hovered-red btn-add-ingredient"><i
-                            class="fa fa-plus"></i>&nbsp;{{ t._('add_ingredient') }}</p>
+                <p class="text-center hovered-red btn-add-ingredient">
+                    <i class="fa fa-plus"></i>&nbsp;{{ t._('add_ingredient') }}
+                </p>
             </div>
         </div>
     </div>

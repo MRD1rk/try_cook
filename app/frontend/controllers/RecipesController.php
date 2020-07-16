@@ -36,7 +36,7 @@ class RecipesController extends BaseController
             $this->view->force_login_modal = true;
             $this->session->set('login_redirect_url', $this->url->get(['for' => 'recipes-new', 'iso_code' => $iso_code]));
             $this->flash->error($this->t->_('you_must_be_logged'));
-            return $this->dispatcher->forward(['action' => 'index', 'params' => ['iso_code' => $iso_code]]);
+            $this->dispatcher->forward(['action' => 'index', 'params' => ['iso_code' => $iso_code]]);
         }
         $drafted_recipe = $user->getDraftRecipe();
         if (!$drafted_recipe) {
@@ -259,7 +259,6 @@ class RecipesController extends BaseController
 
     public function updateRecipeIngredientAction()
     {
-
         if ($this->request->isPost() && $this->request->isAjax()) {
             $status = false;
             $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');

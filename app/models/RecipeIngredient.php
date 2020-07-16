@@ -274,13 +274,15 @@ class RecipeIngredient extends BaseModel
 
     public function beforeSave()
     {
-        $this->position = $this->count('id_recipe=' . $this->getIdRecipe()) + 1;
+        $this->position = $this->count('id_recipe=' . $this->getIdRecipe() . ' AND id_recipe_part='.$this->getIdRecipePart()) + 1;
     }
 
     public function afterDelete()
     {
         $db = Di::getDefault()->get('db');
-        $sql = 'UPDATE tc_recipe_ingredient SET `position` = (`position` - 1) WHERE `position` > ' . $this->getPosition() . ' AND id_recipe=' . $this->getIdRecipe();
+        $sql = 'UPDATE tc_recipe_ingredient SET `position` = (`position` - 1) 
+                WHERE `position` > ' . $this->getPosition() . ' AND id_recipe=' . $this->getIdRecipe() .
+                ' AND id_recipe_part = '. $this->getIdRecipePart();
         $db->execute($sql);
     }
 }
