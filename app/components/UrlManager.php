@@ -51,7 +51,7 @@ class UrlManager extends Url
 
     public function getRecipeImage($id_image, $image_type = 'default', $alias = 'recipe', $absolute = false)
     {
-        $url = DIRECTORY_SEPARATOR.ImageManager::$recipe_image_dir.DIRECTORY_SEPARATOR.$id_image . '-' . $image_type . '/' . $alias . '.jpeg';
+        $url = DIRECTORY_SEPARATOR . ImageManager::$recipe_image_dir . DIRECTORY_SEPARATOR.$id_image . '-' . $image_type . '/' . $alias . '.jpeg';
         if ($absolute)
             $url = Configuration::get('HTTP_SCHEME') . '://' . Configuration::get('DOMAIN') . $url;
         return $url;

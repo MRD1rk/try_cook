@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                {% set preview_url = url.getRecipeImage(cover.getId()) %}
+                                {% set preview_url = cover.getId() ? url.getRecipeImage(cover.getId()) : '' %}
                                 <div class="preview-image-block {% if (preview_url is empty) %}not-image {% endif %}">
                                     <label class="add-recipe-preview-img" for="recipe_image"
                                            style="background-image: url('{{ preview_url }}');">

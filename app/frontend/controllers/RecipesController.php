@@ -401,7 +401,10 @@ class RecipesController extends BaseController
                 return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
             }
             $image = $recipe->uploadPreviewImage($files);
-
+            if (!$image) {
+                $message = Tools::arrToString($recipe->getMessages());
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
             return $this->response->setJsonContent(
                 [
                     'status' => true,

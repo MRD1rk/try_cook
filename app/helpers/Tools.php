@@ -448,9 +448,12 @@ class Tools
      */
     public static function arrToString($value = null, $glue = ', '): string
     {
+        $return = [];
         if (!is_array($value))
             return $value;
-        $value = implode($glue, $value);
-        return $value;
+        foreach ($value as $message) {
+            $return[] = $message;
+        }
+        return implode($glue, $return);
     }
 }

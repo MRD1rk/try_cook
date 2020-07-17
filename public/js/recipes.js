@@ -2,6 +2,7 @@
 $(function () {
     // Translation.load('recipes_add', 'global');
     let values = {};
+    let id_recipe = $('#content').data('id_recipe');
     $('.feature-select').selectize({
         persist: true,
         onChange: function () {
@@ -13,7 +14,7 @@ $(function () {
     // restore from sessionStorage
     $.each($('*[data-keep]'), function () {
         let $this = $(this);
-        let value = window.sessionStorage.getItem($this.attr('name'));
+        let value = window.sessionStorage.getItem(id_recipe + '__' + $this.attr('name'));
         if (value) {
             if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
                 if (value === $this.val()) {
@@ -26,15 +27,15 @@ $(function () {
                 $this.val(value)
         }
     });
-    $('body').on('input', '.recipes-add input,textarea', function () {
+    $('body').on('input', '.recipes-add input:not([type="file"]),textarea', function () {
         let $this = $(this);
         if ($this.attr('type') === 'radio' || $this.attr('type') === 'checkbox') {
             if (!$this.is(':checked')) {
-                window.sessionStorage.removeItem($this.attr('name'));
+                window.sessionStorage.removeItem(id_recipe + '__' + $this.attr('name'));
                 return true;
             }
         }
-        window.sessionStorage.setItem($this.attr('name'), $this.val());
+        window.sessionStorage.setItem(id_recipe + '__' + $this.attr('name'), $this.val());
     });
     //save recipe event
     $('body').on('click', '#save-recipe', function (e) {
@@ -144,7 +145,7 @@ $(function () {
             success: function (data) {
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
-                    parent.removeClass('no-image');
+                    parent.removeClass('not-image');
                     parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v=' + Math.random() + ')');
                 }
                 showAlert(data.message, data.status);
@@ -215,7 +216,7 @@ $(function () {
                 showAlert(data.message, data.status);
                 if (data.status) {
                     let parent = input.parent('.preview-image-block');
-                    parent.removeClass('no-image');
+                    parent.removeClass('not-image');
                     parent.find('.add-recipe-preview-img').css('background-image', 'url(' + data.url + '?v=' + Math.random() + ')');
                 }
             }
@@ -223,6 +224,9 @@ $(function () {
         })
     });
 
+    /**
+     * Input and send data about ingredient item
+     */
     $('body').on('input', '.weight-input', function () {
         let input = $(this);
         let count = input.val();
@@ -292,6 +296,9 @@ function initEditor(selector) {
     tinyMCE.init({
         selector: selector,
         menubar: false,
+        autosave_ask_before_unload: false,
+        autosave_restore_when_empty: true,
+        plugins: ['autosave'],
         branding: false,
         height: 150,
         language: iso_code || 'ru',
@@ -397,6 +404,9 @@ function initRecipeIngredientSelectize(selector) {
     });
 }
 
+/**
+ * Check if need open block with need prepare time params
+ */
 function checkNeedPrepare() {
     let el = $('#need_prepare');
     let show = el.is(':checked');

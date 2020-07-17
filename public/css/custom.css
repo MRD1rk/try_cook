@@ -134,7 +134,9 @@ p {
     opacity: 0;
     animation: popin 1.5s linear infinite 0.5s;
 }
-
+textarea:focus{
+    outline: none;
+}
 footer#footer {
     background-color: #bbb4cc;
     padding: 15px;

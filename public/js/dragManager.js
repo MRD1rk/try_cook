@@ -4,10 +4,6 @@ $(function () {
         // containment: 'parent',
         placeholder: 'step-placeholder',
         axis: 'y',
-        // placeholder: "ui-state-highlight",
-        // receive: function (event, ui) {
-        //     ui.item.remove();
-        // },
         start: function (event, ui) {
             ui.helper.addClass('dragging');
             $('.step-item').addClass('short').css('height', 'auto');
@@ -42,17 +38,44 @@ $(function () {
         }
     });
     $('.steps-block').disableSelection();
-    // parts.draggable({
-    //     containment: 'parent',
-    //     axis:'y',
-    //     handle: '.draggable',
-    //     zIndex: 1000,
-    //     helper:'clone',
-    //     start: function (e, ui) {
-    //
-    //     },
-    //     stop: function (e, ui) {
-    //         parts.removeClass('dragging');
-    //     }
-    // });
+
+    //Ingredient item sortable
+    $('.ingredient-items').sortable({
+        handler:'.draggable',
+        axis:'y',
+        placeholder: 'step-placeholder',
+        start: function (event, ui) {
+            ui.helper.addClass('dragging');
+            $('.step-item').addClass('short').css('height', 'auto');
+            ui.item.data('start-pos', ui.item.index() + 1);
+            ui.placeholder.css('height','35px');
+            ui.placeholder.css('width','95%');
+            $(this).sortable('refreshPositions');
+
+        },
+        stop: function (event, ui) {
+            ui.item.removeClass('dragging');
+            $('.step-item').removeClass('short');
+        },
+        change: function (e, ui) {
+            var seq,
+                startPos = ui.item.data('start-pos'),
+                $index,
+                correction;
+            correction = startPos <= ui.placeholder.index() ? 0 : 1;
+
+            ui.item.parent().find('.ingredient-item').each(function (idx, el) {
+                var $this = $(el),
+                    $index = $this.index();
+                if (($index + 1 >= startPos && correction === 0) || ($index + 1 <= startPos && correction === 1)) {
+                    $index = $index + correction;
+                    $this.attr('data-position', $index);
+                }
+            });
+            seq = ui.item.parent().find('.step-placeholder').index() + correction;
+            ui.item.attr('data-position', seq);
+        }
+    });
+
+    $('.ingredient-items').disableSelection();
 });
