@@ -1,7 +1,7 @@
 # IntellijIdea files
 *.iml
 .idea
-
+.cache
 vendor
 config.*
 !.gitignore
