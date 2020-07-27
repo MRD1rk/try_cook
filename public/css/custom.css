@@ -134,9 +134,11 @@ p {
     opacity: 0;
     animation: popin 1.5s linear infinite 0.5s;
 }
-textarea:focus{
+
+textarea:focus {
     outline: none;
 }
+
 footer#footer {
     background-color: #bbb4cc;
     padding: 15px;
@@ -327,8 +329,72 @@ input[type="file"] {
     color: #afa9a9;
     text-decoration: none;
 }
-.selectize-input:hover{
+
+.selectize-input:hover {
     border: 1px solid black;
+}
+.field-has-error .error-message{
+    display: none;
+}
+.field-has-error i:hover+.error-message {
+    display: block;
+    position: relative;
+    left: -15px;
+    top: 3px;
+    background: red;
+    color: white;
+    padding: 3px;
+    z-index: 1000;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: normal;
+}
+.field-has-error .error-icon:hover {
+    cursor: pointer;
+}
+.error-message::before {
+    content: "";
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-bottom: 5px solid red;
+    position: absolute;
+    top: -5px;
+    left: 20px;
+}
+.field-has-error{
+    position: relative;
+    color: red;
+}
+.field-has-error input{
+    border: 2px solid red;
+}
+.field-has-error #recipe_title{
+    padding-left: 35px;
+}
+.field-has-error .error-container+label{
+    margin-left: 35px;
+    color: red;
+}
+.field-has-error *::placeholder{
+    color: red;
+}
+.field-has-error input:focus {
+    border: 2px solid red;
+    outline-color: red;
+    box-shadow: none;
+}
+.field-has-error .error-container{
+    color: red;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.field-has-error .error-container i{
+    font-size: 20px;
+}
+.field-has-error .recipe-description-block .error-container {
+    top: 0;
 }
 /*::-webkit-input-placeholder {*/
 /*    !* Chrome/Opera/Safari *!*/
@@ -364,6 +430,7 @@ h1.tc-title {
     padding: 10px 0 30px 0;
     border-bottom: 1px solid #ccbd9c;
     margin-bottom: 30px;
+    word-break: break-all;
 }
 
 #search {
@@ -584,46 +651,56 @@ h1.tc-title {
     background-color: #d4edda;
     border-color: #c3e6cb;
 }
-.toast-success .toast-progress{
+
+.toast-success .toast-progress {
     background: #155724;
 }
-.toast-error .toast-progress{
+
+.toast-error .toast-progress {
     background: #721c24;
 }
+
 .toast-error {
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
-.toast-header{
+
+.toast-header {
     color: inherit;
     text-transform: capitalize;
     background-color: inherit;
 }
-.delete-ingredient i{
+
+.delete-ingredient i {
     vertical-align: -webkit-baseline-middle;
 }
 
-.notice-error{
+.notice-error {
     position: relative;
     padding: 5px;
     color: #FF0000;
 }
-.notice-error .notice-error-icon{
+
+.notice-error .notice-error-icon {
     position: absolute;
 }
-.notice-error .notice-error-icon i{
+
+.notice-error .notice-error-icon i {
     padding: 3px;
 }
-.notice-error .notice-error-icon:hover{
+
+.notice-error .notice-error-icon:hover {
     color: white;
     background: red;
 }
+
 .notice-error .notice-message {
     position: relative;
     left: 28px;
     display: inline-block;
 }
+
 /*#header-account-btn .btn-tc{*/
 /*    padding: 0;*/
 /*}*/

@@ -1,5 +1,6 @@
 <div class="recipe-block-item recipe-part-item recipe-part-item-{{ recipe_part.position }}"
-     data-id_recipe_part="{{ recipe_part.id }}">
+     data-id_recipe_part="{{ recipe_part.id }}"
+     data-position="{{ recipe_part.position }}">
     <div class="row">
         <div class="col-12">
             <div class="row">

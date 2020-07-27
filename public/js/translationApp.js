@@ -7,7 +7,7 @@ const Translation = {
             type: 'POST',
             url: '/'+iso_code+'/get-translations',
             dataType: 'json',
-            async: true,
+            async: false,
             data: data,
             success: function (data) {
                 Translation.scope = data.data;

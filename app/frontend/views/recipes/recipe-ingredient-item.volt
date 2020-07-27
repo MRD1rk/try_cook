@@ -5,7 +5,7 @@
             <i class="fas fa-grip-vertical"></i></div>
         <div class="col-5 pl-0">
             <select placeholder="{{ t._('begin_input') }}" class="ingredient-select">
-                <option data-data='{"unit_available": {{ recipe_ingredient.getIngredient() ? recipe_ingredient.getIngredient().unit_available|json_encode:{} }},"get_unit":{{ recipe_ingredient.id_ingredient|default(false) }}}'
+                <option data-data='{"unit_available": {{ recipe_ingredient.getIngredient() ? recipe_ingredient.getIngredient().unit_available|json_encode:{} }},"saved":{{ recipe_ingredient.id_ingredient is defined }}}'
                         value="{{ recipe_ingredient.id_ingredient }}">{{ recipe_ingredient.getIngredient().lang.title|default('') }}</option>
             </select>
         </div>
@@ -20,7 +20,7 @@
                         <option value=""></option>
                         {% if recipe_ingredient.getIngredient() %}
                             {% for unit in recipe_ingredient.getIngredient().getUnits() %}
-                                <option value="{{ unit.id }}">{{ unit.lang.title }}</option>
+                                <option {% if recipe_ingredient.id_unit == unit.id %} selected {% endif %}value="{{ unit.id }}">{{ unit.lang.title }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>

@@ -1,6 +1,6 @@
 'use strict';
 $(function () {
-    // Translation.load('recipes_add', 'global');
+    Translation.load('recipes_add', 'global', 'validation');
     let values = {};
     let id_recipe = $('#content').data('id_recipe');
     $('.feature-select').selectize({
@@ -11,6 +11,10 @@ $(function () {
             values[name] = input;
         }
     });
+    // let  changeRecipeTitle = function (){
+    //     console.log($(this));
+    // }
+    $('#recipe_title').on('input', changeRecipeTitle);
     // restore from sessionStorage
     $.each($('*[data-keep]'), function () {
         let $this = $(this);
@@ -37,6 +41,36 @@ $(function () {
         }
         window.sessionStorage.setItem(id_recipe + '__' + $this.attr('name'), $this.val());
     });
+    $('#recipe_title').myValidation({
+        errorType: 'recipe_name_empty_error'
+    });
+    $('.cooking-time-block').myValidation({
+        rules: ['checkTime'],
+        target: 'label',
+        event: 'input',
+        errorType: 'input_time_error'
+    });
+    $('#recipe_person_count').myValidation({
+        rules: ['required', 'number'],
+        target: 'label',
+        errorType: 'person_count_error',
+        minCount: 1,
+        maxCount: 16
+    });
+    $('.filter-item-values.category').myValidation({
+        rules: ['checked'],
+        target: '.filter-item-title label',
+        errorType: 'category_checked_error',
+        parent: '.filter-item',
+        event: 'change'
+    })
+    $('.filter-item-values.nationality').myValidation({
+        rules: ['checked'],
+        target: '.filter-item-title label',
+        errorType: 'nationality_checked_error',
+        parent: '.filter-item',
+        event: 'change'
+    })
     //save recipe event
     $('body').on('click', '#save-recipe', function (e) {
         e.preventDefault();
@@ -70,6 +104,9 @@ $(function () {
                 block.fadeOut(function () {
                     block.remove();
                 });
+                updateIngredientPosition(data.data)
+
+
                 showAlert(data.message, data.status);
             }
         });
@@ -116,6 +153,7 @@ $(function () {
                     })
                 }
                 showAlert(data.message, data.status);
+                updatePartPosition(data.data);
             }
         });
     });
@@ -242,16 +280,14 @@ $(function () {
         let id_recipe_ingredient = parent.data('id_recipe_ingredient');
         let id_ingredient = parent.find('.ingredient-select').val();
         let id_unit = parent.find('.unit-select').val();
+        let data = {
+            count: count,
+            id_ingredient: id_ingredient,
+            id_unit: id_unit,
+            id_recipe_ingredient: id_recipe_ingredient
+        };
         let timer = setTimeout(function () {
-            $.ajax({
-                type: 'POST',
-                url: current_url + '/update-recipe-ingredient/' + id_recipe_ingredient,
-                dataType: 'json',
-                data: {count: count, id_ingredient: id_ingredient, id_unit: id_unit},
-                success: function (data) {
-                    showAlert(data.message, data.status);
-                }
-            })
+            updateRecipeIngredient(data)
         }, 1000);
         input.data('timer', timer);
 
@@ -262,6 +298,7 @@ $(function () {
     $('body').on('click', '.btn-add-ingredient', function () {
         let parent = $(this).parents('.ingredient-block');
         let id_recipe_part = parent.parents('.recipe-part-item').data('id_recipe_part');
+        parent = parent.find('.ingredient-items');
         $.ajax({
             type: 'POST',
             url: current_url + '/add-recipe-ingredient',
@@ -269,7 +306,7 @@ $(function () {
             data: {id_recipe_part: id_recipe_part},
             success: function (data) {
                 if (data.status) {
-                    parent.children('.row').append(data.content);
+                    parent.append(data.content);
                     let block_class = '.ingredient-item-' + data.position;
                     initRecipeIngredientSelectize(block_class);
                 }
@@ -279,6 +316,54 @@ $(function () {
         });
 
     });
+//Ingredient item sortable
+    $('.ingredient-items').sortable({
+        handler: '.draggable',
+        axis: 'y',
+        placeholder: 'step-placeholder',
+        start: function (event, ui) {
+            ui.helper.addClass('dragging');
+            ui.item.data('start-pos', ui.item.index() + 1);
+            ui.placeholder.css('height', '35px');
+            ui.placeholder.css('width', '95%');
+            $(this).sortable('refreshPositions');
+
+        },
+        stop: function (event, ui) {
+            let element = ui.item;
+            element.removeClass('dragging');
+        },
+        update: function (event, ui) {
+            let element = ui.item;
+            let id_recipe_ingredient = element.data('id_recipe_ingredient');
+            let position = element.data('position');
+            $.ajax({
+                type: 'POST',
+                url: current_url + '/update-recipe-ingredient-position/' + id_recipe_ingredient,
+                data: {position: position}
+            })
+
+        },
+        change: function (e, ui) {
+            var seq,
+                startPos = ui.item.data('start-pos'),
+                correction;
+            correction = startPos <= ui.placeholder.index() ? 0 : 1;
+
+            ui.item.parent().find('.ingredient-item').each(function (idx, el) {
+                var $this = $(el),
+                    $index = $this.index();
+                if (($index + 1 >= startPos && correction === 0) || ($index + 1 <= startPos && correction === 1)) {
+                    $index = $index + correction;
+                    $this.attr('data-position', $index);
+                }
+            });
+            seq = ui.item.parent().find('.step-placeholder').index() + correction;
+            ui.item.data('position', seq);
+            ui.item.attr('data-position', seq);
+        }
+    });
+    $('.ingredient-items').disableSelection();
 
     initEditor('#recipe_description');
     initRecipePartSelectize('.recipe-part-select');
@@ -295,7 +380,19 @@ function calculateCookTime(hours = 0, minutes = 0) {
 function initEditor(selector) {
     tinyMCE.init({
         selector: selector,
+        required: true,
         menubar: false,
+        setup: function (ed) {
+            ed.on('input', function (e) {
+                let parent = $(selector).parents('.form-group');
+                let label = parent.find('label');
+                let target = {parent: parent, target: label}
+                if (!ed.getContent()) {
+                    $.fn.myValidation('showError', target, Translation.get('recipe_description_empty_error'))
+                } else
+                    $.fn.myValidation('hideError', target)
+            });
+        },
         autosave_ask_before_unload: false,
         autosave_restore_when_empty: true,
         plugins: ['autosave'],
@@ -329,17 +426,33 @@ function initRecipeUnitSelectize(unit_selector) {
         plugins: ['restore_on_backspace'],
         labelField: 'title',
         lock: true,
-        onChange: function () {
+        onChange: function (id) {
             let parent = this.$input.parents('.ingredient-item');
             let weight_input = parent.find('.weight-input');
-            weight_input.attr('disabled', false);
-            weight_input.focus();
+            if (id == 6) {
+                let id_recipe_ingredient = parent.data('id_recipe_ingredient');
+                let id_ingredient = parent.find('.ingredient-select').val();
+                let id_unit = parent.find('.unit-select').val();
+                let data = {
+                    count: 0,
+                    id_ingredient: id_ingredient,
+                    id_unit: id_unit,
+                    id_recipe_ingredient: id_recipe_ingredient
+                };
+                updateRecipeIngredient(data);
+                weight_input.attr('disabled', true);
+                weight_input.val('')
+            } else {
+                weight_input.attr('disabled', false);
+                weight_input.focus();
+            }
         }
     });
 }
 
 function initRecipeIngredientSelectize(selector) {
     initRecipeUnitSelectize(selector + ' .unit-select');
+    let error = false;
     $(selector + ' .ingredient-select').selectize({
         valueField: 'id',
         labelField: 'name',
@@ -348,6 +461,7 @@ function initRecipeIngredientSelectize(selector) {
         options: [],
         create: false,
         onChange: function (id_ingredient) {
+            console.log('changed');
             if (!id_ingredient.length) {
                 let parent = this.$input.parents('.ingredient-item');
                 var selectize = parent.find('.unit-select')[0].selectize;
@@ -359,9 +473,8 @@ function initRecipeIngredientSelectize(selector) {
             item: function (value) {
                 let select = this.$input;
                 let parent = select.parents('.ingredient-item');
-                console.log(parent);
                 let data = {};
-                if (!value.get_unit) {
+                if (!value.saved) {
                     data.units = value.unit_available;
                     $.ajax({
                         type: 'POST',
@@ -379,13 +492,20 @@ function initRecipeIngredientSelectize(selector) {
                         }
                     });
                 }
-                return '<div data-units="' + value.unit_available + '" data-value="' + value.id + '">' + value.name + '</div>'
+                return '<div data-error="' + select.data('error') + '" data-units="' + value.unit_available + '" data-value="' + value.id + '">' + value.name + '</div>'
             }
         },
         load: function (query, callback) {
+            let except = [];
+            let block = this.$input.parents('.ingredient-item');
+            let selects = block.siblings('.ingredient-item').find('select.ingredient-select');
+            selects.each(function () {
+                except.push(parseInt($(this).val()))
+            });
             if (!query.length || query.length < 3) return callback();
             let data = {};
             data['query'] = query;
+            data['except'] = except;
             $.ajax({
                 url: '/api/get-ingredients',
                 type: 'POST',
@@ -410,15 +530,72 @@ function initRecipeIngredientSelectize(selector) {
 function checkNeedPrepare() {
     let el = $('#need_prepare');
     let show = el.is(':checked');
-    if (show)
-        $('.prepare-time-block').fadeIn();
-    else {
-        $('.prepare-time-block').fadeOut();
+    let block = $('.prepare-time-block');
+    if (show) {
+        block.fadeIn();
+        block.myValidation({
+            rules: ['checkTime'],
+            target: 'label',
+            event: 'input',
+            errorType: 'input_time_error',
+        });
+    } else {
+        block.fadeOut();
+        block.myValidation('destroy')
         let prepare_hours = $('input[name="recipe_prepare_hours"]');
         let prepare_minutes = $('input[name="recipe_prepare_minutes"]');
         prepare_hours.val('');
         prepare_minutes.val('');
+
         window.sessionStorage.removeItem(prepare_hours.attr('name'));
         window.sessionStorage.removeItem(prepare_minutes.attr('name'));
     }
+}
+
+/**
+ * Function for update data-position for ingredient-item
+ * @param data
+ */
+function updateIngredientPosition(data) {
+    for (let id_ingredient in data) {
+        let element = $('[data-id_recipe_ingredient=' + id_ingredient + ']');
+        element.removeClass('ingredient-item-' + element.data('position'))
+        element.data('position', data[id_ingredient])
+        element.attr('data-position', data[id_ingredient])
+        element.addClass('ingredient-item-' + element.data('position'))
+    }
+}
+
+/**
+ * Function for update data-position for part-item
+ * @param data
+ */
+function updatePartPosition(data) {
+    for (let id_part in data) {
+        let element = $('[data-id_recipe_part=' + id_part + ']');
+        element.removeClass('recipe-part-item-' + element.data('position'))
+        element.data('position', data[id_part])
+        element.attr('data-position', data[id_part])
+        element.addClass('recipe-part-item-' + element.data('position'))
+    }
+}
+
+function updateRecipeIngredient(data) {
+    let id_recipe_ingredient = data.id_recipe_ingredient;
+    delete data.id_recipe_ingredient
+    $.ajax({
+        type: 'POST',
+        url: current_url + '/update-recipe-ingredient/' + id_recipe_ingredient,
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            showAlert(data.message, data.status);
+        }
+    })
+}
+
+function changeRecipeTitle() {
+    let value = $(this).val();
+    if (value)
+        $('.tc-title').text(value);
 }

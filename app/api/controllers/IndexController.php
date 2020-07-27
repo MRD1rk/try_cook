@@ -23,12 +23,13 @@ class IndexController extends BaseController
     public function getIngredientsAction()
     {
         $query = $this->request->getPost('query', 'string');
-        if (!$query){
+        $except = $this->request->getPost('except',null,[]);
+        if (!$query) {
             $response['status'] = false;
             $response['message'] = $this->t->_('query_is_required');
             return $this->response->setJsonContent($response);
         }
-        $ids = (new Search())->query($query);
+        $ids = (new Search())->setFilter('id_ingredient', $except, true)->query($query);
         $ingredients = Ingredient::getIngredient(['ids' => $ids]);
         $datas = [];
         foreach ($ingredients as $ingredient) {
@@ -58,6 +59,7 @@ class IndexController extends BaseController
         $response['data'] = $datas;
         return $this->response->setJsonContent($response);
     }
+
     public function getRecipePartAction()
     {
 

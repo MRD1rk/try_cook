@@ -423,12 +423,27 @@ class Recipe extends BaseModel
      */
     public function allowEdit()
     {
-        $context_user = Context::getInstance()->getUser();
-        if ($context_user->getId() != $this->getIdUser())
-            return false;
-        return true;
+        $current_user = Context::getInstance()->getUser();
+        return $current_user->getId() === $this->getIdUser();
     }
 
+    public function getIngredientsData() {
+        $result = [];
+        $ingredients = $this->getRelated('ingredients');
+        foreach ($ingredients as $ingredient) {
+            $result[$ingredient->getId()] = $ingredient->getPosition();
+        }
+        return $result;
+    }
+
+    public function getPartsData() {
+        $result = [];
+        $parts = $this->getRelated('parts');
+        foreach ($parts as $part) {
+            $result[$part->getId()] = $part->getPosition();
+        }
+        return $result;
+    }
     /**
      * @return Simple
      * @todo change or delete this method.

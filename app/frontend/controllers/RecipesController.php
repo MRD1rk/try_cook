@@ -58,6 +58,7 @@ class RecipesController extends BaseController
         $this->assets->collection('footerJs')->addJs('vendor/jquery-ui-1.12.1/jquery-ui.min.js');
         $this->assets->collection('footerJs')->addJs('js/recipes.js');
         $this->assets->collection('footerJs')->addJs('js/dragManager.js');
+        $this->assets->collection('footerJs')->addJs('js/plugins/myValidation.js');
         $user = Context::getInstance()->getUser();
         $lang = Context::getInstance()->getLang();
         $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
@@ -87,7 +88,6 @@ class RecipesController extends BaseController
         $this->view->parts = $parts;
         $this->view->ingredients = [];
         $this->view->recipe_parts = $recipe_parts;
-        $this->view->recipe_ingredients = $recipe_ingredients;
         $this->view->images = $recipe->getImages();
         $this->view->cover = isset($images[0]) ? $images[0] : new RecipeMedia();
         $this->view->features = $features;
@@ -179,11 +179,13 @@ class RecipesController extends BaseController
             $id_recipe_part = $this->dispatcher->getParam('id_recipe_part');
             $recipe_part = RecipePart::findFirst($id_recipe_part);
             if ($recipe_part->delete()) {
+                $data = $recipe->getPartsData();
                 $status = true;
                 $message = $this->t->_('recipe_part_deleted');
                 return $this->response->setJsonContent([
                     'status' => $status,
-                    'message' => $message
+                    'message' => $message,
+                    'data' => $data
                 ]);
             }
         }
@@ -211,7 +213,7 @@ class RecipesController extends BaseController
             $recipe_ingredient->setIdRecipe($id_recipe);
             $recipe_ingredient->setIdRecipePart($id_recipe_part);
             if (!$recipe_ingredient->save()) {
-                $message = $this->t->_('fail');
+                $message = $this->t->_(Tools::arrToString($recipe_ingredient->getMessages()));
                 return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
             }
             $status = true;
@@ -246,19 +248,44 @@ class RecipesController extends BaseController
             $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient', 'int');
             $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
             if ($recipe_ingredient->delete()) {
+                $data = $recipe->getIngredientsData();
                 $status = true;
                 $message = $this->t->_('ingredient_deleted');
                 return $this->response->setJsonContent([
                     'status' => $status,
-                    'message' => $message
+                    'message' => $message,
+                    'data' => $data
                 ]);
             }
 
         }
     }
 
+    public function updateRecipeIngredientPositionAction() {
+
+        $this->view->disable();
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $status = false;
+            $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
+            if (!$id_recipe) {
+                $message = $this->t->_('id_recipe_is_required');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $recipe = Recipe::findFirst($id_recipe);
+            if (!$recipe->allowEdit()) {
+                $message = $this->t->_('no_access');
+                return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
+            }
+            $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient','int');
+            $position = $this->request->getPost('position','int');
+            $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
+            $recipe_ingredient->setPosition($position);
+            $recipe_ingredient->save();
+        }
+    }
     public function updateRecipeIngredientAction()
     {
+
         if ($this->request->isPost() && $this->request->isAjax()) {
             $status = false;
             $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
@@ -279,7 +306,16 @@ class RecipesController extends BaseController
             $recipe_ingredient->setIdIngredient($id_ingredient);
             $recipe_ingredient->setIdUnit($id_unit);
             $recipe_ingredient->setCount($count);
-            if ($recipe_ingredient->save()) {
+            if (!$recipe_ingredient->save()) {
+                $status = false;
+                $message = Tools::arrToString($recipe_ingredient->getMessages());
+                return $this->response->setJsonContent(
+                    [
+                        'status' => $status,
+                        'message' => $message,
+                    ]);
+            }
+             else {
                 $status = true;
                 $message = $this->t->_('ingredient_updated');
                 return $this->response->setJsonContent(

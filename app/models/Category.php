@@ -338,7 +338,7 @@ class Category extends BaseModel
         $this->setPosition(Category::count() + 1);
     }
 
-    public function afterSave()
+    public function beforeSave()
     {
         if ($this->hasSnapshotData()) {
             if ($this->hasChanged('position')) {

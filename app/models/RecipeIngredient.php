@@ -3,6 +3,8 @@
 namespace Models;
 
 use Phalcon\Di;
+use Phalcon\Mvc\Model\Message;
+use Phalcon\Validation;
 
 class RecipeIngredient extends BaseModel
 {
@@ -171,6 +173,27 @@ class RecipeIngredient extends BaseModel
     }
 
     /**
+     * Validations and business logic
+     *
+     * @return boolean
+     */
+    public function validation()
+    {
+        $validator = new Validation();
+
+        $validator->add(
+            ['id_recipe','id_recipe_part','id_ingredient'],
+            new Validation\Validator\Uniqueness(
+                [
+                    'model' => $this,
+                    'message' => 'ingredient_must_be_unique',
+                ]
+            )
+        );
+
+        return $this->validate($validator);
+    }
+    /**
      * Returns the value of field id_ingredient
      *
      * @return integer
@@ -215,6 +238,7 @@ class RecipeIngredient extends BaseModel
      */
     public function initialize()
     {
+        $this->keepSnapshots(true);
         $this->belongsTo('id_ingredient', 'Models\Ingredient', 'id', ['alias' => 'ingredient']);
         $this->belongsTo('id_recipe_part', 'Models\Part', 'id', ['alias' => 'part']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
@@ -272,7 +296,7 @@ class RecipeIngredient extends BaseModel
         ];
     }
 
-    public function beforeSave()
+    public function beforeValidationOnCreate()
     {
         $this->position = $this->count('id_recipe=' . $this->getIdRecipe() . ' AND id_recipe_part='.$this->getIdRecipePart()) + 1;
     }
@@ -284,5 +308,33 @@ class RecipeIngredient extends BaseModel
                 WHERE `position` > ' . $this->getPosition() . ' AND id_recipe=' . $this->getIdRecipe() .
                 ' AND id_recipe_part = '. $this->getIdRecipePart();
         $db->execute($sql);
+    }
+    public function beforeSave()
+    {
+        if ($this->hasSnapshotData()) {
+            if ($this->hasChanged('position')) {
+                $old_position = $this->getSnapshotData()['position'];
+                $new_position = $this->getPosition();
+                if ($old_position > $new_position) {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position + 1
+                WHERE position >=' . $new_position . ' 
+                AND position < ' . $old_position . ' 
+                AND id != ' . $this->getId(). ' 
+                AND id_recipe_part='.$this->getIdRecipePart();
+                } else {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position - 1
+                WHERE position <=' . $new_position . ' 
+                AND position > ' . $old_position . ' 
+                AND id != ' . $this->getId(). ' 
+                AND id_recipe_part='.$this->getIdRecipePart();
+                }
+                if (!$result = $this->getWriteConnection()->query($phql)) {
+                    $message = new Message('sql query error (position). Result: ' . var_dump($result));
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

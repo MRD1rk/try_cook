@@ -128,7 +128,10 @@ class RecipePart extends BaseModel
      */
     public function initialize()
     {
-        $this->hasMany('id', RecipeIngredient::class, 'id_recipe_part', ['alias' => 'ingredients']);
+        $this->hasMany('id', RecipeIngredient::class, 'id_recipe_part', ['alias' => 'ingredients',
+            'params' => [
+                'order' => 'position'
+            ]]);
         $this->belongsTo('id_part', 'Models\Part', 'id', ['alias' => 'part']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }

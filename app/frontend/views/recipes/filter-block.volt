@@ -3,9 +3,9 @@
         {% if categories is defined %}
             <div class="filter-item">
                 <div class="filter-item-title">
-                    <span>{{ t._('post_in_category') }}</span>
+                    <label>{{ t._('post_in_category') }}</label>
                 </div>
-                <div class="filter-item-values">
+                <div class="filter-item-values category">
                     {% for category in categories %}
                         <div class="filter-item-value {% if loop.index > 5 %}marked visible-hidden hide{% endif %}">
                             <div class="filter-item-value">
@@ -36,9 +36,9 @@
             {% for feature in features %}
                 <div class="filter-item">
                     <div class="filter-item-title">
-                        <span>{{ feature['value'] }}</span>
+                        <label>{{ feature['value'] }}</label>
                     </div>
-                    <div class="filter-item-values">
+                    <div class="filter-item-values{% if feature['id_feature'] ==  1 %} nationality{% endif %}">
                         {% for feature_value in feature['feature_values'] %}
                             <div class="filter-item-value {% if loop.index > 3 %}marked visible-hidden hide{% endif %}">
                                 <div class="custom-control custom-radio">

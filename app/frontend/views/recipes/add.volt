@@ -12,8 +12,8 @@
                     <div class="row">
 
                         <div class="col-12">
-                            <div class="form-group">
-                                <input name="recipe_title" id="recipe_title" class="form-control"
+                            <div class="form-group ">
+                                <input name="recipe_title" id="recipe_title" class="form-control" title="123"
                                        data-keep="true"
                                        placeholder="{{ t._('enter_recipe_title') }}">
                             </div>
@@ -32,36 +32,42 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="recipe_description">{{ t._('add_description') }}</label>
-                                <textarea data-keep="true" class="form-control" id="recipe_description"></textarea>
+                                <div class="recipe-description-block">
+                                    <label for="recipe_description">{{ t._('add_description') }}</label>
+                                    <textarea data-keep="true" class="form-control" id="recipe_description"></textarea>
+                                </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label>
-                                    <i class="far fa-clock fa-2x"></i>
-                                    {{ t._('cooking_time') }}
-                                </label>
-                                <div class="row">
-                                    <div class="col-5 pr-0">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <input name="recipe_cooking_hours" id="recipe_cooking_hours"
-                                                       data-keep="true"
-                                                       class="form-control">
-                                            </div>
-                                            <div class="col-6 p-0"><span class="align-middle">{{ t._('hours') }}</span>
+                                <div class="cooking-time-block">
+                                    <label>
+                                        <i class="far fa-clock fa-2x"></i>
+                                        {{ t._('cooking_time') }}
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-5 pr-0">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input name="recipe_cooking_hours" id="recipe_cooking_hours"
+                                                           data-keep="true"
+                                                           class="form-control">
+                                                </div>
+                                                <div class="col-6 p-0"><span
+                                                            class="align-middle">{{ t._('hours') }}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-5 pr-0">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <input name="recipe_cooking_minutes" id="recipe_cooking_minutes"
-                                                       data-keep="true"
-                                                       class="form-control">
-                                            </div>
-                                            <div class="col-6 p-0"><span class="align-middle">{{ t._('minuts') }}</span>
+                                        <div class="col-5 pr-0">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input name="recipe_cooking_minutes" id="recipe_cooking_minutes"
+                                                           data-keep="true"
+                                                           class="form-control">
+                                                </div>
+                                                <div class="col-6 p-0"><span
+                                                            class="align-middle">{{ t._('minuts') }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -70,15 +76,17 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label>
-                                    <i class="fas fa-user-friends fa-2x"></i>
-                                    {{ t._('person_count') }}
-                                </label>
-                                <div class="row">
-                                    <div class="col-9">
-                                        <input name="recipe_person_count" id="recipe_person_count"
-                                               data-keep="true"
-                                               class="form-control">
+                                <div class="person-count">
+                                    <label>
+                                        <i class="fas fa-user-friends fa-2x"></i>
+                                        {{ t._('person_count') }}
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <input name="recipe_person_count" id="recipe_person_count"
+                                                   data-keep="true"
+                                                   class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -95,34 +103,37 @@
                                         <small class="form-text text-muted">Время на подготовку блюда</small>
                                     </div>
                                 </div>
-                                <div class="col-6 prepare-time-block">
-                                    <div class="form-group">
-                                        <label>
-                                            <i class="far fa-clock fa-2x"></i>
-                                            {{ t._('prepare_time') }}
-                                        </label>
-                                        <div class="row">
-                                            <div class="col-5 pr-0">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <input name="recipe_prepare_hours" id="recipe_prepare_hours"
-                                                               data-keep="true"
-                                                               class="form-control">
-                                                    </div>
-                                                    <div class="col-6 p-0"><span
-                                                                class="align-middle">{{ t._('hours') }}</span>
+                                <div class="col-6">
+                                    <div class="form-group mb-0">
+                                        <div class="prepare-time-block">
+                                            <label>
+                                                <i class="far fa-clock fa-2x"></i>
+                                                {{ t._('prepare_time') }}
+                                            </label>
+                                            <div class="row">
+                                                <div class="col-5 pr-0">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <input name="recipe_prepare_hours" id="recipe_prepare_hours"
+                                                                   data-keep="true"
+                                                                   class="form-control">
+                                                        </div>
+                                                        <div class="col-6 p-0"><span
+                                                                    class="align-middle">{{ t._('hours') }}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-5 pr-0">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <input name="recipe_prepare_minutes" id="recipe_prepare_minutes"
-                                                               data-keep="true"
-                                                               class="form-control">
-                                                    </div>
-                                                    <div class="col-6 p-0"><span
-                                                                class="align-middle">{{ t._('minuts') }}</span>
+                                                <div class="col-5 pr-0">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <input name="recipe_prepare_minutes"
+                                                                   id="recipe_prepare_minutes"
+                                                                   data-keep="true"
+                                                                   class="form-control">
+                                                        </div>
+                                                        <div class="col-6 p-0"><span
+                                                                    class="align-middle">{{ t._('minuts') }}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

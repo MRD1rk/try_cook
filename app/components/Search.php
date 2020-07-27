@@ -15,7 +15,6 @@ class Search
         $this->sphinx->SetServer('localhost', 9312);
         $this->sphinx->SetConnectTimeout(1);
         $this->sphinx->SetMatchMode(SPH_MATCH_EXTENDED);
-
     }
 
     /**
@@ -36,5 +35,11 @@ class Search
             }
         }
         return $ids;
+    }
+
+    public function setFilter($attribute, $values = [], $exclude = false)
+    {
+        $this->sphinx->setFilter($attribute, $values, $exclude);
+        return $this;
     }
 }

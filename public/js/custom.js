@@ -28,7 +28,6 @@ function buttonUpdateError(button) {
 }
 
 function showAlert(text, status) {
-    console.log('called');
     let alert_block = $('.toast-wrapper');
     let delay = 4000;
     let type, icon;
