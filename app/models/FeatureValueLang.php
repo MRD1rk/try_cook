@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class FeatureValueLang extends BaseModel
 {
 
@@ -97,19 +99,11 @@ class FeatureValueLang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_feature_value_lang');
         $this->belongsTo('id_feature_value', 'Models\FeatureValue', 'id', ['alias' => 'FeatureValue']);
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_feature_value_lang';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -117,7 +111,7 @@ class FeatureValueLang extends BaseModel
      * @param mixed $parameters
      * @return FeatureValueLang[]|FeatureValueLang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

@@ -9,7 +9,7 @@ class BaseModel extends \Phalcon\Mvc\Model
         return !$params ? false : parent::findFirst($params);
     }
 
-    public function __isset($property)
+    public function __isset(string $property): bool
     {
         $prefix = 'get';
         $method = $prefix . ucfirst($property);

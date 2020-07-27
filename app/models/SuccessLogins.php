@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class SuccessLogins extends \Phalcon\Mvc\Model
 {
 
@@ -126,20 +128,10 @@ class SuccessLogins extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("try_cook_db");
         $this->setSource("success_logins");
         $this->belongsTo('id_user', 'Models\TcUsers', 'id', ['alias' => 'TcUsers']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'success_logins';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -147,7 +139,7 @@ class SuccessLogins extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return SuccessLogins[]|SuccessLogins|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

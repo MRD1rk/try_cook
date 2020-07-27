@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class Lang extends BaseModel
 {
 
@@ -213,6 +215,7 @@ class Lang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_langs');
         $this->hasMany('id', 'Models\CategoryLang', 'id_lang', ['alias' => 'TcCategoryLang']);
         $this->hasMany('id', 'Models\CookMethodLang', 'id_lang', ['alias' => 'TcCookMethodLang']);
         $this->hasMany('id', 'Models\FeatureLang', 'id_lang', ['alias' => 'TcFeatureLang']);
@@ -224,15 +227,6 @@ class Lang extends BaseModel
         $this->hasMany('id', 'Models\UnitLang', 'id_lang', ['alias' => 'TcUnitLang']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_langs';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -240,7 +234,7 @@ class Lang extends BaseModel
      * @param mixed $parameters
      * @return Lang[]|Lang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }

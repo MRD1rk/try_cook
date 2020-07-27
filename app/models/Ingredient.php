@@ -4,6 +4,7 @@ namespace Models;
 
 use Models\Context;
 use Phalcon\Mvc\Model\Query;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class Ingredient extends BaseModel
 {
@@ -187,6 +188,7 @@ class Ingredient extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_ingredients');
         $this->hasMany('id', 'Models\IngredientLang', 'id_ingredient', ['alias' => 'langs']);
         $this->hasOne('id', 'Models\IngredientLang', 'id_ingredient', ['alias' => 'lang', 'params' =>
             [
@@ -195,15 +197,6 @@ class Ingredient extends BaseModel
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_ingredient', ['alias' => 'recipeIngredients']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_ingredients';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -211,7 +204,7 @@ class Ingredient extends BaseModel
      * @param mixed $parameters
      * @return Ingredient[]|Ingredient|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

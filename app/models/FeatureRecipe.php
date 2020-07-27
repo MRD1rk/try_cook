@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class FeatureRecipe extends BaseModel
 {
 
@@ -100,20 +102,12 @@ class FeatureRecipe extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_feature_recipe');
         $this->belongsTo('id_feature_value', 'Models\FeatureValue', 'id', ['alias' => 'featureValue']);
         $this->belongsTo('id_feature', 'Models\Feature', 'id', ['alias' => 'feature']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_feature_recipe';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -121,7 +115,7 @@ class FeatureRecipe extends BaseModel
      * @param mixed $parameters
      * @return FeatureRecipe[]|FeatureRecipe|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

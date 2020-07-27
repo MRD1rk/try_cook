@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class CategoryRecipe extends BaseModel
 {
 
@@ -97,19 +99,11 @@ class CategoryRecipe extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_category_recipe');
         $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'category']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_category_recipe';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -117,7 +111,7 @@ class CategoryRecipe extends BaseModel
      * @param mixed $parameters
      * @return CategoryRecipe[]|CategoryRecipe|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) : ResultsetInterface
     {
         return parent::find($parameters);
     }

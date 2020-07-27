@@ -326,7 +326,7 @@ class Tools
     {
         $filter = new Filter();
 
-        $filter->add(
+        $filter->set(
             "replace_spaces",
             function ($value) {
                 return preg_replace('/\s\s+/', PHP_EOL, $value);

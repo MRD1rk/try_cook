@@ -4,7 +4,8 @@ namespace Models;
 
 use Components\ImageManager;
 use Phalcon\Di;
-use Phalcon\Mvc\Model\Message;
+use Phalcon\Messages\Message;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class RecipeStep extends BaseModel
 {
@@ -188,6 +189,7 @@ class RecipeStep extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipe_steps');
         $this->hasMany('id', 'Models\RecipeStepLang', 'id_step', ['alias' => 'langs']);
         $this->hasOne('id', 'Models\RecipeStepLang', 'id_step',
             [
@@ -197,15 +199,6 @@ class RecipeStep extends BaseModel
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipe_steps';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -213,7 +206,7 @@ class RecipeStep extends BaseModel
      * @param mixed $parameters
      * @return RecipeStep[]|RecipeStep|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

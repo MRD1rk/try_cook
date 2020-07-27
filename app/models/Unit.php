@@ -3,6 +3,7 @@
 namespace Models;
 
 use Phalcon\Mvc\Model\Query;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class Unit extends BaseModel
 {
@@ -99,34 +100,15 @@ class Unit extends BaseModel
      */
     public function initialize()
     {
-//        $this->hasMany('id', 'Models\RecipeIngredient', 'id_unit', ['alias' => 'recip']);
+        $this->setSource('tc_units');
         $this->hasMany('id', 'Models\UnitLang', 'id_unit', ['alias' => 'langs']);
         $this->hasOne('id', 'Models\UnitLang', 'id_unit', ['alias' => 'lang',
             'params' => [
-                'id_lang=' . Context::getInstance()->getLang()->id
+                'id_lang=' . Context::getInstance()->getLang()->getId()
             ]]);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_units';
-    }
 
-    /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Unit[]|Unit|\Phalcon\Mvc\Model\ResultSetInterface
-     */
-    public static function find($parameters = null)
-    {
-        return parent::find($parameters);
-    }
 
     /**
      * Allows to query the first record that match the specified conditions

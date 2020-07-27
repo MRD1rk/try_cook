@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class FeatureValue extends BaseModel
 {
 
@@ -155,6 +157,7 @@ class FeatureValue extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_feature_values');
         $this->hasMany('id', 'Models\FeatureValueLang', 'id_feature_value', ['alias' => 'langs']);
         $this->hasOne('id', 'Models\FeatureValueLang', 'id_feature_value',
             [
@@ -166,15 +169,6 @@ class FeatureValue extends BaseModel
         $this->belongsTo('id_feature', 'Models\Feature', 'id', ['alias' => 'feature']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_feature_values';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -182,7 +176,7 @@ class FeatureValue extends BaseModel
      * @param mixed $parameters
      * @return FeatureValue[]|FeatureValue|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

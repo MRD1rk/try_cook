@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class PartLang extends BaseModel
 {
 
@@ -97,19 +99,11 @@ class PartLang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_part_lang');
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
         $this->belongsTo('id_part', 'Models\Part', 'id', ['alias' => 'part']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_part_lang';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -117,7 +111,7 @@ class PartLang extends BaseModel
      * @param mixed $parameters
      * @return PartLang[]|PartLang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }

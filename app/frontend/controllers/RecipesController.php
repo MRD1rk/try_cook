@@ -6,6 +6,7 @@ use Helpers\Tools;
 use Models\Category;
 use Models\Context;
 use Models\Feature;
+use Models\Ingredient;
 use Models\RecipeMedia;
 use Models\Part;
 use Models\Recipe;

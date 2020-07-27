@@ -4,11 +4,11 @@ use Phalcon\Mvc\Router\Group as RouterGroup;
 
 class ApiRoutes extends RouterGroup
 {
-    protected static $prefix;
+    protected $prefix;
 
     public function __construct($config = null)
     {
-        self::$prefix = '/api';
+        $this->prefix = '/api';
         parent::__construct($config);
         $this->init();
     }
@@ -20,12 +20,12 @@ class ApiRoutes extends RouterGroup
                 "module" => "api",
             ]
         );
-        $this->add(self::$prefix, [
+        $this->add($this->prefix, [
             'module' => 'api',
             'controller' => 'index',
             'action' => 'index'
         ])->setName('api-index-index');
-        $this->setPrefix(self::$prefix);
+        $this->setPrefix($this->prefix);
         $this->add('/:controller', [
             'controller' => 1,
             'action' => 'index'

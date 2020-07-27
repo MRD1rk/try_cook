@@ -16,7 +16,7 @@ use Modules\Frontend\Widgets\PopularRecipesWidget;
 use Modules\Frontend\Widgets\RecipeListWidget;
 use Modules\Frontend\Widgets\SelectLangWidget;
 use Phalcon\Assets\Manager;
-use Phalcon\DiInterface;
+use Phalcon\Di;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View;
@@ -51,9 +51,9 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param DiInterface $di
+     * @param Di $di
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(Di $di)
     {
         $di->set('dispatcher', function () use ($di) {
             $eventsManager = $di->getShared('eventsManager');
@@ -98,14 +98,10 @@ class Module
             return $view;
         });
 
-        $di->set('volt', function ($view, $di) {
+        $di->set('volt', function ($view) use ($di) {
 
             $volt = new Volt($view, $di);
 
-            $volt->setOptions(array(
-                "compiledPath" => __DIR__ . "/views/.cache/",
-                'compileAlways' => true
-            ));
             $compiler = $volt->getCompiler();
             $compiler->addFunction('is_a', 'is_a');
             $compiler->addFunction('floor', 'floor');

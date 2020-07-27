@@ -7,10 +7,7 @@ use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
-use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Direct as Flash;
-use Phalcon\Cache\Backend\Redis;
-use Phalcon\Cache\Frontend\Data as FrontData;
 
 /**
  * Shared configuration service
@@ -69,9 +66,14 @@ $di->setShared('modelsMetadata', function () {
  * Start the session the first time some component request the session service
  */
 $di->setShared('session', function () {
-    $session = new SessionAdapter();
+    $session = new \Phalcon\Session\Manager();
+    $files = new \Phalcon\Session\Adapter\Stream(
+        [
+            'savePath' => '/tmp',
+        ]
+    );
+    $session->setAdapter($files);
     $session->start();
-
     return $session;
 });
 
@@ -112,56 +114,43 @@ $di->setShared('router', function () {
     $router->mount(new BackendRoutes());
     $router->mount(new ApiRoutes());
     $router->removeExtraSlashes(true);
-    $router->handle();
+    $router->handle($_SERVER['REQUEST_URI']);
     return $router;
 });
 $di->setShared('t', function () {
     $translates = Translate::getTranslates();
-    return new \Phalcon\Translate\Adapter\NativeArray(
-        [
-            'content' => $translates
-        ]
-    );
+    $interpolator = new \Phalcon\Translate\InterpolatorFactory();
+    $factory = new \Phalcon\Translate\TranslateFactory($interpolator);
+    return $factory->newInstance('array', [
+        'content' => $translates
+    ]);
 });
 
 $di->setShared('redis', function () {
-    $redis = new Redis(
-        new FrontData(['lifetime' => 60]),
-        [
-            "host" => "localhost",
-            "port" => 6379,
-            "auth" => "",
-            "persistent" => false,
-        ]);
-//    $redis = new \Redis();
-//    $redis->connect('localhost');
-//    for ($i=0;$i<=10000;$i++){
-//        $redis->setBit('size_2',$i,rand(0,1));
-//        $redis->setBit('weight_2',$i,rand(0,1));
-//    }
-//    $redis->bitOp('OR','result','weight_2','size_2');
-//    $r = $redis->get('result');
-//    $bytes = unpack('C*', $r);
-//    $bin = join(array_map(function($byte){
-//        return sprintf("%08b", $byte);
-//    }, $bytes));
-//    echo '<pre>';
-//    var_dump($bin);
-//    die();
-//    return $bin;
-    return $redis;
+
+    $serializerFactory = new Phalcon\Storage\SerializerFactory();
+    $adapterFactory = new Phalcon\Cache\AdapterFactory($serializerFactory);
+
+    $options = [
+        'defaultSerializer' => 'Php',
+        'lifetime' => 7200
+    ];
+
+    $adapter = $adapterFactory->newInstance('redis', $options);
+
+    return new Phalcon\Cache($adapter);
 });
 $di->setShared('url', function () {
     $urlManager = new \Components\UrlManager();
     return $urlManager;
 });
-$di->setShared('tag',function (){
-   $tag = new \Overwrite\Tag();
-   return $tag;
+$di->setShared('tag', function () {
+    $tag = new \Overwrite\Tag();
+    return $tag;
 });
-$di->setShared('logger',function (){
+$di->setShared('logger', function () {
     $options = [
-        'name'    => 'log.txt',
+        'name' => 'log.txt',
         'adapter' => 'file',
     ];
     $logger = Phalcon\Logger\Factory::load($options);

@@ -3,6 +3,7 @@
 namespace Models;
 
 use Helpers\Tools;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Security;
 
 class TokenStorage extends BaseModel
@@ -183,19 +184,10 @@ class TokenStorage extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('token_storage');
         $this->belongsTo('id_user',   'Models\Users', 'id', [
             'alias' => 'user'
         ]);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'token_storage';
     }
 
     /**
@@ -204,7 +196,7 @@ class TokenStorage extends BaseModel
      * @param mixed $parameters
      * @return TokenStorage[]|TokenStorage|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

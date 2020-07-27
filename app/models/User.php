@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Security;
 use Phalcon\Security\Random;
 use Phalcon\Validation;
@@ -381,6 +382,7 @@ class User extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_users');
         $this->hasMany('id', 'Models\Recipe', 'id_user', ['alias' => 'recipes']);
         $this->hasOne('id', 'Models\Recipe', 'id_user', [
             'alias' => 'draftRecipe',
@@ -388,15 +390,6 @@ class User extends BaseModel
         ]);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_users';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -404,7 +397,7 @@ class User extends BaseModel
      * @param mixed $parameters
      * @return User[]|User|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

@@ -4,6 +4,7 @@ namespace Models;
 
 use Phalcon\Cache\Backend\Redis;
 use \Phalcon\Mvc\Model\Query;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email as EmailValidator;
 
@@ -131,7 +132,7 @@ class Translate extends BaseModel
      */
     public function initialize()
     {
-
+        $this->setSource('tc_translates');
         $this->hasMany('id', 'Models\TranslateLang', 'id_translation', ['alias' => 'langs']);
         $this->hasOne('id', 'Models\TranslateLang', 'id_translation', [
             'alias' => 'lang'
@@ -159,15 +160,6 @@ class Translate extends BaseModel
 
         return $this->validate($validator);
     }
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_translates';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -175,7 +167,7 @@ class Translate extends BaseModel
      * @param mixed $parameters
      * @return Translate[]|Translate|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }
@@ -212,8 +204,8 @@ class Translate extends BaseModel
         $model = new self();
         $di = $model->getDI();
         $redis = $di->get('redis');
-        $id_lang = \Models\Context::getInstance()->getLang()->id;
-        $translates = $redis->get('translation_' . $category . '_' . $id_lang);
+        $id_lang = \Models\Context::getInstance()->getLang()->getId();
+        $translates = $redis->get('translation_' . $id_lang);
         if (!$translates) {
             $phql = 'SELECT t.pattern, tl.value FROM Models\Translate t
                      LEFT JOIN Models\TranslateLang tl ON t.id= tl.id_translation AND tl.id_lang=' . $id_lang . ' 
@@ -226,7 +218,7 @@ class Translate extends BaseModel
                 }
                 unset($rows);
 //                $redis->save('translation_'.$category.'_' . $id_lang, $translates, 360);
-                $redis->save('translation_' . $category . '_' . $id_lang, $translates, 1);
+                $redis->save('translation_' . $id_lang, $translates, 1);
             } else
                 $translates = [];
         }
@@ -237,9 +229,9 @@ class Translate extends BaseModel
     {
         $model = new self();
         $di = $model->getDI();
-        /** @var Redis $redis */
+        /** @var \Phalcon\Cache\Adapter\Redis $redis */
         $redis = $di->get('redis');
-        $id_lang = \Models\Context::getInstance()->getLang()->id;
+        $id_lang = \Models\Context::getInstance()->getLang()->getId();
         $translates = $redis->get('translation_' . $id_lang);
         if (!$translates) {
             $phql = 'SELECT t.pattern, tl.value FROM Models\Translate t
@@ -252,7 +244,7 @@ class Translate extends BaseModel
                 }
                 unset($rows);
 //                $redis->save('translation_' . $id_lang, $translates, 360);
-                $redis->save('translation_' . $id_lang, $translates, 1);
+                $redis->set('translation_' . $id_lang, $translates, 1);
             } else
                 $translates = [];
         }

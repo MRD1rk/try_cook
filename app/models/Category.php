@@ -4,9 +4,10 @@ namespace Models;
 
 use Phalcon\Http\Request\File;
 use Phalcon\Image\Adapter\Imagick;
-use Phalcon\Mvc\Model\Message;
+use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Query;
 use Phalcon\Mvc\Model\Resultset\Simple as Resultset;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class Category extends BaseModel
 {
@@ -225,6 +226,7 @@ class Category extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_categories');
         $this->keepSnapshots(true);
         $this->hasOne('id', 'Models\CategoryLang', 'id_category', [
             'alias' => 'lang',
@@ -246,15 +248,6 @@ class Category extends BaseModel
         $this->hasMany('id', 'Models\CategoryFeature', 'id_category', ['alias' => 'categoryFeatures']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_categories';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -262,7 +255,7 @@ class Category extends BaseModel
      * @param mixed $parameters
      * @return Category[]|Category|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

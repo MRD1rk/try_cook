@@ -18,16 +18,17 @@ class FlashSession extends Session
                 "warning" => "alert alert-warning",
             ];
         }
-        parent::__construct($cssClasses);
+        $this->setCssClasses($cssClasses);
+        parent::__construct();
     }
 
 
     /**
      * Overwrite output method
      * @param bool $remove
-     * @return string|void
+     * @return void
      */
-    public function output($remove = true)
+    public function output(bool $remove = true) :void
     {
         $filter = new \Phalcon\Filter();
         $html = '';
@@ -35,15 +36,16 @@ class FlashSession extends Session
         if (!empty($flash_messages)) {
             foreach ($flash_messages as $type => $messages) {
                 foreach ($messages as $message) {
-                    $html .= '<div class="alert-overwrite ' . $this->_cssClasses[$type] . '">
+                    $html = '<div class="alert-overwrite ' . $this->_cssClasses[$type] . '">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 '.$filter->sanitize($message,'string').'</div>';
                 }
+                $this->outputMessage($type, $html);
             }
         }
-        return $html;
+        parent::clear();
     }
 
 

@@ -4,6 +4,7 @@ namespace Models;
 
 
 use Components\ImageManager;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class RecipeMedia extends BaseModel
 {
@@ -216,18 +217,9 @@ class RecipeMedia extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipe_media');
         $this->hasMany('id', MediaAdditional::class, 'id_media', ['alias' => 'mediaAdditional']);
         $this->belongsTo('id_recipe', Recipe::class, 'id', ['alias' => 'recipe']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipe_media';
     }
 
     /**
@@ -236,7 +228,7 @@ class RecipeMedia extends BaseModel
      * @param mixed $parameters
      * @return RecipeMedia[]|RecipeMedia|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

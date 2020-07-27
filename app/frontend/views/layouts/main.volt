@@ -3,6 +3,8 @@
 <html lang="{{ iso_code }}">
 
 <head>
+    {{ tag.renderTitle(tag.getTitle(false)) }}
+    {{ tag.getDescription() }}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -25,8 +27,6 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/img/icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    {{ tag.getTitle() }}
-    {{ tag.getDescription() }}
     {{ tag.getAppleTouchIcons() }}
     {{ assets.outputCss('headerCss') }}
 </head>

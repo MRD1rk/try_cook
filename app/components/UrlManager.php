@@ -5,7 +5,7 @@ namespace Components;
 
 use Models\Configuration;
 use Models\Context;
-use Phalcon\Mvc\Url;
+use Phalcon\Url;
 
 class UrlManager extends Url
 {
@@ -17,7 +17,7 @@ class UrlManager extends Url
         $this->domain_url = Configuration::get('DOMAIN');
     }
 
-    public function get($uri = null, $args = null, $absolute = null, $baseUri = null)
+    public function get($uri = null, $args = null, bool $absolute = null, $baseUri = null): string
     {
         $url = parent::get($uri, $args, $absolute, $baseUri);
         if ($absolute)

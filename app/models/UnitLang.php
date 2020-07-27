@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class UnitLang extends BaseModel
 {
 
@@ -97,19 +99,11 @@ class UnitLang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_unit_lang');
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
         $this->belongsTo('id_unit', 'Models\Unit', 'id', ['alias' => 'unit']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_unit_lang';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -117,7 +111,7 @@ class UnitLang extends BaseModel
      * @param mixed $parameters
      * @return UnitLang[]|UnitLang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

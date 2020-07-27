@@ -3,6 +3,7 @@
 namespace Models;
 
 use Helpers\Tools;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class CategoryLang extends BaseModel
 {
@@ -157,19 +158,11 @@ class CategoryLang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_category_lang');
         $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'category']);
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
     }
 
-    /**
-     * Returns table title mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_category_lang';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -177,7 +170,7 @@ class CategoryLang extends BaseModel
      * @param mixed $parameters
      * @return CategoryLang[]|CategoryLang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

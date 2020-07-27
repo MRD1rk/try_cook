@@ -2,8 +2,9 @@
 
 namespace Models;
 
-use Phalcon\Mvc\Model\Message;
-use Phalcon\Mvc\Model\Resultset\Simple as Resultset;
+use Phalcon\Messages\Message;
+use Phalcon\Mvc\Model\Resultset\Simple;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 
 class Feature extends BaseModel
@@ -130,6 +131,7 @@ class Feature extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_features');
         $this->keepSnapshots(true);
         $this->hasOne('id', 'Models\FeatureLang', 'id_feature',
             [
@@ -142,15 +144,6 @@ class Feature extends BaseModel
         $this->hasMany('id', 'Models\FeatureValue', 'id_feature', ['alias' => 'values']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_features';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -158,7 +151,7 @@ class Feature extends BaseModel
      * @param mixed $parameters
      * @return Feature[]|Feature|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }
@@ -234,7 +227,7 @@ class Feature extends BaseModel
 
     public static function getFeatures()
     {
-        $id_lang = Context::getInstance()->getLang()->id;
+        $id_lang = Context::getInstance()->getLang()->getId();
         $sql = 'SELECT f.id as id_feature,fv.id as id_feature_value,fl.value as feature, fvl.value as feature_value FROM tc_features f
             LEFT JOIN tc_feature_values fv ON f.id = fv.id_feature
             LEFT JOIN tc_feature_lang fl ON f.id = fl.id_feature
@@ -242,9 +235,9 @@ class Feature extends BaseModel
             WHERE fvl.id_lang = '.$id_lang.' AND fl.id_lang = '.$id_lang.'
             ORDER BY f.id';
         $model = new self;
-        $rows = new Resultset(
+        $rows = new \Phalcon\Mvc\Model\Resultset\Simple(
             null,
-            null,
+            $model,
             $model->getReadConnection()->query($sql)
         );
         $result = [];
@@ -257,8 +250,15 @@ class Feature extends BaseModel
                     'id_feature_value' => $row['id_feature_value'],
                     'value' => $row['feature_value'],
                 ];
+//                $result[$row->id_feature]['id_feature'] = $row->id_feature;
+//                $result[$row->id_feature]['value'] = $row->feature;
+//                $result[$row->id_feature]['feature_values'][$row->id_feature_value] = [
+//                    'id_feature_value' => $row->id_feature_value,
+//                    'value' => $row->feature_value,
+//                ];
             }
         }
+
         return $result;
     }
 }

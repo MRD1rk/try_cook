@@ -5,11 +5,11 @@ use Models\Configuration;
 
 class BackendRoutes extends RouterGroup
 {
-    protected static $prefix;
+    protected $prefix;
 
     public function __construct($config = null)
     {
-        self::$prefix = '/' . Configuration::get('ADMIN_PREFIX');
+        $this->prefix = '/' . Configuration::get('ADMIN_PREFIX');
         parent::__construct($config);
         $this->init();
     }
@@ -21,12 +21,12 @@ class BackendRoutes extends RouterGroup
                 'module' => 'backend'
             ]
         );
-        $this->add(self::$prefix, [
+        $this->add($this->prefix, [
             'module' => 'backend',
             'controller' => 'index',
             'action' => 'index'
         ])->setName('admin-index-index');
-        $this->setPrefix(self::$prefix);
+        $this->setPrefix($this->prefix);
         $this->add('/:controller', [
             'controller' => 1,
             'action' => 'index'

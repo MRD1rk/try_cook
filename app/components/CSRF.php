@@ -5,11 +5,11 @@ namespace Components;
 
 
 use Phalcon\Http\Response;
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
 use \Phalcon\Mvc\Dispatcher;
 
-class CSRF extends Component
+class CSRF extends Injectable
 {
     protected $trusted = [];
 

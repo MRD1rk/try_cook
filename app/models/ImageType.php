@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class ImageType extends BaseModel
 {
 
@@ -184,17 +186,9 @@ class ImageType extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_image_type');
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_image_type';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -202,7 +196,7 @@ class ImageType extends BaseModel
      * @param mixed $parameters
      * @return ImageType[]|ImageType|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

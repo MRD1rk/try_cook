@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class Role extends BaseModel
 {
 
@@ -213,20 +215,12 @@ class Role extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_acl_roles');
         $this->hasMany('id', 'Models\Resource', 'id_role', ['alias' => 'resources']);
         $this->hasMany('id', 'Models\AdminMenu', 'id_role', ['alias' => 'adminTabs']);
         $this->hasMany('id', 'Models\Employee', 'id_role', ['alias' => 'employees']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_acl_roles';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -234,7 +228,7 @@ class Role extends BaseModel
      * @param mixed $parameters
      * @return Role[]|Role|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class TranslateLang extends BaseModel
 {
 
@@ -157,6 +159,7 @@ class TranslateLang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_translate_lang');
         $this->skipAttributesOnCreate(
             [
                 'date_upd'
@@ -174,22 +177,12 @@ class TranslateLang extends BaseModel
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_translate_lang';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
      * @return TranslateLang[]|TranslateLang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

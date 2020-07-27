@@ -2,7 +2,10 @@
 
 namespace Models;
 
-use Phalcon\Mvc\Model\Message;
+use Phalcon\Db\ResultInterface;
+use Phalcon\Messages\Message;
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 
 class AdminMenu extends BaseModel
 {
@@ -360,6 +363,7 @@ class AdminMenu extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_admin_menu');
         $this->keepSnapshots(true);
         $this->belongsTo('id_role', 'Models\Role', 'id', ['alias' => 'role']);
         $this->hasMany('id', 'Models\AdminMenu', 'id_parent', ['alias' => 'childs', 'params' => [
@@ -369,22 +373,12 @@ class AdminMenu extends BaseModel
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_admin_menu';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
      * @return AdminMenu[]|AdminMenu|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }

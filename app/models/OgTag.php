@@ -68,8 +68,4 @@ class OgTag
         return $this->og_content;
     }
 
-    public static function test()
-    {
-        return 1;
-    }
 }

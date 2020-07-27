@@ -5,7 +5,8 @@
             <i class="fas fa-grip-vertical"></i></div>
         <div class="col-5 pl-0">
             <select placeholder="{{ t._('begin_input') }}" class="ingredient-select">
-                <option data-data='{"unit_available": {{ recipe_ingredient.getIngredient() ? recipe_ingredient.getIngredient().unit_available|json_encode:{} }},"saved":{{ recipe_ingredient.id_ingredient is defined }}}'
+                {% set unit_available = recipe_ingredient.getIngredient() != null ? recipe_ingredient.getIngredient().unit_available: {} %}
+                <option data-data='{"unit_available": {{ unit_available|json_encode }},"saved":{{ recipe_ingredient.id_ingredient is defined }} }'
                         value="{{ recipe_ingredient.id_ingredient }}">{{ recipe_ingredient.getIngredient().lang.title|default('') }}</option>
             </select>
         </div>

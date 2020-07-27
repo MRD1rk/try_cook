@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class RecipeLang extends BaseModel
 {
 
@@ -183,19 +185,11 @@ class RecipeLang extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipe_lang');
         $this->belongsTo('id_lang', 'Models\Lang', 'id', ['alias' => 'lang']);
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipe_lang';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -203,7 +197,7 @@ class RecipeLang extends BaseModel
      * @param mixed $parameters
      * @return RecipeLang[]|RecipeLang|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

@@ -57,12 +57,12 @@ try {
     $application = new \Phalcon\Mvc\Application($di);
 
 
-    /**
+    /**b
      * Include modules
      */
     require __DIR__ . '/../app/config/modules.php';
     (new Phalcon\Debug)->listen();
-    echo $application->handle()->getContent();
+    echo $application->handle($_SERVER['REQUEST_URI'])->getContent();
 //    echo str_replace(["\n","\r","\t"], '', $application->handle()->getContent());
 
 } catch (\Exception $e) {

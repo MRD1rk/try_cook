@@ -4,6 +4,7 @@ namespace Models;
 
 use Phalcon\Di;
 use Phalcon\Mvc\Model\Query;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class Part extends BaseModel
 {
@@ -100,19 +101,10 @@ class Part extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_parts');
         $this->hasMany('id', 'Models\PartLang', 'id_part', ['alias' => 'langs']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe_part', ['alias' => 'ingredients']);
         $this->hasMany('id', 'Models\RecipePart', 'id_part', ['alias' => 'recipe_parts']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_parts';
     }
 
     /**
@@ -121,7 +113,7 @@ class Part extends BaseModel
      * @param mixed $parameters
      * @return Part[]|Part|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }

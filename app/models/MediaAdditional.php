@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class MediaAdditional extends BaseModel
 {
 
@@ -126,18 +128,10 @@ class MediaAdditional extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipe_media_additional');
         $this->belongsTo('id_media', 'Models\RecipeMedia', 'id', ['alias' => 'source']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipe_media_additional';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -145,7 +139,7 @@ class MediaAdditional extends BaseModel
      * @param mixed $parameters
      * @return MediaAdditional[]|MediaAdditional|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

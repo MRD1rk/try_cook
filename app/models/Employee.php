@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Security;
 
 class Employee extends BaseModel
@@ -354,18 +355,10 @@ class Employee extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_employees');
         $this->belongsTo('id_role', 'Models\Role', 'id', ['alias' => 'role']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_employees';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -373,7 +366,7 @@ class Employee extends BaseModel
      * @param mixed $parameters
      * @return Employee[]|Employee|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

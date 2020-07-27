@@ -4,8 +4,9 @@ namespace Models;
 
 
 use Components\ImageManager;
-use Phalcon\Mvc\Model\Message;
+use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Resultset\Simple;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class Recipe extends BaseModel
 {
@@ -274,6 +275,7 @@ class Recipe extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipes');
         $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category', 'Models\Category', 'id', ['alias' => 'categories']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients',
             'params' => [
@@ -304,15 +306,6 @@ class Recipe extends BaseModel
         ]);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipes';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -320,7 +313,7 @@ class Recipe extends BaseModel
      * @param mixed $parameters
      * @return Recipe[]|Recipe|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

@@ -2,7 +2,8 @@
 
 namespace Models;
 
-use Phalcon\Mvc\Model\Message;
+use Phalcon\Messages\Message;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class CategoryFeature extends BaseModel
 {
@@ -99,19 +100,10 @@ class CategoryFeature extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_category_feature');
         $this->keepSnapshots(true);
         $this->belongsTo('id_category', 'Models\Category', 'id', ['alias' => 'category']);
         $this->belongsTo('id_feature', 'Models\Feature', 'id', ['alias' => 'feature']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_category_feature';
     }
 
     /**
@@ -120,7 +112,7 @@ class CategoryFeature extends BaseModel
      * @param mixed $parameters
      * @return CategoryFeature[]|CategoryFeature|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

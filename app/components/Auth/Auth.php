@@ -11,9 +11,9 @@ use Models\FailedLogins;
 use Models\SuccessLogins;
 use Models\TokenStorage;
 use Models\User;
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 
-class Auth extends Component
+class Auth extends Injectable
 {
     /**
      * @var integer

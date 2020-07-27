@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
+
 class Resource extends BaseModel
 {
 
@@ -242,18 +244,10 @@ class Resource extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_acl_resources');
         $this->belongsTo('id_role', 'Models\Role', 'id', ['alias' => 'role']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_acl_resources';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -261,7 +255,7 @@ class Resource extends BaseModel
      * @param mixed $parameters
      * @return Resource[]|Resource|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }

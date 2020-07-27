@@ -3,6 +3,7 @@
 namespace Models;
 
 use Phalcon\Di;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class RecipePart extends BaseModel
 {
@@ -128,6 +129,7 @@ class RecipePart extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipe_part');
         $this->hasMany('id', RecipeIngredient::class, 'id_recipe_part', ['alias' => 'ingredients',
             'params' => [
                 'order' => 'position'
@@ -136,15 +138,6 @@ class RecipePart extends BaseModel
         $this->belongsTo('id_recipe', 'Models\Recipe', 'id', ['alias' => 'recipe']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipe_part';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -152,7 +145,7 @@ class RecipePart extends BaseModel
      * @param mixed $parameters
      * @return RecipePart[]|RecipePart|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null) :ResultsetInterface
     {
         return parent::find($parameters);
     }

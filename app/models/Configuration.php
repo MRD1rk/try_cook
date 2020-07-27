@@ -3,6 +3,7 @@
 namespace Models;
 
 use Phalcon\Di;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
 class Configuration extends BaseModel
 {
@@ -36,17 +37,9 @@ class Configuration extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_configurations');
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_configurations';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -54,7 +47,7 @@ class Configuration extends BaseModel
      * @param mixed $parameters
      * @return Configuration[]|Configuration|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }

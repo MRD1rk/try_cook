@@ -6,9 +6,9 @@ use Models\ImageType;
 use Models\RecipeMedia;
 use Phalcon\Http\Request\File;
 use Phalcon\Image\Adapter\Imagick;
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 
-class ImageManager extends Component
+class ImageManager extends Injectable
 {
 
     /**

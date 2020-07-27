@@ -3,7 +3,8 @@
 namespace Models;
 
 use Phalcon\Di;
-use Phalcon\Mvc\Model\Message;
+use Phalcon\Messages\Message;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Validation;
 
 class RecipeIngredient extends BaseModel
@@ -238,6 +239,7 @@ class RecipeIngredient extends BaseModel
      */
     public function initialize()
     {
+        $this->setSource('tc_recipe_ingredient');
         $this->keepSnapshots(true);
         $this->belongsTo('id_ingredient', 'Models\Ingredient', 'id', ['alias' => 'ingredient']);
         $this->belongsTo('id_recipe_part', 'Models\Part', 'id', ['alias' => 'part']);
@@ -245,15 +247,6 @@ class RecipeIngredient extends BaseModel
         $this->belongsTo('id_unit', 'Models\Unit', 'id', ['alias' => 'unit']);
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'tc_recipe_ingredient';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -261,7 +254,7 @@ class RecipeIngredient extends BaseModel
      * @param mixed $parameters
      * @return RecipeIngredient[]|RecipeIngredient|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
+    public static function find($parameters = null):ResultsetInterface
     {
         return parent::find($parameters);
     }
