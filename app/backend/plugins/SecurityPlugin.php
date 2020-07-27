@@ -5,9 +5,8 @@ namespace Modules\Backend\Plugins;
 use Models\Context;
 use Phalcon\Acl;
 use Phalcon\Acl\Role;
-use Phalcon\Acl\Resource;
+use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use Models\Resource as AclResource;
@@ -19,7 +18,7 @@ use Models\Role as AclRole;
  *
  * This is the security plugin which controls that users only have access to the modules they're assigned to
  */
-class SecurityPlugin extends Plugin
+class SecurityPlugin extends Injectable
 {
     /**
      * Returns an existing or new access control list
@@ -35,13 +34,14 @@ class SecurityPlugin extends Plugin
 
         $acl = new AclList();
 
-        $acl->setDefaultAction(Acl::DENY);
+
+        $acl->setDefaultAction(Acl\Enum::DENY);
 //        $acl->setDefaultAction(Acl::ALLOW);
 
         $acl_roles = AclRole::find('module="backend"');
         $tmp = array();
         foreach ($acl_roles as $acl_role) {
-            $tmp[$acl_role->id] = new Role($acl_role->name, $acl_role->description);
+            $tmp[$acl_role->getId()] = new Role($acl_role->getName(), $acl_role->getDescription());
         }
         $roles = $tmp;
         unset($tmp);
@@ -61,7 +61,7 @@ class SecurityPlugin extends Plugin
         );
 
         foreach ($privateResources as $resource) {
-            $acl->addResource(new Resource($resource->controller), json_decode($resource->action_list));
+            $acl->addComponent(new Acl\Component($resource->getController()), json_decode($resource->getActionList()));
         }
         $publicResources = AclResource::find(
             [
@@ -74,28 +74,28 @@ class SecurityPlugin extends Plugin
         );
 
         foreach ($publicResources as $resource) {
-            $acl->addResource(new Resource($resource->controller), json_decode($resource->action_list));
+            $acl->addComponent(new Acl\Component($resource->getController()), json_decode($resource->getActionList()));
         }
 
         foreach ($roles as $role) {
             foreach ($publicResources as $resource) {
-                foreach (json_decode($resource->action_list) as $action) {
-                    $acl->allow($role->getName(), $resource->controller, $action);
+                foreach (json_decode($resource->getActionList()) as $action) {
+                    $acl->allow($role->getName(), $resource->getController(), $action);
                 }
             }
         }
 
         foreach ($privateResources as $resource) {
-            foreach (json_decode($resource->action_list) as $action) {
-                $acl->allow($roles[$resource->id_role]->getName(), $resource->controller, $action);
+            foreach (json_decode($resource->getActionList()) as $action) {
+                $acl->allow($roles[$resource->getIdRole()]->getName(), $resource->getController(), $action);
             }
         }
 
-        $this->persistent->acl = $acl;
+//        $this->persistent->acl = $acl;
 //        $this->session->set('acl_backend', $acl);
 
 
-        return $this->persistent->acl;
+        return $acl;
     }
 
     /**
@@ -116,7 +116,7 @@ class SecurityPlugin extends Plugin
 
 
 
-        if (!$acl->isResource($controller)) {
+        if (!$acl->isComponent($controller)) {
             $dispatcher->forward([
                 'controller' => 'errors',
                 'action' => 'show404'

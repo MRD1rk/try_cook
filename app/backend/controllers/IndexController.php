@@ -26,7 +26,6 @@ class IndexController extends BaseController
             }
         }
     }
-
     public function _registerSession($employee): void
     {
         $session_name = 'backend_auth';

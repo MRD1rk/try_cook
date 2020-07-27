@@ -45,6 +45,7 @@
 {#                                    <input type="radio" class="custom-control-input" name="features[{{ feature['id_feature'] }}][{{ feature_value['id_feature_value'] }}]"#}
                                     <input type="radio" class="custom-control-input" name="features[{{ feature['id_feature'] }}]"
                                            data-keep="true"
+                                           data-id_feature="{{ feature['id_feature'] }}"
                                            value="{{ feature_value['id_feature_value'] }}"
                                            id="feature-check-{{ feature_value['id_feature_value'] }}">
                                     <label class="custom-control-label"

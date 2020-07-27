@@ -78,12 +78,24 @@ class RecipesController extends BaseController
         $features = Feature::getFeatures();
         $parts = Part::getParts();
         $recipe_parts = $recipe->getParts();
-        $recipe_ingredients = $recipe->getIngredients();
 
         $images = $recipe->getImages();
         //begin save
         if ($this->request->isPost() && $this->request->isAjax()) {
             $data = $this->request->getPost();
+            $recipe_data = $data['recipe'];
+            $recipe->setCookingTime($recipe_data['cooking_time']);
+            $recipe->setPrepareTime($recipe_data['prepare_time']);
+            $recipe->setDefaultPersonCount($recipe_data['default_person_count']);
+            $id_category = $data['id_category'];
+            if ($recipe->updateFeature($data['features'])
+                && $recipe->updateRecipeLang($data['recipe_lang'])
+                && $recipe->updateCategory($id_category)
+                && $recipe->save()) {
+                return $this->response->setJsonContent(['status' => true, 'message' => $this->t->_('recipe_saved')]);
+            } else {
+                return $this->response->setJsonContent(['status'=> false,'message'=>Tools::arrToString($recipe->getMessages())]);
+            }
         }
         $this->view->recipe = $recipe;
         $this->view->parts = $parts;
@@ -262,7 +274,8 @@ class RecipesController extends BaseController
         }
     }
 
-    public function updateRecipeIngredientPositionAction() {
+    public function updateRecipeIngredientPositionAction()
+    {
 
         $this->view->disable();
         if ($this->request->isPost() && $this->request->isAjax()) {
@@ -277,13 +290,14 @@ class RecipesController extends BaseController
                 $message = $this->t->_('no_access');
                 return $this->response->setJsonContent(['status' => $status, 'message' => $message]);
             }
-            $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient','int');
-            $position = $this->request->getPost('position','int');
+            $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient', 'int');
+            $position = $this->request->getPost('position', 'int');
             $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
             $recipe_ingredient->setPosition($position);
             $recipe_ingredient->save();
         }
     }
+
     public function updateRecipeIngredientAction()
     {
 
@@ -315,8 +329,7 @@ class RecipesController extends BaseController
                         'status' => $status,
                         'message' => $message,
                     ]);
-            }
-             else {
+            } else {
                 $status = true;
                 $message = $this->t->_('ingredient_updated');
                 return $this->response->setJsonContent(
@@ -413,8 +426,8 @@ class RecipesController extends BaseController
             $recipe_step = RecipeStep::findFirst($id_step);
             $status = $recipe_step->uploadImage($files);
             $response = [
-                'status' =>$status,
-                'url' =>$recipe_step->getLink(),
+                'status' => $status,
+                'url' => $recipe_step->getLink(),
                 'message' => $this->t->_('image_added')
             ];
 
@@ -427,7 +440,7 @@ class RecipesController extends BaseController
     {
         if ($this->request->isPost() && $this->request->isAjax()) {
             $status = false;
-            $id_recipe = $this->dispatcher->getParam('id_recipe','int');
+            $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');
             $files = $this->request->getUploadedFiles();
             if (!$files) {
                 return $this->response->setJsonContent(['status' => $status, 'message' => $this->t->_('failed_upload')]);
@@ -450,6 +463,7 @@ class RecipesController extends BaseController
                 ]);
         }
     }
+
     public function viewAction()
     {
         $id_recipe = $this->dispatcher->getParam('id_recipe', 'int');

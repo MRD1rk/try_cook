@@ -142,4 +142,8 @@ class CategoryRecipe extends BaseModel
         ];
     }
 
+    public function beforeSave()
+    {
+        $this->position = $this->count('id_recipe=' . $this->getIdRecipe().' AND id_category='.$this->getIdCategory()) + 1;
+    }
 }

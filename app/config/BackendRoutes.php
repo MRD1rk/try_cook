@@ -21,12 +21,13 @@ class BackendRoutes extends RouterGroup
                 'module' => 'backend'
             ]
         );
-        $this->add($this->prefix, [
+
+        $this->setPrefix($this->prefix);
+        $this->add('', [
             'module' => 'backend',
             'controller' => 'index',
             'action' => 'index'
         ])->setName('admin-index-index');
-        $this->setPrefix($this->prefix);
         $this->add('/:controller', [
             'controller' => 1,
             'action' => 'index'

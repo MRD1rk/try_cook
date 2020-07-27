@@ -73,17 +73,52 @@ $(function () {
     })
     //save recipe event
     $('body').on('click', '#save-recipe', function (e) {
-        e.preventDefault();
         let recipe_title = $('#recipe_title').val();
-        let recipe_description = $('#recipe_description').val();
+        let difficulty_feature = 9;
+        let recipe_description = tinyMCE.activeEditor.getContent({format: 'text'});
         let recipe_cooking_hours = $('#recipe_cooking_hours').val();
+        let difficulty = $('input[name="features[' + difficulty_feature + ']"]').val()
         let recipe_cooking_minutes = $('#recipe_cooking_minutes').val();
         let recipe_cooking_time = calculateCookTime(recipe_cooking_hours, recipe_cooking_minutes);
-        let recipe_person_count = $('#recipe_person_count').val();
+        let default_person_count = $('#recipe_person_count').val();
         let recipe_prepare_hours = $('#recipe_prepare_hours').val();
         let recipe_prepare_minutes = $('#recipe_prepare_minutes').val();
         let recipe_prepare_time = calculateCookTime(recipe_prepare_hours, recipe_prepare_minutes);
-
+        let validation = $.fn.myValidation('doValidation')
+        let features = $('.filters-items input').not('[name="id_category"]');
+        let id_category = $('input[name="id_category"]:checked').val()
+        let feature_values = {};
+        features.each(function () {
+            let item = $(this);
+            if (item.is(':checked')) {
+                let key = item.data('id_feature');
+                feature_values[key] = item.val();
+            }
+        });
+        if (!validation) {
+            return false;
+        } else {
+            let recipe = {
+                default_person_count: default_person_count,
+                cooking_time: recipe_cooking_time,
+                prepare_time: recipe_prepare_time,
+                difficulty: difficulty
+            };
+            let recipe_lang = {
+                title:recipe_title,
+                description:recipe_description
+            }
+            let data = {
+                recipe:recipe,
+                id_category:id_category,
+                recipe_lang:recipe_lang,
+                features:feature_values
+            }
+            $.ajax({
+                type: 'POST',
+                data: data
+            })
+        }
 
     });
     checkNeedPrepare();

@@ -22,14 +22,12 @@
                     params:params
                 }
                 $this.data('validation', data);
+                methods.trigger($this, params);
                 return this.on(params.event, function () {
                     methods.trigger($this, params);
                     methods.doValidation();
                 })
             }
-        },
-        unique: function (content) {
-
         },
         required: function (content) {
             let value = null;
@@ -156,9 +154,11 @@
 
                 if (result.result) {
                     invalidStorage[id] = object;
+                    $this.data('validation').hasError = true;
                 } else {
                     delete invalidStorage[id];
                     methods.hideError(object.target)
+                    $this.data('validation').hasError = false;
                 }
             });
         },
@@ -167,6 +167,7 @@
                 let item = invalidStorage[key];
                 methods.showError(item.target, item.message);
             }
+            return Object.keys(invalidStorage).length === 0;
         }
     };
 

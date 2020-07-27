@@ -277,6 +277,7 @@ class Recipe extends BaseModel
     {
         $this->setSource('tc_recipes');
         $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category', 'Models\Category', 'id', ['alias' => 'categories']);
+        $this->hasMany('id',CategoryRecipe::class,'id_recipe',['alias'=>'recipeCategories']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients',
             'params' => [
                 'order' => 'position'
@@ -313,7 +314,7 @@ class Recipe extends BaseModel
      * @param mixed $parameters
      * @return Recipe[]|Recipe|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null):ResultsetInterface
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }
@@ -366,12 +367,46 @@ class Recipe extends BaseModel
             $recipe_feature->setIdRecipe($this->getId());
             $recipe_feature->setIdFeature($id_feature);
             $recipe_feature->setIdFeatureValue($id_feature_value);
-            if (!$recipe_feature->save())
+            if (!$recipe_feature->save()) {
+                $this->appendMessage(new Message('failed_save_recipe_features'));
                 return false;
+            }
         }
         return true;
     }
 
+    /**
+     * @param $recipe_lang_data
+     * @return bool
+     */
+    public function updateRecipeLang($recipe_lang_data)
+    {
+        if (!$recipe_lang_data)
+            return false;
+        $recipe_lang = $this->getLang();
+        $recipe_lang->setTitle($recipe_lang_data['title']);
+        $recipe_lang->setDescription($recipe_lang_data['description']);
+        if (!$recipe_lang->save()) {
+            $this->appendMessage(new Message('failed_save_recipe_lang'));
+            return false;
+        }
+        return true;
+    }
+
+    public function updateCategory($id_category) {
+        if (!$id_category)
+            return false;
+        $this->getRecipeCategories()->delete();
+        $category_recipe = new CategoryRecipe();
+        $category_recipe->setIdCategory($id_category);
+        $category_recipe->setIdRecipe($this->getId());
+        if (!$category_recipe->save()) {
+            $this->appendMessage(new Message('failed_save_recipe_category'));
+            return false;
+        }
+        return true;
+
+    }
     public function uploadPreviewImage($files)
     {
         foreach ($files as $file) {
@@ -403,6 +438,7 @@ class Recipe extends BaseModel
         $this->getSteps()->delete();
         $this->getLangs()->delete();
     }
+
     public function afterSave()
     {
         $recipe_step = new RecipeStep();
@@ -420,7 +456,8 @@ class Recipe extends BaseModel
         return $current_user->getId() === $this->getIdUser();
     }
 
-    public function getIngredientsData() {
+    public function getIngredientsData()
+    {
         $result = [];
         $ingredients = $this->getRelated('ingredients');
         foreach ($ingredients as $ingredient) {
@@ -429,7 +466,8 @@ class Recipe extends BaseModel
         return $result;
     }
 
-    public function getPartsData() {
+    public function getPartsData()
+    {
         $result = [];
         $parts = $this->getRelated('parts');
         foreach ($parts as $part) {
@@ -437,6 +475,7 @@ class Recipe extends BaseModel
         }
         return $result;
     }
+
     /**
      * @return Simple
      * @todo change or delete this method.
@@ -468,10 +507,10 @@ class Recipe extends BaseModel
         $result = [];
 
         foreach ($rows->toArray() as $row) {
-            $ids_unit = explode(',',$row['id_units']);
-            $unit_titles = explode(',',$row['unit_title']);
-            $ids_id_ingredient = explode(',',$row['id_ingredients']);
-            $ingredient_titles = explode(',',$row['ingredient_title']);
+            $ids_unit = explode(',', $row['id_units']);
+            $unit_titles = explode(',', $row['unit_title']);
+            $ids_id_ingredient = explode(',', $row['id_ingredients']);
+            $ingredient_titles = explode(',', $row['ingredient_title']);
             $units = [];
             $ingredients = [];
             foreach ($ids_id_ingredient as $key => $item) {
@@ -480,7 +519,7 @@ class Recipe extends BaseModel
             }
             $result = [
                 'id_recipe' => $row['id'],
-                'units' =>$units,
+                'units' => $units,
                 'ingredients' => $ingredients
             ];
             echo '<pre>';

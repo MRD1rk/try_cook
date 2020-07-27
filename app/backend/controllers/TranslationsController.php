@@ -70,7 +70,8 @@ class TranslationsController extends BaseController
             if (!empty($post)) {
                 foreach ($post as $item) {
                     $translationLang = new TranslateLang();
-                    if (!$translationLang->save($item)) {
+                    $translationLang->assign($item);
+                    if (!$translationLang->save()) {
                         foreach ($translationLang->getMessages() as $errorMessage) {
                             $message[] = $this->t->_($errorMessage->getMessage());
                         }
