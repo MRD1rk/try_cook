@@ -73,7 +73,7 @@
     font-family: 'Gotham Pro Bold';
     font-style: normal;
     font-weight: normal;
-    src: local('Gotham Pro Bold'), url('/fonts/GothamPro/GothaProBol.woff') format('woff');
+    src: local('Gotham Pro Bold'), url("/fonts/GothamPro/GothaProBol.woff") format('woff');
 }
 
 
@@ -81,7 +81,7 @@
     font-family: 'GothamPro-MediumItalic';
     font-style: normal;
     font-weight: normal;
-    src: local('GothamPro-MediumItalic'), url('/fonts/GothamPro/GothamProMediumItalic.woff') format('woff');
+    src: local('GothamPro-MediumItalic'), url("/fonts/GothamPro/GothamProMediumItalic.woff") format('woff');
 }
 
 body {
@@ -97,7 +97,7 @@ img {
     width: 100%;
 }
 
-p {
+.index-index p {
     color: #8b80a0;
 }
 
@@ -341,7 +341,7 @@ input[type="file"] {
     position: relative;
     left: -15px;
     top: 3px;
-    background: red;
+    background: #ff451c;
     color: white;
     padding: 3px;
     z-index: 1000;
@@ -357,35 +357,45 @@ input[type="file"] {
     content: "";
     border-right: 5px solid transparent;
     border-left: 5px solid transparent;
-    border-bottom: 5px solid red;
+    border-bottom: 5px solid #ff451c;
     position: absolute;
     top: -5px;
     left: 20px;
 }
 .field-has-error{
     position: relative;
-    color: red;
+    color: #ff451c;
 }
-.field-has-error input{
-    border: 2px solid red;
+.field-has-error input,.field-has-error *[contenteditable="true"]{
+    border: 2px solid #ff451c;
+    outline: none;
+    box-shadow: none;
 }
 .field-has-error #recipe_title{
     padding-left: 35px;
 }
+.recipe-title-block.field-has-error .error-container{
+    left: 25px;
+}
+.recipe-step-description-block.field-has-error textarea{
+    padding: 10px 10px 10px 35px;
+    border-color: #ff451c;
+    border-width: 2px;
+}
 .field-has-error .error-container+label{
     margin-left: 35px;
-    color: red;
+    color: #ff451c;
 }
 .field-has-error *::placeholder{
-    color: red;
+    color: #ff451c;
 }
 .field-has-error input:focus {
-    border: 2px solid red;
-    outline-color: red;
+    border: 2px solid #ff451c;
+    outline-color: #ff451c;
     box-shadow: none;
 }
 .field-has-error .error-container{
-    color: red;
+    color: #ff451c;
     position: absolute;
     top: 10px;
     left: 10px;
@@ -525,7 +535,9 @@ h1.tc-title {
     font-weight: bold;
     text-align: center;
 }
-
+.title:first-letter{
+    text-transform: capitalize;
+}
 .new-big-item .short-description {
     font-size: 18px;;
 }
@@ -672,7 +684,7 @@ h1.tc-title {
     background-color: inherit;
 }
 
-.delete-ingredient i {
+.delete-ing#ff451cient i {
     vertical-align: -webkit-baseline-middle;
 }
 
@@ -692,7 +704,7 @@ h1.tc-title {
 
 .notice-error .notice-error-icon:hover {
     color: white;
-    background: red;
+    background: #ff451c;
 }
 
 .notice-error .notice-message {
@@ -700,7 +712,51 @@ h1.tc-title {
     left: 28px;
     display: inline-block;
 }
+.s-swtich input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    position: absolute;
+}
 
+.s-swtich label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 40px;
+    height: 23px;
+    background: #c0d8d2;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    margin: 0;
+}
+
+.s-swtich label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: calc(60% - 10px);
+    height: calc(100% - 10px);
+    background: #fff;
+    border-radius: 90px;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.s-swtich input:checked+label {
+    background: #4cd021;
+}
+
+.s-swtich input:checked+label:after {
+    left: calc(100% - 5px);
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+
+.s-swtich label:active:after {
+    width: 40px;
+}
 /*#header-account-btn .btn-tc{*/
 /*    padding: 0;*/
 /*}*/

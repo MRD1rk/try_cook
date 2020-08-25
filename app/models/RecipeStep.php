@@ -206,7 +206,7 @@ class RecipeStep extends BaseModel
      * @param mixed $parameters
      * @return RecipeStep[]|RecipeStep|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null):ResultsetInterface
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }
@@ -290,6 +290,12 @@ class RecipeStep extends BaseModel
 
     public function beforeDelete()
     {
+        if ($this->count('id_recipe='.$this->getIdRecipe()) === 1) {
+            $this->appendMessage(new Message('can_not_delete_last_part'));
+            return false;
+        }
+        if ($this->getLang())
+            $this->getLang()->delete();
         $image_types = ImageType::find('active=1');
         foreach ($image_types as $image_type) {
             if (file_exists($this->getImagePath($image_type->getType())))

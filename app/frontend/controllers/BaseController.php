@@ -24,7 +24,7 @@ class BaseController extends Controller
         $this->assets->collection('footerJs')->addJs('js/translationApp.js?v=1');
         $this->view->container_class = '';
         $this->view->t = $this->getDI()->get('t');
-        $this->view->iso_code = $this->context->getLang()->iso_code;
+        $this->view->iso_code = $this->context->getLang()->getIsoCode();
         $this->view->tokenKey = $tokenKey;
         $this->view->tokenValue = $tokenValue;
         $this->view->site_name = Configuration::get('SITE_NAME');

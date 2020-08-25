@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Helpers\Tools;
 use Phalcon\Mvc\Model\ResultsetInterface;
 
 class RecipeLang extends BaseModel
@@ -229,6 +230,12 @@ class RecipeLang extends BaseModel
             'content' => 'content',
             'link_rewrite' => 'link_rewrite'
         ];
+    }
+
+    public function beforeSave()
+    {
+        $link_rewrite = Tools::strToUrl($this->getTitle());
+        $this->setLinkRewrite($link_rewrite);
     }
 
 }

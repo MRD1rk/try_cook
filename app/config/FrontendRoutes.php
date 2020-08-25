@@ -18,6 +18,7 @@ class FrontendRoutes extends RouterGroup
             ]
         );
 
+        //index
         $this->add('/:controller', array(
             'controller' => 1,
             'action' => 'index'
@@ -36,92 +37,95 @@ class FrontendRoutes extends RouterGroup
             'action' => 'getTranslations',
             'iso_code' => 1
         ));
+        //recipes
         $this->add('/([a-z]{2})/recipes', array(
             'controller' => 'recipes',
             'action' => 'index',
             'iso_code' => 1,
         ))->setName('recipes-index');
-        $this->add('/([a-z]{2})/recipes/add/:int', array(
+        $this->add('/([a-z]{2})/recipes/form/:int', array(
             'controller' => 'recipes',
-            'action' => 'add',
+            'action' => 'form',
             'iso_code' => 1,
             'id_recipe' => 2
-        ))->setName('recipes-add');
-        $this->add('/([a-z]{2})/recipes/add', array(
-            'controller' => 'recipes',
-            'action' => 'add',
-            'iso_code' => 1
-        ))->setName('recipes-add');
+        ))->setName('recipes-form');
         $this->add('/([a-z]{2})/recipes/new', array(
             'controller' => 'recipes',
             'action' => 'new',
             'iso_code' => 1
         ))->setName('recipes-new');
-        $this->add('/([a-z]{2})/recipes/add/:int/upload-image', [
+        $this->add('/([a-z]{2})/recipes/form/:int/upload-image', [
             'controller' => 'recipes',
             'action' => 'uploadImage',
             'iso_code' => 1,
             'id_recipe' => 2
         ])->setName('recipes-upload-image');
-        $this->add('/([a-z]{2})/recipes/add/:int/upload-step-image', [
+        $this->add('/([a-z]{2})/recipes/form/:int/upload-step-image', [
             'controller' => 'recipes',
             'action' => 'uploadStepImage',
             'iso_code' => 1,
             'id_recipe' => 2
         ])->setName('recipes-upload-step-image');
-        $this->add('/([a-z]{2}/recipes/add/:int/add-recipe-step)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/add-recipe-step)', [
             'controller' => 'recipes',
             'action' => 'addRecipeStep',
             'iso_code' => 1,
             'id_recipe' => 2,
         ])->setName('recipes-add-step');
-        $this->add('/([a-z]{2}/recipes/add/:int/delete-step/:int)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/delete-step/:int)', [
             'controller' => 'recipes',
             'action' => 'deleteRecipeStep',
             'iso_code' => 1,
             'id_recipe' => 2,
             'id_step' => 3
         ])->setName('recipes-delete-step');
-        $this->add('/([a-z]{2}/recipes/add/:int/add-recipe-ingredient)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/add-recipe-ingredient)', [
             'controller' => 'recipes',
             'action' => 'addRecipeIngredient',
             'iso_code' => 1,
             'id_recipe' => 2,
         ])->setName('recipes-add-recipe-ingredient');
-        $this->add('/([a-z]{2}/recipes/add/:int/delete-recipe-ingredient/:int)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/delete-recipe-ingredient/:int)', [
             'controller' => 'recipes',
             'action' => 'deleteRecipeIngredient',
             'iso_code' => 1,
             'id_recipe' => 2,
             'id_recipe_ingredient' => 3,
         ])->setName('recipes-delete-recipe-ingredient');
-        $this->add('/([a-z]{2}/recipes/add/:int/update-recipe-ingredient/:int)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/update-recipe-ingredient/:int)', [
             'controller' => 'recipes',
             'action' => 'updateRecipeIngredient',
             'iso_code' => 1,
             'id_recipe' => 2,
             'id_recipe_ingredient' => 3,
         ])->setName('recipes-delete-recipe-ingredient');
-        $this->add('/([a-z]{2}/recipes/add/:int/update-recipe-ingredient-position/:int)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/update-recipe-ingredient-position/:int)', [
             'controller' => 'recipes',
             'action' => 'updateRecipeIngredientPosition',
             'iso_code' => 1,
             'id_recipe' => 2,
             'id_recipe_ingredient' => 3,
-        ])->setName('recipes-delete-recipe-ingredient');
-        $this->add('/([a-z]{2}/recipes/add/:int/add-recipe-part)', [
+        ])->setName('recipes-update-recipe-ingredient-position');
+        $this->add('/([a-z]{2}/recipes/form/:int/update-recipe-part-position/:int)', [
+            'controller' => 'recipes',
+            'action' => 'updateRecipePartPosition',
+            'iso_code' => 1,
+            'id_recipe' => 2,
+            'id_recipe_part' => 3,
+        ])->setName('recipes-update-recipe-part-position');
+        $this->add('/([a-z]{2}/recipes/form/:int/add-recipe-part)', [
             'controller' => 'recipes',
             'action' => 'addRecipePart',
             'iso_code' => 1,
             'id_recipe' => 2,
         ])->setName('recipes-add-part');
-        $this->add('/([a-z]{2}/recipes/add/:int/update-recipe-part)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/update-recipe-part)', [
             'controller' => 'recipes',
             'action' => 'updateRecipePart',
             'iso_code' => 1,
             'id_recipe' => 2,
         ])->setName('recipes-update-part');
-        $this->add('/([a-z]{2}/recipes/add/:int/delete-part/:int)', [
+        $this->add('/([a-z]{2}/recipes/form/:int/delete-part/:int)', [
             'controller' => 'recipes',
             'action' => 'deleteRecipePart',
             'iso_code' => 1,
@@ -133,13 +137,15 @@ class FrontendRoutes extends RouterGroup
             'action' => 'filter',
             'iso_code' => 1,
         ))->setName('categories-filter');
-        $this->add('/([a-z]{2})/recipes/([0-9]+)[-]([a-zA-Z0-9\_\-]+)[.]html', array(
+        //'/([a-z]{2})/([0-9]+)[-]([a-zA-Z0-9\_\-]+)'
+        $this->add('/([a-z]{2})/recipes/([0-9]+)-([a-zA-Z0-9\_\-]+).html', array(
             'controller' => 'recipes',
             'action' => 'view',
             'iso_code' => 1,
             'id_recipe' => 2,
             'link_rewrite' => 3
         ))->setName('recipes-view');
+        //categories
         $this->add('/([a-z]{2})/([0-9]+)[-]([a-zA-Z0-9\_\-]+)', [
             'controller' => 'categories',
             'action' => 'view',
@@ -148,6 +154,7 @@ class FrontendRoutes extends RouterGroup
             'link_rewrite' => 3
         ])->setName('categories-view');
 
+        //auth
         $this->add('/([a-z]{2})/auth/signup', [
             'controller' => 'auth',
             'action' => 'signup',

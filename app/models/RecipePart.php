@@ -3,6 +3,7 @@
 namespace Models;
 
 use Phalcon\Di;
+use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\ResultsetInterface;
 
 class RecipePart extends BaseModel
@@ -129,6 +130,7 @@ class RecipePart extends BaseModel
      */
     public function initialize()
     {
+        $this->keepSnapshots(true);
         $this->setSource('tc_recipe_part');
         $this->hasMany('id', RecipeIngredient::class, 'id_recipe_part', ['alias' => 'ingredients',
             'params' => [
@@ -145,7 +147,7 @@ class RecipePart extends BaseModel
      * @param mixed $parameters
      * @return RecipePart[]|RecipePart|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null) :ResultsetInterface
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }
@@ -179,9 +181,40 @@ class RecipePart extends BaseModel
 
     public function beforeSave()
     {
-        $this->position = $this->count('id_recipe=' . $this->getIdRecipe()) + 1;
+        if ($this->hasSnapshotData()) {
+            if ($this->hasChanged('position')) {
+                $old_position = $this->getSnapshotData()['position'];
+                $new_position = $this->getPosition();
+                if ($old_position > $new_position) {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position + 1
+                WHERE position >=' . $new_position . ' 
+                AND position < ' . $old_position . ' 
+                AND id != ' . $this->getId() . ' 
+                AND id_recipe =' . $this->getIdRecipe();
+                } else {
+                    $phql = 'UPDATE ' . $this->getSource() . ' SET position = position - 1
+                WHERE position <=' . $new_position . ' 
+                AND position > ' . $old_position . ' 
+                AND id != ' . $this->getId() . ' 
+                AND id_recipe =' . $this->getIdRecipe();
+                }
+                if (!$result = $this->getWriteConnection()->query($phql)) {
+                    $message = new Message('sql query error (position). Result: ' . var_dump($result));
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
+    public function beforeDelete()
+    {
+        if ($this->count('id_recipe='.$this->getIdRecipe()) === 1) {
+            $this->appendMessage(new Message('can_not_delete_last_part'));
+            return false;
+        }
+    }
     public function afterDelete()
     {
         $db = Di::getDefault()->get('db');
@@ -196,4 +229,5 @@ class RecipePart extends BaseModel
         $recipe_ingredient->setIdRecipePart($this->getId());
         $recipe_ingredient->save();
     }
+
 }

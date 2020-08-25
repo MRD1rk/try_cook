@@ -7,10 +7,15 @@ use Components\ImageManager;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\Model\Transaction\Manager;
 
 class Recipe extends BaseModel
 {
 
+    const RECIPE_STATUS_DRAFT = 1;
+    const RECIPE_STATUS_NEW = 2;
+    const RECIPE_STATUS_CHECK = 3;
+    const RECIPE_STATUS_DEFAULT = 4;
     /**
      *
      * @var integer
@@ -277,7 +282,7 @@ class Recipe extends BaseModel
     {
         $this->setSource('tc_recipes');
         $this->hasManyToMany('id', 'Models\CategoryRecipe', 'id_recipe', 'id_category', 'Models\Category', 'id', ['alias' => 'categories']);
-        $this->hasMany('id',CategoryRecipe::class,'id_recipe',['alias'=>'recipeCategories']);
+        $this->hasMany('id', CategoryRecipe::class, 'id_recipe', ['alias' => 'recipeCategories']);
         $this->hasMany('id', 'Models\RecipeIngredient', 'id_recipe', ['alias' => 'ingredients',
             'params' => [
                 'order' => 'position'
@@ -357,10 +362,10 @@ class Recipe extends BaseModel
      * @param $features array
      * @return bool
      */
-    public function updateFeature($features)
+    public function updateFeature($features = [])
     {
-        if (!$features)
-            return false;
+//        if (!$features)
+//            return false;
         $this->getRecipeFeatures()->delete();
         foreach ($features as $id_feature => $id_feature_value) {
             $recipe_feature = new FeatureRecipe();
@@ -381,32 +386,64 @@ class Recipe extends BaseModel
      */
     public function updateRecipeLang($recipe_lang_data)
     {
-        if (!$recipe_lang_data)
-            return false;
-        $recipe_lang = $this->getLang();
-        $recipe_lang->setTitle($recipe_lang_data['title']);
-        $recipe_lang->setDescription($recipe_lang_data['description']);
-        if (!$recipe_lang->save()) {
-            $this->appendMessage(new Message('failed_save_recipe_lang'));
-            return false;
+        if ($recipe_lang_data) {
+            $recipe_lang = $this->getLang();
+            $recipe_lang->setTitle($recipe_lang_data['title']);
+            $recipe_lang->setDescription($recipe_lang_data['description']);
+            if (!$recipe_lang->save()) {
+                $this->appendMessage(new Message('failed_save_recipe_lang'));
+                return false;
+            }
         }
         return true;
     }
 
-    public function updateCategory($id_category) {
-        if (!$id_category)
-            return false;
-        $this->getRecipeCategories()->delete();
-        $category_recipe = new CategoryRecipe();
-        $category_recipe->setIdCategory($id_category);
-        $category_recipe->setIdRecipe($this->getId());
-        if (!$category_recipe->save()) {
-            $this->appendMessage(new Message('failed_save_recipe_category'));
-            return false;
+    /**
+     * @param $recipe_step_data
+     * @return bool
+     */
+    public function updateStep($recipe_step_data)
+    {
+        if ($recipe_step_data) {
+            foreach ($recipe_step_data as $id_recipe_step => $recipe_step_datum) {
+                $recipe_step = RecipeStep::findFirst([
+                    'conditions' => 'id = :id: AND id_recipe = :id_recipe:',
+                    'bind' => [
+                        'id' => $id_recipe_step,
+                        'id_recipe' => $this->getId()
+                    ]]);
+                if (!$recipe_step)
+                    return false;
+                $recipe_step->setPosition($recipe_step_datum['position']);
+                $recipe_step_lang = new RecipeStepLang();
+                $recipe_step_lang->setContent($recipe_step_datum['description']);
+                $recipe_step_lang->setIdStep($id_recipe_step);
+                $recipe_step_lang->setIdLang(Context::getInstance()->getLang()->getId());
+                if (!$recipe_step->save() || !$recipe_step_lang->save()) {
+                    $this->appendMessage(new Message('failed_save_recipe_step'));
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public function updateCategory($id_category)
+    {
+        if ($id_category) {
+            $this->getRecipeCategories()->delete();
+            $category_recipe = new CategoryRecipe();
+            $category_recipe->setIdCategory($id_category);
+            $category_recipe->setIdRecipe($this->getId());
+            if (!$category_recipe->save()) {
+                $this->appendMessage(new Message('failed_save_recipe_category'));
+                return false;
+            }
         }
         return true;
 
     }
+
     public function uploadPreviewImage($files)
     {
         foreach ($files as $file) {
@@ -444,6 +481,13 @@ class Recipe extends BaseModel
         $recipe_step = new RecipeStep();
         $recipe_step->setIdRecipe($this->getId());
         $recipe_step->save();
+        $recipe_part = new RecipePart();
+        $recipe_part->setIdRecipe($this->getId());
+        $recipe_part->save();
+        $recipe_lang = new RecipeLang();
+        $recipe_lang->setIdRecipe($this->getId());
+        $recipe_lang->setIdLang(Context::getInstance()->getLang()->getId());
+        $recipe_lang->save();
     }
 
     /**
@@ -528,4 +572,5 @@ class Recipe extends BaseModel
         }
         return $rows;
     }
+
 }

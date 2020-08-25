@@ -17,13 +17,13 @@ class UrlManager extends Url
         $this->domain_url = Configuration::get('DOMAIN');
     }
 
-    public function get($uri = null, $args = null, bool $absolute = null, $baseUri = null): string
-    {
-        $url = parent::get($uri, $args, $absolute, $baseUri);
-        if ($absolute)
-            $url = $this->domain_url . '/' . $url;
-        return rtrim($url);
-    }
+//    public function get($uri = null, $args = null, bool $absolute = null, $baseUri = null): string
+//    {
+//        $url = parent::get($uri, $args, $absolute, $baseUri);
+//        if ($absolute)
+//            $url = $this->domain_url . '/' . $url;
+//        return rtrim($url);
+//    }
 
     /**
      * @param $id_category

@@ -1,5 +1,5 @@
-<h1 class="tc-title">{{ t._('new_recipe') }}</h1>
 <div id="content" class="recipes-add" data-id_recipe="{{ recipe.id }}">
+    <h1 class="tc-title">{{ t._('new_recipe') }}</h1>
     <div class="row">
         <div class="col-2">
             <div class="sticky-top">
@@ -10,8 +10,7 @@
             <div class="row recipe-block justify-content-between">
                 <div class="col-12 recipe-block-item">
                     <div class="row">
-
-                        <div class="col-12">
+                        <div class="col-12 recipe-title-block">
                             <div class="form-group ">
                                 <input name="recipe_title" id="recipe_title" class="form-control" title="123"
                                        data-keep="true"
@@ -34,7 +33,7 @@
                             <div class="form-group">
                                 <div class="recipe-description-block">
                                     <label for="recipe_description">{{ t._('add_description') }}</label>
-                                    <textarea data-keep="true" class="form-control" id="recipe_description"></textarea>
+                                    <div data-keep="true" class="form-control" id="recipe_description"></div>
                                 </div>
                             </div>
                         </div>
@@ -178,16 +177,12 @@
             </div>
         </div>
         <!--right block-->
-        <div class="col-2">
-            <div class="sticky-top">
-                <div class="row recipe-button-block  justify-content-between">
-                    <div class="col-12">
-                        <div class="text-center">
-                            <button id="save-recipe" class="btn btn-success">{{ t._('save') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-2 pr-0">
+            {{ partial('recipes/form-right-block') }}
         </div>
     </div>
+</div>
+
+<div id="preloader">
+    <div class="loader"></div>
 </div>

@@ -6,38 +6,48 @@
         target: '',
         event: 'change input',
         errorType: '',
-        parent: 'div.form-group'
+        parent: 'div.form-group',
     };
     var invalidStorage = [];
     var methods = {
         init: function (options) {
-            let $this = $(this);
-            let init = $this.data('validation');
-            if (init)
-                return this;
-            else {
-                var params = $.extend({}, defaults, options);
-                let data = {
-                    id:Math.random().toString(36).substr(2, 9),
-                    params:params
-                }
-                $this.data('validation', data);
-                methods.trigger($this, params);
-                return this.on(params.event, function () {
+            $(this).each(function () {
+                let $this = $(this);
+                let init = $this.data('validation');
+                if (init)
+                    return this;
+                else {
+                    var params = $.extend({}, defaults, options);
+                    let data = {
+                        id: Math.random().toString(36).substr(2, 9),
+                        params: params
+                    }
+                    $this.data('validation', data);
                     methods.trigger($this, params);
-                    methods.doValidation();
-                })
-            }
+                    return $this.on(params.event, function () {
+                        methods.trigger($this, params);
+                        methods.validationItem($this);
+                    })
+                }
+            })
+        },
+        requiredContenteditable: function (content) {
+            let value = content.text();
+            console.log(value)
+            return {
+                result: value.length === 0,
+                element: content
+            };
         },
         required: function (content) {
             let value = null;
-            if (content.prop('tagName') === 'INPUT') {
+            if (content.prop('tagName') === 'INPUT' || content.prop('tagName') === 'TEXTAREA') {
                 value = content.val();
             } else {
                 let inputs = content.find('input')
                 inputs.each(function () {
                     $(this).val($(this).val().replace(/[^\d]/, ''));
-                    value = !$(this).val().length;
+                    value = $(this).val().length;
                 });
             }
             return {
@@ -56,8 +66,9 @@
                 }
                 if (error)
                     value = '';
-                return {result:error,value:value};
+                return {result: error, value: value};
             }
+
             let result = false;
             if (content.prop('tagName') === 'INPUT') {
                 let value = checkValue(content.val());
@@ -79,11 +90,12 @@
         checked: function (content) {
             let result = false;
             let inputs = content.find('input');
-            inputs.each(function (item) {
-                result = $(item).is(':checked')
-            })
+            inputs.each(function () {
+                if (!result)
+                    result = $(this).is(':checked');
+            });
             return {
-                result: result,
+                result: !result,
                 element: content
             }
         },
@@ -162,7 +174,12 @@
                 }
             });
         },
-        doValidation: function () {
+        validationItem: function (item) {
+            let element = invalidStorage[item.data('validation').id];
+            if (!element) return;
+            methods.showError(element.target, element.message);
+        },
+        validationAll: function () {
             for (let key in invalidStorage) {
                 let item = invalidStorage[key];
                 methods.showError(item.target, item.message);
@@ -171,7 +188,7 @@
         }
     };
 
-    $.fn.myValidation = function (method) {
+    $.fn.recipeValidation = function (method) {
 
         // логика вызова метода
         if (methods[method]) {

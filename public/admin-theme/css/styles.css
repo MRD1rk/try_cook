@@ -2777,7 +2777,7 @@ table.dataTable thead td {
     top: 5px;
     left: 5px;
     width: 15px;
-    height: 15px;
+    height: calc(100% - 10px);
     background: #fff;
     border-radius: 90px;
     -webkit-transition: 0.3s;

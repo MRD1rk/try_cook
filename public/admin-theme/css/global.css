@@ -32,7 +32,6 @@ table .s-swtich label {
 
 table .s-swtich label:after {
     width: 20px;
-    height: 20px;
 }
 .tDnD_whileDrag{
     background: #c66e2d;

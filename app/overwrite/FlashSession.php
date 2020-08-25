@@ -10,7 +10,8 @@ class FlashSession extends Session
 
     public function __construct($cssClasses = [])
     {
-        if (empty($cssClassess)) {
+        parent::__construct();
+        if (empty($cssClasses)) {
             $cssClasses = [
                 "error" => "alert alert-danger",
                 "success" => "alert alert-success",
@@ -19,7 +20,6 @@ class FlashSession extends Session
             ];
         }
         $this->setCssClasses($cssClasses);
-        parent::__construct();
     }
 
 
@@ -36,7 +36,7 @@ class FlashSession extends Session
         if (!empty($flash_messages)) {
             foreach ($flash_messages as $type => $messages) {
                 foreach ($messages as $message) {
-                    $html = '<div class="alert-overwrite ' . $this->_cssClasses[$type] . '">
+                    $html = '<div class="alert-overwrite ' . $this->getCssClasses()[$type] . '">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

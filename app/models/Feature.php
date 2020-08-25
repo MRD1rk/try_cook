@@ -233,7 +233,7 @@ class Feature extends BaseModel
             LEFT JOIN tc_feature_lang fl ON f.id = fl.id_feature
             LEFT JOIN tc_feature_value_lang fvl ON fv.id = fvl.id_feature_value
             WHERE fvl.id_lang = '.$id_lang.' AND fl.id_lang = '.$id_lang.'
-            ORDER BY f.id';
+            ORDER BY f.position';
         $model = new self;
         $rows = new \Phalcon\Mvc\Model\Resultset\Simple(
             null,

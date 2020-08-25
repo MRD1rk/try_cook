@@ -5,6 +5,7 @@ namespace Modules\Api;
 use Components\CSRF;
 use Models\Context;
 use Phalcon\Assets\Manager;
+use Phalcon\Di;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
@@ -41,9 +42,9 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param DiInterface $di
+     * @param Di $di
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(Di $di)
     {
         $di->set('dispatcher', function () use ($di) {
             $eventsManager = $di->getShared('eventsManager');
@@ -51,19 +52,19 @@ class Module
              * Check if the user is allowed to access certain action using the SecurityPlugin
              */
 
-            $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
-                switch ($exception->getCode()) {
-                    case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-                    case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                        $dispatcher->forward(
-                            array(
-                                'controller' => 'error',
-                                'action' => 'show404',
-                            )
-                        );
-                        return false;
-                }
-            });
+//            $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
+//                switch ($exception->getCode()) {
+//                    case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+//                    case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+//                        $dispatcher->forward(
+//                            array(
+//                                'controller' => 'error',
+//                                'action' => 'show404',
+//                            )
+//                        );
+//                        return false;
+//                }
+//            });
 //            $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
             $eventsManager->attach('dispatch:beforeDispatch', new CSRF());
             $dispatcher = new Dispatcher();

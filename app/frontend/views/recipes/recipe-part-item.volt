@@ -4,7 +4,10 @@
     <div class="row">
         <div class="col-12">
             <div class="row">
-                <div class="col-8">
+                <div class="col-1 pr-0 draggable" title="{{ t._('change_part_position') }}">
+                    <i class="fas fa-grip-vertical"></i>
+                </div>
+                <div class="col-7 p-0">
                     <select data-id_recipe_part="{{ recipe_part.id }}"
                             name="recipe_parts[{{ recipe_part.id }}]"
                             class="recipe-part-select"

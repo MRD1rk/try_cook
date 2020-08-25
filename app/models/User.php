@@ -386,7 +386,9 @@ class User extends BaseModel
         $this->hasMany('id', 'Models\Recipe', 'id_user', ['alias' => 'recipes']);
         $this->hasOne('id', 'Models\Recipe', 'id_user', [
             'alias' => 'draftRecipe',
-            'conditions' => 'state = \'draft\''
+            'params' => [
+                'state = "draft"'
+            ]
         ]);
     }
 
@@ -397,7 +399,7 @@ class User extends BaseModel
      * @param mixed $parameters
      * @return User[]|User|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null) :ResultsetInterface
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }
