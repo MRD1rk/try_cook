@@ -305,7 +305,7 @@ $(function () {
     /**
      * Input and send data about ingredient item
      */
-    $('body').on('input', '.weight-input', function () {
+    $('body').on('input change', '.weight-input', function () {
         let input = $(this);
         let count = input.val();
         let clean_val = count.replace(/\D+/g, '');
@@ -523,6 +523,10 @@ function initRecipeUnitSelectize(unit_selector) {
         labelField: 'title',
         lock: true,
         onChange: function (id) {
+            /**
+             * @todo clean weight input, when changing ingredient column
+             * @type {jQuery}
+             */
             let parent = this.$input.parents('.ingredient-item');
             let weight_input = parent.find('.weight-input');
             if (id == 6) {
