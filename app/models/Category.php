@@ -255,7 +255,7 @@ class Category extends BaseModel
      * @param mixed $parameters
      * @return Category[]|Category|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null) :ResultsetInterface
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }

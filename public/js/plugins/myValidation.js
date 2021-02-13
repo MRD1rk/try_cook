@@ -33,6 +33,7 @@
         },
         requiredContenteditable: function (content) {
             let value = content.text();
+            console.log(content)
             console.log(value)
             return {
                 result: value.length === 0,

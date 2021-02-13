@@ -308,7 +308,7 @@ $(function () {
     $('body').on('input change', '.weight-input', function () {
         let input = $(this);
         let count = input.val();
-        let clean_val = count.replace(/\D+/g, '');
+        let clean_val = count.replace(/[^(?<=^| )\d+(\.\d+)?(?=$| )]/g, '');
         if (count !== clean_val) {
             input.val(clean_val);
             return;
@@ -326,12 +326,22 @@ $(function () {
             id_unit: id_unit,
             id_recipe_ingredient: id_recipe_ingredient
         };
+        input.data('data', data);
         let timer = setTimeout(function () {
-            updateRecipeIngredient(data)
-        }, 1000);
+            updateRecipeIngredient(data);
+            input.data('data', null);
+        }, 2200);
         input.data('timer', timer);
 
     });
+    $('body').on('focusout', '.weight-input', function () {
+        let input = $(this);
+        let data = input.data('data');
+        if (data) {
+            clearTimeout(input.data('timer'));
+            updateRecipeIngredient(data);
+        }
+    })
     /**
      * Add ingredients block
      */
@@ -479,13 +489,20 @@ function initEditor(selector) {
         selector: selector,
         required: true,
         menubar: false,
-        inline:true,
+        inline: true,
         setup: function (ed) {
             ed.on('init', function (e) {
                 $(selector).recipeValidation({
-                    'rules' : ['requiredContenteditable'],
-                    'target':'label',
-                    'errorType' : 'recipe_description_empty_error'
+                    'rules': ['requiredContenteditable'],
+                    'target': 'label',
+                    'errorType': 'recipe_description_empty_error'
+                });
+            })
+            ed.on('change', function (e) {
+                $(selector).recipeValidation({
+                    'rules': ['requiredContenteditable'],
+                    'target': 'label',
+                    'errorType': 'recipe_description_empty_error'
                 });
             })
         },
@@ -709,7 +726,7 @@ function getRecipeData() {
     let difficulty = $('input[name="features[' + difficulty_feature + ']"]').val()
     let recipe_cooking_minutes = $('#recipe_cooking_minutes').val();
     let recipe_cooking_time = calculateCookTime(recipe_cooking_hours, recipe_cooking_minutes);
-    let default_person_count = $('#recipe_person_count').val().length  ? $('#recipe_person_count').val() : 1;
+    let default_person_count = $('#recipe_person_count').val().length ? $('#recipe_person_count').val() : 1;
     let recipe_prepare_hours = $('#recipe_prepare_hours').val();
     let recipe_prepare_minutes = $('#recipe_prepare_minutes').val();
     let recipe_prepare_time = calculateCookTime(recipe_prepare_hours, recipe_prepare_minutes);

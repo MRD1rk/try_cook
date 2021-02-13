@@ -34,6 +34,5 @@ class BaseController extends Controller
     {
         if (!$this->auth->getIdentity() && $this->auth->hasRememberMe())
             return $this->auth->loginWithRememberMe();
-
     }
 }

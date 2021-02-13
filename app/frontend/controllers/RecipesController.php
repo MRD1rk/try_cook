@@ -388,7 +388,7 @@ class RecipesController extends BaseController
             $id_recipe_ingredient = $this->dispatcher->getParam('id_recipe_ingredient', 'int');
             $id_ingredient = $this->request->getPost('id_ingredient', 'int');
             $id_unit = $this->request->getPost('id_unit', 'int');
-            $count = $this->request->getPost('count', 'int');
+            $count = $this->request->getPost('count');
             $recipe_ingredient = RecipeIngredient::findFirst($id_recipe_ingredient);
             $recipe_ingredient->setIdIngredient($id_ingredient);
             $recipe_ingredient->setIdUnit($id_unit);

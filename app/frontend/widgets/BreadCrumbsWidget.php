@@ -13,7 +13,6 @@ class BreadCrumbsWidget extends BaseWidget
 
     public function run($view = 'nav')
     {
-
         $controller_name = $this->getDi()->get('router')->getControllerName();
         $action_name = $this->getDi()->get('router')->getActionName();
         $method = $controller_name . '/' . $action_name;
