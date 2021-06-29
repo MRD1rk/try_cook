@@ -33,7 +33,7 @@ class UrlManager extends Url
      */
     public function getCategoryLink($id_category, $link_rewrite = 'category', $absolute = false)
     {
-        $iso_code = Context::getInstance()->getLang()->iso_code;
+        $iso_code = Context::getInstance()->getLang()->getIsoCode();
         $url = '/' . $iso_code . '/' . $id_category . '-' . $link_rewrite;
         if ($absolute)
             $url = $this->domain_url . $url;
